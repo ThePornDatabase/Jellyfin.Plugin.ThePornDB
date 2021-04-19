@@ -18,6 +18,6 @@ namespace ThePornDB
 
         public const string APIPerfomerURL = APIBaseURL + "/performers/{0}";
 
-        public const string UserAgent = "Jellyfin.Plugin.ThePornDB/1.0.0";
+        public const string UserAgent = "Jellyfin.Plugin.ThePornDB/1.0.1";
     }
 }
