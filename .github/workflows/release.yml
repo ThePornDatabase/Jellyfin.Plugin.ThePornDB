@@ -1,0 +1,53 @@
+name: Node.CI
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Build
+        run: dotnet publish --configuration Release --output bin --no-restore
+
+      - name: Rename Files
+        run: mv bin/ThePornDB.dll ./Jellyfin.Plugin.ThePornDb.dll && mv bin/ThePornDB.pdb ./Jellyfin.Plugin.ThePornDb.pdb
+
+      - uses: papeloto/action-zip@v1
+        with:
+          files: ./Jellyfin.Plugin.ThePornDb.pdb ./Jellyfin.Plugin.ThePornDb.dll
+          dest: Jellyfin.Plugin.ThePornDb.zip
+
+      - uses: actions/upload-artifact@v2
+        with:
+          if-no-files-found: error
+          name: build
+          retention-days: 90
+          path: |
+            ./Jellyfin.Plugin.ThePornDb.pdb 
+            ./Jellyfin.Plugin.ThePornDb.dll
+    
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: Jellyfin.Plugin.ThePornDb.zip
