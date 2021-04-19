@@ -127,6 +127,7 @@ namespace ThePornDB.Providers
             if (!string.IsNullOrEmpty(result.Item.Name))
             {
                 result.HasMetadata = true;
+                result.Item.ProviderIds.Add(Plugin.Instance.Name, curID);
                 result.Item.OfficialRating = "XXX";
 
                 if (result.Item.PremiereDate.HasValue)
