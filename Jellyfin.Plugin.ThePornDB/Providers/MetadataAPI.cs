@@ -124,6 +124,7 @@ namespace ThePornDB.Providers
                 {
                     var actor = new PersonInfo
                     {
+                        ProviderIds = { { Plugin.Instance.Name, (string)actorLink["parent"]["id"] } },
                         Name = (string)actorLink["name"],
                         ImageUrl = (string)actorLink["image"],
                     };
