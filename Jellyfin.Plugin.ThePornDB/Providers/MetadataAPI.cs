@@ -101,6 +101,11 @@ namespace ThePornDB.Providers
             result.Item.Name = (string)sceneData["title"];
             result.Item.Overview = (string)sceneData["description"];
             result.Item.AddStudio((string)sceneData["site"]["name"]);
+            var trailer = (string)sceneData["trailer"];
+            if (!string.IsNullOrEmpty(trailer))
+            {
+                result.Item.AddTrailerUrl((string)sceneData["trailer"]);
+            }
 
             var sceneDate = (string)sceneData["date"];
             if (DateTime.TryParseExact(sceneDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))

@@ -86,6 +86,8 @@ namespace ThePornDB.Providers
 
             if (result.HasMetadata)
             {
+                result.Item.ProviderIds.Add(Plugin.Instance.Name, curID);
+
                 if (result.Item.PremiereDate.HasValue)
                 {
                     result.Item.ProductionYear = result.Item.PremiereDate.Value.Year;
