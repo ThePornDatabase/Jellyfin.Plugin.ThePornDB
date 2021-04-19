@@ -6,6 +6,7 @@
         "description": "This metadata provider helps fill Jellyfin/Emby with information for your adult videos by pulling from the MetadataAPI.",
         "owner": "DirtyRacer",
         "overview": "Manage Your Adult Videos in Jellyfin/Emby",
+        "imageUrl": "https://metadataapi.net/images/logo.png",
         "versions": [
             {
                 "checksum": "f6c034c903b179d37a9a58f920db2499",
