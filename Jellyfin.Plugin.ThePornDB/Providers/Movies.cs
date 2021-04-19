@@ -59,7 +59,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                result = await MetadataAPI.Search(searchInfo.Name, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneSearch(searchInfo.Name, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -117,7 +117,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                result = await MetadataAPI.Update(curID, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneUpdate(curID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -128,6 +128,11 @@ namespace ThePornDB.Providers
             {
                 result.HasMetadata = true;
                 result.Item.OfficialRating = "XXX";
+
+                if (result.Item.PremiereDate.HasValue)
+                {
+                    result.Item.ProductionYear = result.Item.PremiereDate.Value.Year;
+                }
 
                 foreach (var actorLink in result.People)
                 {

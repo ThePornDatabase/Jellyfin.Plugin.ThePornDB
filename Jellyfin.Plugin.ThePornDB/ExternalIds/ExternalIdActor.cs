@@ -22,7 +22,7 @@ namespace ThePornDB
         public ExternalIdMediaType? Type => ExternalIdMediaType.Person;
 #endif
 
-        public string Key => Plugin.Instance.Name + "Actor";
+        public string Key => Plugin.Instance.Name;
 
         public string UrlFormatString => Consts.PerfomerURL;
 

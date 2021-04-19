@@ -19,7 +19,7 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
-    public class Images : IRemoteImageProvider
+    public class MoviesImages : IRemoteImageProvider
     {
         public string Name => Plugin.Instance.Name;
 
@@ -47,7 +47,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                images = (List<RemoteImageInfo>)await MetadataAPI.GetImages(curID, cancellationToken).ConfigureAwait(false);
+                images = (List<RemoteImageInfo>)await MetadataAPI.SceneImages(curID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {

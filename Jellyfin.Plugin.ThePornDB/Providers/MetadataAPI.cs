@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
@@ -34,7 +35,7 @@ namespace ThePornDB.Providers
             return json;
         }
 
-        public static async Task<List<RemoteSearchResult>> Search(string searchTitle, CancellationToken cancellationToken)
+        public static async Task<List<RemoteSearchResult>> SceneSearch(string searchTitle, CancellationToken cancellationToken)
         {
             var result = new List<RemoteSearchResult>();
             if (string.IsNullOrEmpty(searchTitle))
@@ -75,7 +76,7 @@ namespace ThePornDB.Providers
             return result;
         }
 
-        public static async Task<MetadataResult<Movie>> Update(string sceneID, CancellationToken cancellationToken)
+        public static async Task<MetadataResult<Movie>> SceneUpdate(string sceneID, CancellationToken cancellationToken)
         {
             var result = new MetadataResult<Movie>()
             {
@@ -134,7 +135,7 @@ namespace ThePornDB.Providers
             return result;
         }
 
-        public static async Task<IEnumerable<RemoteImageInfo>> GetImages(string sceneID, CancellationToken cancellationToken)
+        public static async Task<IEnumerable<RemoteImageInfo>> SceneImages(string sceneID, CancellationToken cancellationToken)
         {
             var result = new List<RemoteImageInfo>();
 
@@ -162,6 +163,113 @@ namespace ThePornDB.Providers
                 Url = (string)sceneData["background"]["full"],
                 Type = ImageType.Backdrop,
             });
+
+            return result;
+        }
+
+        public static async Task<List<RemoteSearchResult>> PeopleSearch(string actorName, CancellationToken cancellationToken)
+        {
+            var result = new List<RemoteSearchResult>();
+            if (string.IsNullOrEmpty(actorName))
+            {
+                return result;
+            }
+
+            var url = string.Format(Consts.APIPerfomerSearchURL, actorName);
+            var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+
+            if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
+            {
+                return result;
+            }
+
+            foreach (var searchResult in data["data"])
+            {
+                string curID = (string)searchResult["id"],
+                    sceneName = (string)searchResult["name"],
+                    scenePoster = (string)searchResult["image"];
+
+                var res = new RemoteSearchResult
+                {
+                    ProviderIds = { { Plugin.Instance.Name, curID } },
+                    Name = sceneName,
+                    ImageUrl = scenePoster,
+                };
+
+                result.Add(res);
+            }
+
+            return result;
+        }
+
+        public static async Task<MetadataResult<Person>> PeopleUpdate(string sceneID, CancellationToken cancellationToken)
+        {
+            var result = new MetadataResult<Person>()
+            {
+                Item = new Person(),
+            };
+
+            if (sceneID == null)
+            {
+                return result;
+            }
+
+            var url = string.Format(Consts.APIPerfomerURL, sceneID);
+            var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
+            {
+                return result;
+            }
+
+            sceneData = (JObject)sceneData["data"];
+
+            // result.Item.Name = (string)sceneData["name"];
+            result.Item.OriginalTitle = string.Join(", ", sceneData["aliases"].Select(o => o.ToString().Trim()));
+            result.Item.Overview = (string)sceneData["bio"];
+
+            var actorBornDate = (string)sceneData["extras"]["birthday"];
+            if (DateTime.TryParseExact(actorBornDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))
+            {
+                result.Item.PremiereDate = sceneDateObj;
+            }
+
+            var actorBornPlace = (string)sceneData["extras"]["birthplace"];
+            if (!string.IsNullOrEmpty(actorBornPlace))
+            {
+                result.Item.ProductionLocations = new string[] { actorBornPlace };
+            }
+
+            result.HasMetadata = true;
+
+            return result;
+        }
+
+        public static async Task<IEnumerable<RemoteImageInfo>> PeopleImages(string sceneID, CancellationToken cancellationToken)
+        {
+            var result = new List<RemoteImageInfo>();
+
+            if (sceneID == null)
+            {
+                return result;
+            }
+
+            var url = string.Format(Consts.APIPerfomerURL, sceneID);
+            var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
+            {
+                return result;
+            }
+
+            sceneData = (JObject)sceneData["data"];
+
+            foreach (var poster in sceneData["posters"])
+            {
+                result.Add(new RemoteImageInfo
+                {
+                    Url = (string)poster["url"],
+                    Type = ImageType.Primary,
+                });
+            }
 
             return result;
         }
