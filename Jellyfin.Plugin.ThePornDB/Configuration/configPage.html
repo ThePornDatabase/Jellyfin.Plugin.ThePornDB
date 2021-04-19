@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ThePornDB</title>
+</head>
+<body>
+    <div id="ThePornDBConfigurationPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-button, emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <h1>ThePornDB</h1>
+                <form id="ThePornDBConfigForm">
+                    <div class="inputContainer">
+                        <label class="inputeLabel inputLabelUnfocused" for="MetadataAPIToken">Token</label>
+                        <input id="MetadataAPIToken" name="MetadataAPIToken" type="text" is="emby-input" />
+                    </div>
+                    <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                        <span>Save</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var ThePornDBConfig = {
+                pluginUniqueId: 'fb7580cf-576d-4991-8e56-0b4520c111d3'
+            };
+
+            $('#ThePornDBConfigurationPage').on('pageshow', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(ThePornDBConfig.pluginUniqueId).then(function (config) {
+                    $('#MetadataAPIToken').val(config.MetadataAPIToken).change();
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+
+            $('#ThePornDBConfigForm').on('submit', function () {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(ThePornDBConfig.pluginUniqueId).then(function (config) {
+                    config.MetadataAPIToken = $('#MetadataAPIToken').val();
+                    ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+                return false;
+            });
+        </script>
+    </div>
+</body>
+</html>
