@@ -1,8 +1,10 @@
 name: Node.CI
-on: 
+on:
   push:
     branches:
       - main
+    paths:
+      - Jellyfin.Plugin.ThePornDB/**
 
 jobs:
   build:
