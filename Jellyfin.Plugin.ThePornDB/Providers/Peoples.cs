@@ -49,6 +49,11 @@ namespace ThePornDB.Providers
                 Item = new Person(),
             };
 
+            if (info == null)
+            {
+                return result;
+            }
+
             info.ProviderIds.TryGetValue(this.Name, out var curID);
 
             if (string.IsNullOrEmpty(curID))
