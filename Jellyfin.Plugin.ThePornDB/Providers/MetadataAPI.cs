@@ -98,7 +98,7 @@ namespace ThePornDB.Providers
 
             sceneData = (JObject)sceneData["data"];
 
-            result.Item.Name = (string)sceneData["title"];
+            result.Item.Name = (string)sceneData["site"]["name"] + ": " + (string)sceneData["title"];
             result.Item.Overview = (string)sceneData["description"];
             result.Item.AddStudio((string)sceneData["site"]["name"]);
             var trailer = (string)sceneData["trailer"];
