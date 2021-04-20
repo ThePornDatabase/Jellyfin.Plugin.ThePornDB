@@ -139,6 +139,18 @@ namespace ThePornDB.Providers
                 {
                     actorLink.Type = PersonType.Actor;
                 }
+
+                if (Plugin.Instance.Configuration.UseCustomTitle)
+                {
+                    var parameters = new Dictionary<string, object>()
+                    {
+                        { "{title}", result.Item.Name },
+                        { "{studio}", result.Item.Studios.First() },
+                        { "{actors}", string.Join(", ", result.People.Select(o => o.Name)) },
+                    };
+
+                    result.Item.Name = parameters.Aggregate(Plugin.Instance.Configuration.CustomTitle, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
+                }
             }
 
             return result;
