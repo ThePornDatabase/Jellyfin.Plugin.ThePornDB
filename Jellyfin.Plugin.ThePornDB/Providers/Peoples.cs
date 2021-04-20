@@ -49,28 +49,18 @@ namespace ThePornDB.Providers
                 Item = new Person(),
             };
 
-            if (info == null)
-            {
-                return result;
-            }
+            info.ProviderIds.TryGetValue(this.Name, out var curID);
 
-            var sceneID = info.ProviderIds;
-            sceneID.TryGetValue(this.Name, out var curID);
-
-            if (!sceneID.ContainsKey(this.Name) || curID == null)
+            if (string.IsNullOrEmpty(curID))
             {
                 var searchResults = await this.GetSearchResults(info, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
                 {
-                    var first = searchResults.First();
-
-                    sceneID = first.ProviderIds;
-
-                    sceneID.TryGetValue(this.Name, out curID);
+                    searchResults.First().ProviderIds.TryGetValue(this.Name, out curID);
                 }
             }
 
-            if (curID == null)
+            if (string.IsNullOrEmpty(curID))
             {
                 return result;
             }

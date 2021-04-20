@@ -138,6 +138,8 @@ namespace ThePornDB.Providers
                 }
             }
 
+            result.HasMetadata = true;
+
             return result;
         }
 

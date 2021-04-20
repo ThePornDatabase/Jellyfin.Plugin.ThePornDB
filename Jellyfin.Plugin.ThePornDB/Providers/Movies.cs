@@ -94,23 +94,18 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var sceneID = info.ProviderIds;
-            sceneID.TryGetValue(this.Name, out var curID);
+            info.ProviderIds.TryGetValue(this.Name, out var curID);
 
-            if (!sceneID.ContainsKey(this.Name) || curID == null)
+            if (string.IsNullOrEmpty(curID))
             {
                 var searchResults = await this.GetSearchResults(info, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
                 {
-                    var first = searchResults.First();
-
-                    sceneID = first.ProviderIds;
-
-                    sceneID.TryGetValue(this.Name, out curID);
+                    searchResults.First().ProviderIds.TryGetValue(this.Name, out curID);
                 }
             }
 
-            if (curID == null)
+            if (string.IsNullOrEmpty(curID))
             {
                 return result;
             }
@@ -124,9 +119,8 @@ namespace ThePornDB.Providers
                 Logger.Error($"Search error: \"{e}\"");
             }
 
-            if (!string.IsNullOrEmpty(result.Item.Name))
+            if (result.HasMetadata)
             {
-                result.HasMetadata = true;
                 result.Item.ProviderIds.Add(Plugin.Instance.Name, curID);
                 result.Item.OfficialRating = "XXX";
 
