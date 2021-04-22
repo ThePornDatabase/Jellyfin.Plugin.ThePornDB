@@ -1,0 +1,15 @@
+---
+name: "ThePornDB"
+guid: "b88714eb-55e9-402f-ba72-4dfaa4b1401f"
+version: "1.0.2.0"
+targetAbi: "10.7.0.0"
+framework: "net5.0"
+owner: "theporndb"
+overview: "Metadata for your porn collection"
+description: >
+  This metadata provider helps fill Jellyfin/Emby with information for your adult videos by pulling from the MetadataAPI.
+category: "Metadata"
+artifacts:
+- "Jellyfin.Plugin.ThePornDB.dll"
+changelog: >
+  changelog
