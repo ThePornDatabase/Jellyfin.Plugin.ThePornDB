@@ -57,9 +57,18 @@ namespace ThePornDB.Providers
                 return result;
             }
 
+            var searchTitle = searchInfo.Name;
+#if __EMBY__
+#else
+            if (!string.IsNullOrEmpty(searchInfo.Path))
+            {
+                searchTitle = searchInfo.Path;
+            }
+#endif
+
             try
             {
-                result = await MetadataAPI.SceneSearch(searchInfo.Name, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneSearch(searchTitle, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
