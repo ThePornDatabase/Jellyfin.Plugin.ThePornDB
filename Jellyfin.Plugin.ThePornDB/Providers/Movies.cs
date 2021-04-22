@@ -116,7 +116,7 @@ namespace ThePornDB.Providers
             }
             catch (Exception e)
             {
-                Logger.Error($"Search error: \"{e}\"");
+                Logger.Error($"Update error: \"{e}\"");
             }
 
             if (result.HasMetadata)
