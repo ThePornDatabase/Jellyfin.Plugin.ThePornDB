@@ -36,7 +36,7 @@ jobs:
       - uses: papeloto/action-zip@v1
         with:
           files: ./Jellyfin.Plugin.ThePornDB.pdb ./Jellyfin.Plugin.ThePornDB.dll
-          dest: Jellyfin.Plugin.ThePornDb.zip
+          dest: Jellyfin.Plugin.ThePornDB.zip
 
       - uses: actions/upload-artifact@v2
         with:
@@ -44,8 +44,8 @@ jobs:
           name: build
           retention-days: 90
           path: |
-            ./Jellyfin.Plugin.ThePornDb.pdb 
-            ./Jellyfin.Plugin.ThePornDb.dll
+            ./Jellyfin.Plugin.ThePornDB.pdb 
+            ./Jellyfin.Plugin.ThePornDB.dll
      
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -53,4 +53,4 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: Jellyfin.Plugin.ThePornDb.zip
+          files: Jellyfin.Plugin.ThePornDB.zip
