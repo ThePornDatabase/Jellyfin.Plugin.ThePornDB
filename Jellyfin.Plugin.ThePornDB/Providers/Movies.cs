@@ -140,6 +140,7 @@ namespace ThePornDB.Providers
                     {
                         { "{title}", result.Item.Name },
                         { "{studio}", result.Item.Studios.First() },
+                        { "{studios}", string.Join(", ", result.Item.Studios) },
                         { "{actors}", string.Join(", ", result.People.Select(o => o.Name)) },
                     };
 
