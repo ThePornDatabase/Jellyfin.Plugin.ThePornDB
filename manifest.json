@@ -9,12 +9,12 @@
         "imageUrl": "https://metadataapi.net/images/logo.png",
         "versions": [
             {
-                "checksum": "c03b6392f07425eb4d2ec4310eb2d231",
-                "changelog": "Scene title config; Collections;",
+                "checksum": "ea2a30f14d48f797d1eebb5fb9d11c48",
+                "changelog": "Scene title config; Collections; More studios",
                 "targetAbi": "10.7.0.0",
-                "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.2.0/Jellyfin.Plugin.ThePornDB.zip",
+                "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.2.2/Jellyfin.Plugin.ThePornDB.zip",
                 "timestamp": "2021-04-22 03:40:04",
-                "version": "1.0.2.0"
+                "version": "1.0.2.2"
             },
             {
                 "checksum": "59ffb85465eaaeef6a5a2431d660909a",
