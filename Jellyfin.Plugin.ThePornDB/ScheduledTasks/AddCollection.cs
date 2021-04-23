@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Tasks;
 
 namespace ThePornDB.ScheduledTasks
@@ -59,6 +60,12 @@ namespace ThePornDB.ScheduledTasks
 #else
                 var collection = await this.collectionManager.CreateCollectionAsync(option).ConfigureAwait(false);
 #endif
+
+                var moviesImages = movies.Where(o => o.HasImage(ImageType.Primary));
+                if (moviesImages.Any())
+                {
+                    collection.SetImage(moviesImages.Random().GetImageInfo(ImageType.Primary, 0), 0);
+                }
 
                 if (cancellationToken.IsCancellationRequested)
                 {
