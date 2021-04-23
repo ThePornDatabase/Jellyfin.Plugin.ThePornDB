@@ -144,12 +144,22 @@ namespace ThePornDB.Providers
             {
                 foreach (var actorLink in sceneData["performers"])
                 {
+                    string curID = string.Empty;
+                    if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object && actorLink["parent"]["id"] != null)
+                    {
+                        curID = (string)actorLink["parent"]["id"];
+                    }
+
                     var actor = new PersonInfo
                     {
-                        ProviderIds = { { Plugin.Instance.Name, (string)actorLink["parent"]["id"] } },
                         Name = (string)actorLink["name"],
                         ImageUrl = (string)actorLink["image"],
                     };
+
+                    if (!string.IsNullOrEmpty(curID))
+                    {
+                        actor.ProviderIds.Add(Plugin.Instance.Name, (string)actorLink["parent"]["id"]);
+                    }
 
                     result.People.Add(actor);
                 }
