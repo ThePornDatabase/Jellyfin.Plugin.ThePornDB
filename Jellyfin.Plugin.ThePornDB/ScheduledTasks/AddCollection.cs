@@ -38,7 +38,7 @@ namespace ThePornDB.ScheduledTasks
 
             var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
 
-            var studios = items.SelectMany(o => o.Studios).Distinct().ToList();
+            var studios = items.SelectMany(o => o.Studios).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
             foreach (var (idx, studio) in studios.WithIndex())
             {

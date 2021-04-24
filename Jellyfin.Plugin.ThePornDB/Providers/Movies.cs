@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -138,9 +139,40 @@ namespace ThePornDB.Providers
                     result.Item.ProductionYear = result.Item.PremiereDate.Value.Year;
                 }
 
+                if (result.Item.Studios.Any())
+                {
+                    var studios = new List<string>();
+
+                    foreach (var studioLink in result.Item.Studios)
+                    {
+                        var studioName = studioLink;
+                        if (studioLink.All(char.IsLower) || studioLink.All(char.IsUpper))
+                        {
+                            studioName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(studioLink.ToLower());
+                        }
+
+                        studios.Add(studioName);
+                    }
+
+                    result.Item.Studios = studios.Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+                }
+
                 if (result.Item.Genres.Any())
                 {
-                    result.Item.Genres = result.Item.Genres.OrderBy(o => o).ToArray();
+                    var genres = new List<string>();
+
+                    foreach (var genreLink in result.Item.Genres)
+                    {
+                        var genreName = genreLink;
+                        if (genreLink.All(char.IsLower) || genreLink.All(char.IsUpper))
+                        {
+                            genreName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(genreLink.ToLower());
+                        }
+
+                        genres.Add(genreName);
+                    }
+
+                    result.Item.Genres = genres.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(o => o).ToArray();
                 }
 
                 if (result.People.Any())
