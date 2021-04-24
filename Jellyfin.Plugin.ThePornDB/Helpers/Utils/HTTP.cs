@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Abstractions;
+using Microsoft.Extensions.Caching.InMemory;
 
 namespace ThePornDB.Helpers.Utils
 {
@@ -20,7 +22,13 @@ namespace ThePornDB.Helpers.Utils
 
         private static CookieContainer CookieContainer { get; } = new CookieContainer();
 
-        private static HttpClient Http { get; } = new HttpClient();
+        private static HttpClientHandler HttpClientHandler { get; } = new HttpClientHandler();
+
+        private static IDictionary<HttpStatusCode, TimeSpan> CacheExpirationPerHttpResponseCode { get; } = CacheExpirationProvider.CreateSimple(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(5));
+
+        private static InMemoryCacheHandler Handler { get; } = new InMemoryCacheHandler(HttpClientHandler, CacheExpirationPerHttpResponseCode);
+
+        private static HttpClient Http { get; } = new HttpClient(Handler);
 
         public static async Task<HTTPResponse> Request(string url, HttpMethod method, HttpContent param, IDictionary<string, string> headers, IDictionary<string, string> cookies, CancellationToken cancellationToken)
         {
