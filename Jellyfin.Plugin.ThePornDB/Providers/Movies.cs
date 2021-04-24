@@ -53,7 +53,53 @@ namespace ThePornDB.Providers
         {
             var result = new List<RemoteSearchResult>();
 
-            if (searchInfo == null || string.IsNullOrEmpty(searchInfo.Name) || string.IsNullOrEmpty(Plugin.Instance.Configuration.MetadataAPIToken))
+            if (searchInfo == null || string.IsNullOrEmpty(Plugin.Instance.Configuration.MetadataAPIToken))
+            {
+                return result;
+            }
+
+            if (searchInfo.ProviderIds.TryGetValue(this.Name, out var curID))
+            {
+                var sceneData = new MetadataResult<Movie>()
+                {
+                    HasMetadata = false,
+                    Item = new Movie(),
+                    People = new List<PersonInfo>(),
+                };
+
+                var sceneImages = new List<RemoteImageInfo>();
+
+                try
+                {
+                    sceneData = await MetadataAPI.SceneUpdate(curID, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"Update error: \"{e}\"");
+                }
+
+                try
+                {
+                    sceneImages = (List<RemoteImageInfo>)await MetadataAPI.SceneImages(curID, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"GetImages error: \"{e}\"");
+                }
+
+                if (sceneData.HasMetadata)
+                {
+                    result.Add(new RemoteSearchResult
+                    {
+                        ProviderIds = { { Plugin.Instance.Name, curID } },
+                        Name = sceneData.Item.Name,
+                        ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
+                        PremiereDate = sceneData.Item.PremiereDate,
+                    });
+                }
+            }
+
+            if (string.IsNullOrEmpty(searchInfo.Name))
             {
                 return result;
             }
