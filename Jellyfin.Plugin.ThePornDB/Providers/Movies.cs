@@ -138,9 +138,11 @@ namespace ThePornDB.Providers
                     result.Item.ProductionYear = result.Item.PremiereDate.Value.Year;
                 }
 
-                foreach (var actorLink in result.People)
+                if (result.Item.Genres.Any())
                 {
-                    actorLink.Type = PersonType.Actor;
+                    result.Item.Genres = result.Item.Genres.OrderBy(o => o).ToArray();
+                }
+
                 }
 
                 if (Plugin.Instance.Configuration.UseCustomTitle)
