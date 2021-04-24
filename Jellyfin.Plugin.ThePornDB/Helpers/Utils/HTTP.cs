@@ -22,7 +22,10 @@ namespace ThePornDB.Helpers.Utils
 
         private static CookieContainer CookieContainer { get; } = new CookieContainer();
 
-        private static HttpClientHandler HttpClientHandler { get; } = new HttpClientHandler();
+        private static HttpClientHandler HttpClientHandler { get; } = new HttpClientHandler()
+        {
+            CookieContainer = CookieContainer,
+        };
 
         private static IDictionary<HttpStatusCode, TimeSpan> CacheExpirationPerHttpResponseCode { get; } = CacheExpirationProvider.CreateSimple(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(5));
 
