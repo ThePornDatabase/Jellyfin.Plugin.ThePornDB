@@ -56,19 +56,13 @@ namespace ThePornDB.Providers
 
             foreach (var searchResult in data["data"])
             {
-                string curID = (string)searchResult["_id"],
-                    sceneName = (string)searchResult["title"],
-                    scenePoster = (string)searchResult["poster"];
-
-                var res = new RemoteSearchResult
+                result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, curID } },
-                    Name = sceneName,
-                    ImageUrl = scenePoster,
+                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["_id"] } },
+                    Name = (string)searchResult["title"],
+                    ImageUrl = (string)searchResult["poster"],
                     PremiereDate = (DateTime)searchResult["date"],
-                };
-
-                result.Add(res);
+                });
             }
 
             return result;
@@ -241,18 +235,12 @@ namespace ThePornDB.Providers
 
             foreach (var searchResult in data["data"])
             {
-                string curID = (string)searchResult["_id"],
-                    sceneName = (string)searchResult["name"],
-                    scenePoster = (string)searchResult["image"];
-
-                var res = new RemoteSearchResult
+                result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, curID } },
-                    Name = sceneName,
-                    ImageUrl = scenePoster,
-                };
-
-                result.Add(res);
+                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["_id"] } },
+                    Name = (string)searchResult["name"],
+                    ImageUrl = (string)searchResult["image"],
+                });
             }
 
             return result;
