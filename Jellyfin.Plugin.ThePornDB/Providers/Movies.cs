@@ -151,6 +151,7 @@ namespace ThePornDB.Providers
                     }
 
                     result.People = result.People
+                        .DistinctBy(o => o.ProviderIds[this.Name])
                         .OrderBy(o => (o.Role == null || o.Role.Equals("Male", StringComparison.OrdinalIgnoreCase)))
                         .ThenBy(o => o.Name)
                         .ToList();
