@@ -150,6 +150,12 @@ namespace ThePornDB.Providers
                         curID = (string)actorLink["parent"]["id"];
                     }
 
+                    string gender = string.Empty;
+                    if (actorLink["parent"]["extras"]["gender"] != null)
+                    {
+                        gender = (string)actorLink["parent"]["extras"]["gender"];
+                    }
+
                     var actor = new PersonInfo
                     {
                         Name = (string)actorLink["name"],
@@ -159,6 +165,11 @@ namespace ThePornDB.Providers
                     if (!string.IsNullOrEmpty(curID))
                     {
                         actor.ProviderIds.Add(Plugin.Instance.Name, (string)actorLink["parent"]["id"]);
+                    }
+
+                    if (!string.IsNullOrEmpty(gender))
+                    {
+                        actor.Role = gender;
                     }
 
                     result.People.Add(actor);
