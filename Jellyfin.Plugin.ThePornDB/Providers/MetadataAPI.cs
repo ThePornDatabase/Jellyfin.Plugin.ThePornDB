@@ -332,7 +332,7 @@ namespace ThePornDB.Providers
                 var posterURL = (string)poster["url"];
                 var res = new RemoteImageInfo
                 {
-                    Url = url,
+                    Url = posterURL,
                     Type = ImageType.Primary,
                 };
 
