@@ -192,9 +192,9 @@ namespace ThePornDB.Providers
                     foreach (var studioLink in result.Item.Studios)
                     {
                         var studioName = studioLink;
-                        if (studioLink.ToLower().Equals(studioLink, StringComparison.Ordinal) || studioLink.ToUpper().Equals(studioLink, StringComparison.Ordinal))
+                        if (studioLink.ToLower().Equals(studioLink, StringComparison.Ordinal))
                         {
-                            studioName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(studioLink.ToLower());
+                            studioName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(studioLink);
                         }
 
                         studios.Add(studioName);
@@ -210,9 +210,9 @@ namespace ThePornDB.Providers
                     foreach (var genreLink in result.Item.Genres)
                     {
                         var genreName = genreLink;
-                        if (genreLink.ToLower().Equals(genreLink, StringComparison.Ordinal) || genreLink.ToUpper().Equals(genreLink, StringComparison.Ordinal))
+                        if (genreLink.ToLower().Equals(genreLink, StringComparison.Ordinal))
                         {
-                            genreName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(genreLink.ToLower());
+                            genreName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(genreLink);
                         }
 
                         genres.Add(genreName);
