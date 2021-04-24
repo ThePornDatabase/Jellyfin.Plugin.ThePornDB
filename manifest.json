@@ -9,7 +9,7 @@
         "imageUrl": "https://metadataapi.net/images/logo.png",
         "versions": [
             {
-                "checksum": "aabf6bfc89442f1b3ead951768504f97",
+                "checksum": "83b0387de450c2dc36ac733f53bef324",
                 "changelog": "Added HTTP caching; Added using FilePath for search; Added images for collections; Minor changes",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.3.3/Jellyfin.Plugin.ThePornDB.zip",
