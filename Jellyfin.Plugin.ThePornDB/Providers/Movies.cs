@@ -143,6 +143,17 @@ namespace ThePornDB.Providers
                     result.Item.Genres = result.Item.Genres.OrderBy(o => o).ToArray();
                 }
 
+                if (result.People.Any())
+                {
+                    foreach (var actorLink in result.People)
+                    {
+                        actorLink.Type = PersonType.Actor;
+                    }
+
+                    result.People = result.People
+                        .OrderBy(o => (o.Role == null || o.Role.Equals("Male", StringComparison.OrdinalIgnoreCase)))
+                        .ThenBy(o => o.Name)
+                        .ToList();
                 }
 
                 if (Plugin.Instance.Configuration.UseCustomTitle)
