@@ -158,7 +158,7 @@ namespace ThePornDB.Providers
                         .OrderBy(o => (o.Role == null || o.Role.Equals("Male", StringComparison.OrdinalIgnoreCase)))
                         .ThenBy(o => o.Name)
                         .ToList();
-                    result.People.AddRange(other);
+                    result.People.AddRange(other.OrderBy(o => o.Name));
                 }
 
                 if (Plugin.Instance.Configuration.UseCustomTitle)
