@@ -150,11 +150,15 @@ namespace ThePornDB.Providers
                         actorLink.Type = PersonType.Actor;
                     }
 
-                    result.People = result.People
-                        .DistinctBy(o => o.ProviderIds[this.Name])
+                    var people = result.People.Where(o => o.ProviderIds.ContainsKey(this.Name) && !string.IsNullOrEmpty(o.ProviderIds[this.Name]));
+                    var other = result.People.Where(o => !o.ProviderIds.ContainsKey(this.Name) || string.IsNullOrEmpty(o.ProviderIds[this.Name]));
+
+                    result.People = people
+                        .DistinctBy(o => o.ProviderIds[this.Name], StringComparer.OrdinalIgnoreCase)
                         .OrderBy(o => (o.Role == null || o.Role.Equals("Male", StringComparison.OrdinalIgnoreCase)))
                         .ThenBy(o => o.Name)
                         .ToList();
+                    result.People.AddRange(other);
                 }
 
                 if (Plugin.Instance.Configuration.UseCustomTitle)
