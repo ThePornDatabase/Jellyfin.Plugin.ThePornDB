@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
@@ -16,6 +17,8 @@ namespace ThePornDB.Providers
 {
     public static class MetadataAPI
     {
+        private static readonly Regex RegExImageSize = new Regex(@"(?<Width>[0-9]{1,})x(?<Height>[0-9]{1,})", RegexOptions.Compiled);
+
         public static async Task<JObject> GetDataFromAPI(string url, CancellationToken cancellationToken)
         {
             JObject json = null;
@@ -202,16 +205,29 @@ namespace ThePornDB.Providers
 
             sceneData = (JObject)sceneData["data"];
 
-            result.Add(new RemoteImageInfo
+            var images = new Dictionary<ImageType, string>
             {
-                Url = (string)sceneData["poster"],
-                Type = ImageType.Primary,
-            });
-            result.Add(new RemoteImageInfo
+                { ImageType.Primary, (string)sceneData["posters"]["large"] },
+                { ImageType.Backdrop, (string)sceneData["background"]["large"] },
+            };
+
+            foreach (var image in images)
             {
-                Url = (string)sceneData["background"]["full"],
-                Type = ImageType.Backdrop,
-            });
+                var res = new RemoteImageInfo
+                {
+                    Url = image.Value,
+                    Type = image.Key,
+                };
+
+                var reg = RegExImageSize.Match(image.Value);
+                if (reg.Success)
+                {
+                    res.Width = int.Parse(reg.Groups["Width"].Value);
+                    res.Height = int.Parse(reg.Groups["Height"].Value);
+                }
+
+                result.Add(res);
+            }
 
             return result;
         }
@@ -313,11 +329,21 @@ namespace ThePornDB.Providers
 
             foreach (var poster in sceneData["posters"])
             {
-                result.Add(new RemoteImageInfo
+                var posterURL = (string)poster["url"];
+                var res = new RemoteImageInfo
                 {
-                    Url = (string)poster["url"],
+                    Url = url,
                     Type = ImageType.Primary,
-                });
+                };
+
+                var reg = RegExImageSize.Match(posterURL);
+                if (reg.Success)
+                {
+                    res.Width = int.Parse(reg.Groups["Width"].Value);
+                    res.Height = int.Parse(reg.Groups["Height"].Value);
+                }
+
+                result.Add(res);
             }
 
             return result;
