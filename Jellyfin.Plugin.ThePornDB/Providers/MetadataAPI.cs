@@ -53,7 +53,7 @@ namespace ThePornDB.Providers
 
             foreach (var searchResult in data["data"])
             {
-                string curID = (string)searchResult["id"],
+                string curID = (string)searchResult["_id"],
                     sceneName = (string)searchResult["title"],
                     sceneDate = (string)searchResult["date"],
                     scenePoster = (string)searchResult["poster"];
@@ -145,9 +145,9 @@ namespace ThePornDB.Providers
                 foreach (var actorLink in sceneData["performers"])
                 {
                     string curID = string.Empty;
-                    if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object && actorLink["parent"]["id"] != null)
+                    if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object && actorLink["parent"]["_id"] != null)
                     {
-                        curID = (string)actorLink["parent"]["id"];
+                        curID = (string)actorLink["parent"]["_id"];
                     }
 
                     string gender = string.Empty;
@@ -164,7 +164,7 @@ namespace ThePornDB.Providers
 
                     if (!string.IsNullOrEmpty(curID))
                     {
-                        actor.ProviderIds.Add(Plugin.Instance.Name, (string)actorLink["parent"]["id"]);
+                        actor.ProviderIds.Add(Plugin.Instance.Name, (string)actorLink["parent"]["_id"]);
                     }
 
                     if (!string.IsNullOrEmpty(gender))
@@ -231,7 +231,7 @@ namespace ThePornDB.Providers
 
             foreach (var searchResult in data["data"])
             {
-                string curID = (string)searchResult["id"],
+                string curID = (string)searchResult["_id"],
                     sceneName = (string)searchResult["name"],
                     scenePoster = (string)searchResult["image"];
 
