@@ -58,7 +58,6 @@ namespace ThePornDB.Providers
             {
                 string curID = (string)searchResult["_id"],
                     sceneName = (string)searchResult["title"],
-                    sceneDate = (string)searchResult["date"],
                     scenePoster = (string)searchResult["poster"];
 
                 var res = new RemoteSearchResult
@@ -66,12 +65,8 @@ namespace ThePornDB.Providers
                     ProviderIds = { { Plugin.Instance.Name, curID } },
                     Name = sceneName,
                     ImageUrl = scenePoster,
+                    PremiereDate = (DateTime)searchResult["date"],
                 };
-
-                if (DateTime.TryParseExact(sceneDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))
-                {
-                    res.PremiereDate = sceneDateObj;
-                }
 
                 result.Add(res);
             }
@@ -127,11 +122,7 @@ namespace ThePornDB.Providers
                 result.Item.AddTrailerUrl((string)sceneData["trailer"]);
             }
 
-            var sceneDate = (string)sceneData["date"];
-            if (DateTime.TryParseExact(sceneDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))
-            {
-                result.Item.PremiereDate = sceneDateObj;
-            }
+            result.Item.PremiereDate = (DateTime)sceneData["date"];
 
             if (sceneData.ContainsKey("tags"))
             {
