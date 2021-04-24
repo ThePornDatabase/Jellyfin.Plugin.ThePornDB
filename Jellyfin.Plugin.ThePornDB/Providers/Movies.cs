@@ -58,7 +58,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            if (searchInfo.ProviderIds.TryGetValue(this.Name, out var curID))
+            if (searchInfo.ProviderIds.TryGetValue(this.Name, out var curID) && !string.IsNullOrEmpty(curID))
             {
                 var sceneData = new MetadataResult<Movie>()
                 {
