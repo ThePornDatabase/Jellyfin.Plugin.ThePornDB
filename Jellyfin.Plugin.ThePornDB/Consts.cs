@@ -20,6 +20,6 @@ namespace ThePornDB
 
         public const string APISiteURL = APIBaseURL + "/sites/{0}";
 
-        public const string UserAgent = "Jellyfin.Plugin.ThePornDB/1.0.3";
+        public static readonly string UserAgent = $"Jellyfin.Plugin.ThePornDB/{Plugin.Instance.Version}";
     }
 }
