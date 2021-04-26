@@ -10,7 +10,7 @@ namespace ThePornDB
 
         public const string APIBaseURL = "https://api.metadataapi.net";
 
-        public const string APISceneSearchURL = APIBaseURL + "/scenes?parse={0}";
+        public const string APISceneSearchURL = APIBaseURL + "/scenes?parse={0}&hash={1}";
 
         public const string APISceneURL = APIBaseURL + "/scenes/{0}";
 

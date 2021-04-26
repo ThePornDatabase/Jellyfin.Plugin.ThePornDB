@@ -10,6 +10,7 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 using ThePornDB.Helpers;
+using ThePornDB.Helpers.Utils;
 
 #if __EMBY__
 using MediaBrowser.Common.Net;
@@ -104,18 +105,20 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var searchTitle = searchInfo.Name;
+            string searchTitle = searchInfo.Name,
+                oshash = string.Empty;
 #if __EMBY__
 #else
             if (!string.IsNullOrEmpty(searchInfo.Path))
             {
                 searchTitle = searchInfo.Path;
+                oshash = OpenSubtitlesHash.ComputeHash(searchInfo.Path);
             }
 #endif
 
             try
             {
-                result = await MetadataAPI.SceneSearch(searchTitle, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneSearch(searchTitle, oshash, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
