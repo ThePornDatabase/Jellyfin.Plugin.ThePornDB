@@ -4,13 +4,11 @@ using MediaBrowser.Model.Logging;
 using Microsoft.Extensions.Logging;
 #endif
 
-using ThePornDB.Providers;
-
 namespace ThePornDB.Helpers
 {
     internal static class Logger
     {
-        private static ILogger Log { get; } = Movies.Log;
+        private static ILogger Log { get; } = Plugin.Log;
 
         public static void Info(string text)
         {

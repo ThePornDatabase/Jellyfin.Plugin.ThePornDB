@@ -6,17 +6,46 @@ using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
 using ThePornDB.Configuration;
 
+#if __EMBY__
+using MediaBrowser.Common.Net;
+using MediaBrowser.Model.Logging;
+#else
+using System.Net.Http;
+using Microsoft.Extensions.Logging;
+#endif
+
 [assembly: CLSCompliant(false)]
 
 namespace ThePornDB
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
+#if __EMBY__
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClient http, ILogManager logger)
+#else
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClientFactory http, ILogger<Plugin> logger)
+#endif
             : base(applicationPaths, xmlSerializer)
         {
             Instance = this;
+
+#if __EMBY__
+            if (logger != null)
+            {
+                Log = logger.GetLogger(this.Name);
+            }
+#else
+            Log = logger;
+#endif
         }
+
+#if __EMBY__
+        public static IHttpClient Http { get; set; }
+#else
+        public static IHttpClientFactory Http { get; set; }
+#endif
+
+        public static ILogger Log { get; set; }
 
         public static Plugin Instance { get; private set; }
 

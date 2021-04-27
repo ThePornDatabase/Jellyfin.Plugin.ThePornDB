@@ -10,44 +10,18 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 using ThePornDB.Helpers;
-using ThePornDB.Helpers.Utils;
 
 #if __EMBY__
 using MediaBrowser.Common.Net;
-using MediaBrowser.Model.Logging;
 #else
 using System.Net.Http;
-using Microsoft.Extensions.Logging;
+using ThePornDB.Helpers.Utils;
 #endif
 
 namespace ThePornDB.Providers
 {
     public class Movies : IRemoteMetadataProvider<Movie, MovieInfo>
     {
-#if __EMBY__
-        public Movies(ILogManager logger, IHttpClient http)
-        {
-            if (logger != null)
-            {
-                Log = logger.GetLogger(this.Name);
-            }
-
-            Http = http;
-        }
-
-        public static IHttpClient Http { get; set; }
-#else
-        public Movies(ILogger<Movies> logger, IHttpClientFactory http)
-        {
-            Log = logger;
-            Http = http;
-        }
-
-        public static IHttpClientFactory Http { get; set; }
-#endif
-
-        public static ILogger Log { get; set; }
-
         public string Name => Plugin.Instance.Name;
 
         public async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, CancellationToken cancellationToken)
@@ -261,23 +235,11 @@ namespace ThePornDB.Providers
 
 #if __EMBY__
         public Task<HttpResponseInfo> GetImageResponse(string url, CancellationToken cancellationToken)
-        {
-            return Http.GetResponse(new HttpRequestOptions
-            {
-                CancellationToken = cancellationToken,
-                Url = url,
-                EnableDefaultUserAgent = false,
-                UserAgent = Consts.UserAgent,
-            });
-        }
 #else
         public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.TryAddWithoutValidation("User-Agent", Consts.UserAgent);
-
-            return Http.CreateClient().SendAsync(request, cancellationToken);
-        }
 #endif
+        {
+            return UGetImageResponse.SendAsync(url, cancellationToken);
+        }
     }
 }

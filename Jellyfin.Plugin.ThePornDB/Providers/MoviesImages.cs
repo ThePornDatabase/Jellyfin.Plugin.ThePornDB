@@ -71,7 +71,7 @@ namespace ThePornDB.Providers
         public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
 #endif
         {
-            return new Movies(null, Movies.Http).GetImageResponse(url, cancellationToken);
+            return UGetImageResponse.SendAsync(url, cancellationToken);
         }
     }
 }
