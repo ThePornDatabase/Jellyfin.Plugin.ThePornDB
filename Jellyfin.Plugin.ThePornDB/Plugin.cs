@@ -28,6 +28,7 @@ namespace ThePornDB
             : base(applicationPaths, xmlSerializer)
         {
             Instance = this;
+            Http = http;
 
 #if __EMBY__
             if (logger != null)
