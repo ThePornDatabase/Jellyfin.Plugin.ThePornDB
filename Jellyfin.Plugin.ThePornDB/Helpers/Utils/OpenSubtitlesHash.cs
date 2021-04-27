@@ -1,6 +1,10 @@
 using System;
 using System.IO;
 
+#if __EMBY__
+using System.Text;
+#endif
+
 namespace ThePornDB.Helpers.Utils
 {
     public static class OpenSubtitlesHash
@@ -20,7 +24,17 @@ namespace ThePornDB.Helpers.Utils
                 hash = ComputeMovieHash(fileStream);
             }
 
+#if __EMBY__
+            StringBuilder hexBuilder = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                hexBuilder.Append(hash[i].ToString("x2"));
+            }
+
+            oshash = hexBuilder.ToString();
+#else
             oshash = Convert.ToHexString(hash).ToLowerInvariant();
+#endif
 
             return oshash;
         }
