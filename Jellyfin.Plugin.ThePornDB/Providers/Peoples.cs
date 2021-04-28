@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
+using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 using ThePornDB.Helpers;
 
@@ -27,6 +28,47 @@ namespace ThePornDB.Providers
             if (searchInfo == null)
             {
                 return result;
+            }
+
+            if (searchInfo.ProviderIds.TryGetValue(this.Name, out var curID) && !string.IsNullOrEmpty(curID))
+            {
+                var sceneData = new MetadataResult<Person>()
+                {
+                    HasMetadata = false,
+                    Item = new Person(),
+                    People = new List<PersonInfo>(),
+                };
+
+                IEnumerable<RemoteImageInfo> sceneImages = new List<RemoteImageInfo>();
+
+                try
+                {
+                    sceneData = await MetadataAPI.PeopleUpdate(curID, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"Update error: \"{e}\"");
+                }
+
+                try
+                {
+                    sceneImages = await MetadataAPI.PeopleImages(curID, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"GetImages error: \"{e}\"");
+                }
+
+                if (sceneData.HasMetadata)
+                {
+                    result.Add(new RemoteSearchResult
+                    {
+                        ProviderIds = { { Plugin.Instance.Name, curID } },
+                        Name = sceneData.Item.Name,
+                        ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
+                        PremiereDate = sceneData.Item.PremiereDate,
+                    });
+                }
             }
 
             try
