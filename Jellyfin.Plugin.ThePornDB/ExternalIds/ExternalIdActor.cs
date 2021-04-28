@@ -15,10 +15,7 @@ namespace ThePornDB
         public string Name => Plugin.Instance.Name;
 #else
         public string ProviderName => Plugin.Instance.Name;
-#endif
 
-#if __EMBY__
-#else
         public ExternalIdMediaType? Type => ExternalIdMediaType.Person;
 #endif
 

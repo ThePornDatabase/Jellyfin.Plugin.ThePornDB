@@ -38,7 +38,7 @@ namespace ThePornDB.Providers
         public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
 #endif
         {
-            var images = new List<RemoteImageInfo>();
+            IEnumerable<RemoteImageInfo> images = new List<RemoteImageInfo>();
 
             if (item == null || !item.ProviderIds.TryGetValue(this.Name, out var curID))
             {
@@ -47,7 +47,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                images = (List<RemoteImageInfo>)await MetadataAPI.SceneImages(curID, cancellationToken).ConfigureAwait(false);
+                images = await MetadataAPI.SceneImages(curID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
