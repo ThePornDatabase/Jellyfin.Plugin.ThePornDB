@@ -210,7 +210,8 @@ namespace ThePornDB.Providers
 
                     result.People = people
                         .DistinctBy(o => o.ProviderIds[this.Name], StringComparer.OrdinalIgnoreCase)
-                        .OrderBy(o => (o.Role == null || o.Role.Equals("Male", StringComparison.OrdinalIgnoreCase)))
+                        .OrderBy(o => string.IsNullOrEmpty(o.Role))
+                        .ThenBy(o => o.Role?.Equals("Male", StringComparison.OrdinalIgnoreCase))
                         .ThenBy(o => o.Name)
                         .ToList();
                     result.People.AddRange(other.OrderBy(o => o.Name));
