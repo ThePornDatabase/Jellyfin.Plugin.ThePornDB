@@ -269,6 +269,7 @@ namespace ThePornDB.Providers
             sceneData = (JObject)sceneData["data"];
 
             // result.Item.Name = (string)sceneData["name"];
+            result.Item.ExternalId = (string)sceneData["name"];
             result.Item.OriginalTitle = string.Join(", ", sceneData["aliases"].Select(o => o.ToString().Trim()));
             result.Item.Overview = (string)sceneData["bio"];
 

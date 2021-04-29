@@ -25,25 +25,24 @@ namespace ThePornDB.Providers
         {
             var result = new List<RemoteSearchResult>();
 
-            if (searchInfo == null || searchInfo.ProviderIds.Any(o => !string.IsNullOrEmpty(o.Value)))
+            if (searchInfo == null)
             {
                 return result;
             }
 
             if (searchInfo.ProviderIds.TryGetValue(this.Name, out var curID) && !string.IsNullOrEmpty(curID))
             {
-                var sceneData = new MetadataResult<Person>()
+                var actorData = new MetadataResult<Person>()
                 {
                     HasMetadata = false,
                     Item = new Person(),
-                    People = new List<PersonInfo>(),
                 };
 
                 IEnumerable<RemoteImageInfo> sceneImages = new List<RemoteImageInfo>();
 
                 try
                 {
-                    sceneData = await MetadataAPI.PeopleUpdate(curID, cancellationToken).ConfigureAwait(false);
+                    actorData = await MetadataAPI.PeopleUpdate(curID, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -59,16 +58,21 @@ namespace ThePornDB.Providers
                     Logger.Error($"GetImages error: \"{e}\"");
                 }
 
-                if (sceneData.HasMetadata)
+                if (actorData.HasMetadata)
                 {
                     result.Add(new RemoteSearchResult
                     {
                         ProviderIds = { { Plugin.Instance.Name, curID } },
-                        Name = sceneData.Item.Name,
+                        Name = actorData.Item.ExternalId,
                         ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
-                        PremiereDate = sceneData.Item.PremiereDate,
+                        PremiereDate = actorData.Item.PremiereDate,
                     });
                 }
+            }
+
+            if (searchInfo.ProviderIds.Any(o => !string.IsNullOrEmpty(o.Value)))
+            {
+                return result;
             }
 
             try
