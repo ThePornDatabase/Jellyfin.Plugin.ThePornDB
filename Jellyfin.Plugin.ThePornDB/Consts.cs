@@ -18,6 +18,8 @@ namespace ThePornDB
 
         public const string APIPerfomerURL = APIBaseURL + "/performers/{0}";
 
+        public const string APISiteSearchURL = APIBaseURL + "/sites?q={0}";
+
         public const string APISiteURL = APIBaseURL + "/sites/{0}";
 
         public static readonly string UserAgent = $"Jellyfin.Plugin.ThePornDB/{Plugin.Instance.Version}";

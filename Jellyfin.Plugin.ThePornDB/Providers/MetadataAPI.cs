@@ -101,12 +101,9 @@ namespace ThePornDB.Providers
 
             if (!siteID.Equals(network_id))
             {
-                url = string.Format(Consts.APISiteURL, network_id);
-                var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-                if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Object)
+                var siteData = await SiteUpdate(network_id, cancellationToken).ConfigureAwait(false);
+                if (siteData != null)
                 {
-                    siteData = (JObject)siteData["data"];
-
                     result.Item.AddStudio((string)siteData["name"]);
                 }
             }
@@ -325,6 +322,34 @@ namespace ThePornDB.Providers
                 }
 
                 result.Add(res);
+            }
+
+            return result;
+        }
+
+        public static async Task<JArray> SiteSearch(string name, CancellationToken cancellationToken)
+        {
+            JArray result = null;
+
+            var url = string.Format(Consts.APISiteSearchURL, name);
+            var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Array)
+            {
+                result = (JArray)siteData["data"];
+            }
+
+            return result;
+        }
+
+        public static async Task<JObject> SiteUpdate(int id, CancellationToken cancellationToken)
+        {
+            JObject result = null;
+
+            var url = string.Format(Consts.APISiteURL, id);
+            var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Object)
+            {
+                result = (JObject)siteData["data"];
             }
 
             return result;
