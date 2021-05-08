@@ -15,6 +15,12 @@
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
+                            <input id="UseOSHash" name="UseOSHash" type="checkbox" is="emby-checkbox" />
+                            <span>Use OpenSubtitlesHash for matching</span>
+                        </label>
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
                             <input id="UseCustomTitle" name="UseCustomTitle" type="checkbox" is="emby-checkbox" />
                             <span>Use Custom Title Format</span>
                         </label>
@@ -38,6 +44,7 @@
                 Dashboard.showLoadingMsg();
                 ApiClient.getPluginConfiguration(ThePornDBConfig.pluginUniqueId).then(function (config) {
                     $('#MetadataAPIToken').val(config.MetadataAPIToken).change();
+                    $('#UseOSHash').prop('checked', config.UseOSHash);
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
                     $('#CustomTitle').val(config.CustomTitle).change();
                     Dashboard.hideLoadingMsg();
@@ -48,6 +55,7 @@
                 Dashboard.showLoadingMsg();
                 ApiClient.getPluginConfiguration(ThePornDBConfig.pluginUniqueId).then(function (config) {
                     config.MetadataAPIToken = $('#MetadataAPIToken').val();
+                    config.UseOSHash = $('#UseOSHash').prop('checked');
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');
                     config.CustomTitle = $('#CustomTitle').val();
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
