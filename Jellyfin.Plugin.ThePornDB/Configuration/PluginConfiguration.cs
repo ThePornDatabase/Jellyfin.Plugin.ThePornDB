@@ -8,6 +8,7 @@ namespace ThePornDB.Configuration
         {
             this.MetadataAPIToken = string.Empty;
 
+            this.UseFilePath = true;
             this.UseOSHash = true;
 
             this.UseCustomTitle = false;
@@ -15,6 +16,8 @@ namespace ThePornDB.Configuration
         }
 
         public string MetadataAPIToken { get; set; }
+
+        public bool UseFilePath { get; set; }
 
         public bool UseOSHash { get; set; }
 
