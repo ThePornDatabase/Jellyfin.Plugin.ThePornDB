@@ -94,17 +94,20 @@ namespace ThePornDB.Providers
             result.Item.Name = (string)sceneData["title"];
             result.Item.Overview = (string)sceneData["description"];
 
-            result.Item.AddStudio((string)sceneData["site"]["name"]);
-
-            int siteID = (int)sceneData["site"]["id"],
-                network_id = (int)sceneData["site"]["network_id"];
-
-            if (!siteID.Equals(network_id))
+            if (sceneData.ContainsKey("site") && sceneData["site"].Type == JTokenType.Object)
             {
-                var siteData = await SiteUpdate(network_id, cancellationToken).ConfigureAwait(false);
-                if (siteData != null)
+                result.Item.AddStudio((string)sceneData["site"]["name"]);
+
+                int site_id = (int)sceneData["site"]["id"],
+                    network_id = (int)sceneData["site"]["network_id"];
+
+                if (!site_id.Equals(network_id))
                 {
-                    result.Item.AddStudio((string)siteData["name"]);
+                    var siteData = await SiteUpdate(network_id, cancellationToken).ConfigureAwait(false);
+                    if (siteData != null)
+                    {
+                        result.Item.AddStudio((string)siteData["name"]);
+                    }
                 }
             }
 
