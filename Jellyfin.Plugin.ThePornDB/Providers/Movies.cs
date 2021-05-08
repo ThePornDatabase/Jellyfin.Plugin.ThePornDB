@@ -83,9 +83,13 @@ namespace ThePornDB.Providers
                 oshash = string.Empty;
 #if __EMBY__
 #else
-            if (!string.IsNullOrEmpty(searchInfo.Path) && Plugin.Instance.Configuration.UseOSHash)
+            if (!string.IsNullOrEmpty(searchInfo.Path) && Plugin.Instance.Configuration.UseFilePath)
             {
                 searchTitle = searchInfo.Path;
+            }
+
+            if (!string.IsNullOrEmpty(searchInfo.Path) && Plugin.Instance.Configuration.UseOSHash)
+            {
                 oshash = OpenSubtitlesHash.ComputeHash(searchInfo.Path);
             }
 #endif
