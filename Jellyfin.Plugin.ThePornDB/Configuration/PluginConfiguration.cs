@@ -8,11 +8,15 @@ namespace ThePornDB.Configuration
         {
             this.MetadataAPIToken = string.Empty;
 
+            this.UseOSHash = true;
+
             this.UseCustomTitle = false;
             this.CustomTitle = "{studio}: {title} ({actors})";
         }
 
         public string MetadataAPIToken { get; set; }
+
+        public bool UseOSHash { get; set; }
 
         public bool UseCustomTitle { get; set; }
 
