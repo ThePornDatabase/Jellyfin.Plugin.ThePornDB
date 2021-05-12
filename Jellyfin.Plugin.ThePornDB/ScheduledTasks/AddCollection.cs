@@ -96,31 +96,39 @@ namespace ThePornDB.ScheduledTasks
                 {
                     foreach (var item in supported)
                     {
-                        string poster = (string)siteData.First()[item.Key],
+                        string filepath = string.Empty,
+                            poster = (string)siteData.First()?[item.Key],
                             startPath = Paths?[item.Value];
 
-                        if (!string.IsNullOrEmpty(poster) && !string.IsNullOrEmpty(startPath))
+                        if (!string.IsNullOrEmpty(startPath))
                         {
-                            var filepath = Path.Combine(startPath, studio + Path.GetExtension(poster));
-
-                            if (!File.Exists(filepath))
+                            filepath = Path.Combine(startPath, studio + ".png");
+                            if (!File.Exists(filepath) && !string.IsNullOrEmpty(poster))
                             {
-                                var http = await HTTP.Request(poster, cancellationToken).ConfigureAwait(false);
-                                if (http.IsOK)
+                                filepath = Path.Combine(startPath, studio + Path.GetExtension(poster));
+
+                                if (!File.Exists(filepath))
                                 {
-                                    using (var fileStream = File.Create(filepath))
+                                    var http = await HTTP.Request(poster, cancellationToken).ConfigureAwait(false);
+                                    if (http.IsOK)
                                     {
-                                        http.ContentStream.Seek(0, SeekOrigin.Begin);
-                                        http.ContentStream.CopyTo(fileStream);
+                                        using (var fileStream = File.Create(filepath))
+                                        {
+                                            http.ContentStream.Seek(0, SeekOrigin.Begin);
+                                            http.ContentStream.CopyTo(fileStream);
+                                        }
                                     }
                                 }
                             }
 
-                            images.Add(new ItemImageInfo()
+                            if (File.Exists(filepath))
                             {
-                                Path = filepath,
-                                Type = item.Value,
-                            });
+                                images.Add(new ItemImageInfo()
+                                {
+                                    Path = filepath,
+                                    Type = item.Value,
+                                });
+                            }
                         }
                     }
                 }
