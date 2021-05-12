@@ -17,15 +17,6 @@ namespace ThePornDB.ScheduledTasks
 {
     public class AddCollection : IScheduledTask
     {
-        private static readonly string ImagesPath = Path.Combine(Plugin.Instance.DataFolderPath, "images");
-
-        private static readonly Dictionary<ImageType, string> Paths = new Dictionary<ImageType, string>
-        {
-            { ImageType.Primary, Path.Combine(ImagesPath, "posters") },
-            { ImageType.Logo, Path.Combine(ImagesPath, "logos") },
-            { ImageType.Disc, Path.Combine(ImagesPath, "discs") },
-        };
-
         private readonly ILibraryManager libraryManager;
 
         private readonly ICollectionManager collectionManager;
@@ -48,15 +39,6 @@ namespace ThePornDB.ScheduledTasks
         {
             await Task.Yield();
             progress?.Report(0);
-
-            foreach (var path in Paths)
-            {
-                if (!Directory.Exists(path.Value))
-                {
-                    Logger.Info($"Creating missing directory \"{path.Value}\"");
-                    Directory.CreateDirectory(path.Value);
-                }
-            }
 
             var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
 
@@ -82,73 +64,6 @@ namespace ThePornDB.ScheduledTasks
 #else
                 var collection = await this.collectionManager.CreateCollectionAsync(option).ConfigureAwait(false);
 #endif
-
-                var images = new List<ItemImageInfo>();
-                var supported = new Dictionary<string, ImageType>
-                {
-                    { "poster", ImageType.Primary },
-                    { "logo", ImageType.Logo },
-                    { "favicon", ImageType.Disc },
-                };
-
-                var siteData = await MetadataAPI.SiteSearch(studio, cancellationToken).ConfigureAwait(false);
-                if (siteData != null)
-                {
-                    foreach (var item in supported)
-                    {
-                        string filepath = string.Empty,
-                            poster = (string)siteData.First()?[item.Key],
-                            startPath = Paths?[item.Value];
-
-                        if (!string.IsNullOrEmpty(startPath))
-                        {
-                            filepath = Path.Combine(startPath, studio + ".png");
-                            if (!File.Exists(filepath) && !string.IsNullOrEmpty(poster))
-                            {
-                                filepath = Path.Combine(startPath, studio + Path.GetExtension(poster));
-
-                                if (!File.Exists(filepath))
-                                {
-                                    var http = await HTTP.Request(poster, cancellationToken).ConfigureAwait(false);
-                                    if (http.IsOK)
-                                    {
-                                        using (var fileStream = File.Create(filepath))
-                                        {
-                                            http.ContentStream.Seek(0, SeekOrigin.Begin);
-                                            http.ContentStream.CopyTo(fileStream);
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (File.Exists(filepath))
-                            {
-                                images.Add(new ItemImageInfo()
-                                {
-                                    Path = filepath,
-                                    Type = item.Value,
-                                });
-                            }
-                        }
-                    }
-                }
-
-                foreach (var item in supported)
-                {
-                    var moviesImages = movies.Where(o => o.HasImage(item.Value));
-                    if (moviesImages.Any() && !images.Where(o => o.Type == item.Value).Any())
-                    {
-                        images.Add(moviesImages.Random().GetImageInfo(item.Value, 0));
-                    }
-                }
-
-                if (images.Any())
-                {
-                    foreach (var image in images)
-                    {
-                        collection.SetImage(image, 0);
-                    }
-                }
 
                 if (cancellationToken.IsCancellationRequested)
                 {

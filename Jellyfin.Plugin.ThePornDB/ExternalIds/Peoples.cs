@@ -9,7 +9,7 @@ using MediaBrowser.Model.Providers;
 
 namespace ThePornDB
 {
-    public class ExternalIdActor : IExternalId
+    public class Peoples : IExternalId
     {
 #if __EMBY__
         public string Name => Plugin.Instance.Name;
