@@ -103,21 +103,24 @@ namespace ThePornDB.ScheduledTasks
                         {
                             var filepath = Path.Combine(startPath, studio + Path.GetExtension(poster));
 
-                            var http = await HTTP.Request(poster, cancellationToken).ConfigureAwait(false);
-                            if (http.IsOK)
+                            if (!File.Exists(filepath))
                             {
-                                using (var fileStream = File.Create(filepath))
+                                var http = await HTTP.Request(poster, cancellationToken).ConfigureAwait(false);
+                                if (http.IsOK)
                                 {
-                                    http.ContentStream.Seek(0, SeekOrigin.Begin);
-                                    http.ContentStream.CopyTo(fileStream);
+                                    using (var fileStream = File.Create(filepath))
+                                    {
+                                        http.ContentStream.Seek(0, SeekOrigin.Begin);
+                                        http.ContentStream.CopyTo(fileStream);
+                                    }
                                 }
-
-                                images.Add(new ItemImageInfo()
-                                {
-                                    Path = filepath,
-                                    Type = item.Value,
-                                });
                             }
+
+                            images.Add(new ItemImageInfo()
+                            {
+                                Path = filepath,
+                                Type = item.Value,
+                            });
                         }
                     }
                 }
