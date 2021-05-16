@@ -66,6 +66,7 @@
   <ItemGroup>
     <None Remove="Configuration\configPage.html" />
     <EmbeddedResource Include="Configuration\configPage.html" />
+    <EmbeddedResource Condition="'$(Configuration)'=='Debug.Emby' or '$(Configuration)'=='Release.Emby'" Include="Resources\logo.png" />
   </ItemGroup>
 
 </Project>

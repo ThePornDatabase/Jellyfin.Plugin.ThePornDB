@@ -7,7 +7,9 @@ using MediaBrowser.Model.Serialization;
 using ThePornDB.Configuration;
 
 #if __EMBY__
+using System.IO;
 using MediaBrowser.Common.Net;
+using MediaBrowser.Model.Drawing;
 using MediaBrowser.Model.Logging;
 #else
 using System.Net.Http;
@@ -18,11 +20,13 @@ using Microsoft.Extensions.Logging;
 
 namespace ThePornDB
 {
-    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
-    {
 #if __EMBY__
+    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasThumbImage
+    {
         public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClient http, ILogManager logger)
 #else
+    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
+    {
         public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClientFactory http, ILogger<Plugin> logger)
 #endif
             : base(applicationPaths, xmlSerializer)
@@ -53,6 +57,13 @@ namespace ThePornDB
         public override string Name => "ThePornDB";
 
         public override Guid Id => Guid.Parse("fb7580cf-576d-4991-8e56-0b4520c111d3");
+
+#if __EMBY__
+        public ImageFormat ThumbImageFormat => ImageFormat.Png;
+
+        public Stream GetThumbImage() => this.GetType().Assembly.GetManifestResourceStream($"{this.GetType().Namespace}.Resources.logo.png");
+#else
+#endif
 
         public IEnumerable<PluginPageInfo> GetPages()
             => new[]
