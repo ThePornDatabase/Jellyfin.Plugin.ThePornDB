@@ -11,6 +11,7 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 using Newtonsoft.Json.Linq;
+using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
 
 namespace ThePornDB.Providers
@@ -27,12 +28,20 @@ namespace ThePornDB.Providers
             if (!string.IsNullOrEmpty(Plugin.Instance.Configuration.MetadataAPIToken))
             {
                 headers.Add("Authorization", $"Bearer {Plugin.Instance.Configuration.MetadataAPIToken}");
+                headers.Add("Accept", "application/json");
             }
 
             var http = await HTTP.Request(url, cancellationToken, headers).ConfigureAwait(false);
-            if (http.IsOK)
+            try
             {
                 json = JObject.Parse(http.Content);
+            }
+            finally
+            {
+                if (json != null && json.ContainsKey("message"))
+                {
+                    Logger.Error($"API error: \"{(string)json["message"]}\"");
+                }
             }
 
             return json;

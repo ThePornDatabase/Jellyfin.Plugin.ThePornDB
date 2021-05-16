@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
-using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Tasks;
-using ThePornDB.Helpers;
-using ThePornDB.Helpers.Utils;
-using ThePornDB.Providers;
 
 namespace ThePornDB.ScheduledTasks
 {
