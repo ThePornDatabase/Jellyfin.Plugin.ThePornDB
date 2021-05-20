@@ -1,9 +1,10 @@
-using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 
 #if __EMBY__
+using MediaBrowser.Controller.Entities;
 #else
+using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Model.Providers;
 #endif
 

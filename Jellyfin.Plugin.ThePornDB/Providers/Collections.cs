@@ -2,20 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
 using ThePornDB.Helpers;
 
 #if __EMBY__
 using MediaBrowser.Common.Net;
+using MediaBrowser.Controller.Entities;
 #else
 using System.Net.Http;
+using MediaBrowser.Controller.Entities.Movies;
 #endif
 
 namespace ThePornDB.Providers
 {
+#if __EMBY__
+    public class Collections : IRemoteSearchProvider<BoxSetInfo>
+#else
     public class Collections : IRemoteMetadataProvider<BoxSet, BoxSetInfo>
+#endif
     {
         public string Name => Plugin.Instance.Name;
 
