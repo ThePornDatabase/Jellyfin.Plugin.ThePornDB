@@ -6,7 +6,7 @@
       <InputAssemblies Include="$(OutputPath)HttpClient.Caching.dll" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)'=='Debug.Emby' or '$(Configuration)'=='Release.Emby'">
+    <ItemGroup Condition="'$(Configuration)'=='Release.Emby'">
       <InputAssemblies Include="$(OutputPath)Newtonsoft.Json.dll" />
     </ItemGroup>
 
