@@ -85,10 +85,12 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: Jellyfin.Plugin.ThePornDB.zip
+          path: ./dist
 
       - uses: actions/download-artifact@v2
         with:
           name: Emby.Plugins.ThePornDB.zip
+          path: ./dist
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -97,4 +99,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            *.zip
+            dist/Jellyfin.Plugin.ThePornDB.zip
+            dist/Emby.Plugins.ThePornDB.zip
