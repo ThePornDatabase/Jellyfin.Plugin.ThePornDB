@@ -233,6 +233,7 @@ namespace ThePornDB.Providers
                     };
 
                     result.Item.Name = parameters.Aggregate(Plugin.Instance.Configuration.CustomTitle, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
+                    result.Item.Name = string.Join(" ", result.Item.Name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
                 }
             }
 
