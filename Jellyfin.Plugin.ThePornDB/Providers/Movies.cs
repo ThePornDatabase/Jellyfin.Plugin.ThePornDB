@@ -229,7 +229,11 @@ namespace ThePornDB.Providers
                         { "{studio}", result.Item.Studios.First() },
                         { "{studios}", string.Join(", ", result.Item.Studios) },
                         { "{actors}", string.Join(", ", result.People.Select(o => o.Name)) },
+#if __EMBY__
                         { "{release_date}", result.Item.PremiereDate.HasValue ? result.Item.PremiereDate.Value.DateTime.ToString("yyyy-MM-dd") : string.Empty},
+#else
+                        { "{release_date}", result.Item.PremiereDate.HasValue ? result.Item.PremiereDate.Value.ToString("yyyy-MM-dd") : string.Empty},
+#endif
                     };
 
                     result.Item.Name = parameters.Aggregate(Plugin.Instance.Configuration.CustomTitle, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
