@@ -19,7 +19,7 @@ jobs:
           dotnet-version: 5.0.x
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore /property:Configuration=Debug.Emby
 
       - name: Build
         run: dotnet build --configuration Debug.Emby --no-restore
