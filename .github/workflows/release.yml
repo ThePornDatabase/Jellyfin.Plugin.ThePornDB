@@ -1,4 +1,4 @@
-name: Jellyfin
+name: Build
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
       - .github/**
 
 jobs:
-  build:
+  jellyfin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -48,11 +48,44 @@ jobs:
             ./Jellyfin.Plugin.ThePornDB.pdb 
             ./Jellyfin.Plugin.ThePornDB.dll
             ./HttpClient.Caching.dll
-     
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: Jellyfin.Plugin.ThePornDB.zip
+    emby:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+
+          - name: Setup .NET Core
+            uses: actions/setup-dotnet@v1
+            with:
+              dotnet-version: 5.0.x
+
+          - name: Install dependencies
+            run: dotnet restore /property:Configuration=Debug.Emby
+
+          - name: Build
+            run: dotnet build --configuration Debug.Emby --no-restore
+
+          - name: Test
+            run: dotnet test --no-restore --verbosity normal
+
+          - name: Build
+            run: dotnet publish --configuration Debug.Emby --output bin --no-restore
+
+          - name: Rename Files
+            run: mv bin/ThePornDB.dll ./Emby.Plugins.ThePornDB.dll && mv bin/ThePornDB.pdb ./Emby.Plugins.ThePornDB.pdb
+
+          - uses: papeloto/action-zip@v1
+            with:
+              files: ./Emby.Plugins.ThePornDB.pdb ./Emby.Plugins.ThePornDB.dll ./bin/Newtonsoft.Json.dll ./bin/HttpClient.Caching.dll
+              dest: Emby.Plugins.ThePornDB.zip
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: "marvinpinto/action-automatic-releases@latest"
+            with:
+              repo_token: "${{ secrets.GITHUB_TOKEN }}"
+              automatic_release_tag: "latest"
+              prerelease: true
+              title: "Development Build"
+              files: |
+                Jellyfin.Plugin.ThePornDB.zip
+                Emby.Plugins.ThePornDB.zip
