@@ -97,5 +97,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            Jellyfin.Plugin.ThePornDB.zip
-            Emby.Plugins.ThePornDB.zip
+            ./Jellyfin.Plugin.ThePornDB.zip
+            ./Emby.Plugins.ThePornDB.zip
