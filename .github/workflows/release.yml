@@ -44,9 +44,7 @@ jobs:
           if-no-files-found: error
           name: Jellyfin.Plugin.ThePornDB.zip
           retention-days: 90
-          path: |
-            ./Jellyfin.Plugin.ThePornDB.pdb 
-            ./Jellyfin.Plugin.ThePornDB.dll
+          path: Jellyfin.Plugin.ThePornDB.zip
   emby:
     runs-on: ubuntu-latest
     steps:
@@ -82,9 +80,7 @@ jobs:
           if-no-files-found: error
           name: Emby.Plugins.ThePornDB.zip
           retention-days: 90
-          path: |
-            ./Emby.Plugins.ThePornDB.pdb 
-            ./Emby.Plugins.ThePornDB.dll
+          path: Emby.Plugins.ThePornDB.zip
   deploy:
     runs-on: ubuntu-latest
     needs: [jellyfin, emby]
@@ -96,5 +92,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            Jellyfin.Plugin.ThePornDB.zip
-            Emby.Plugins.ThePornDB.zip
+            **/Jellyfin.Plugin.ThePornDB.zip
+            **/Emby.Plugins.ThePornDB.zip
