@@ -82,15 +82,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [jellyfin, emby]
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: Jellyfin.Plugin.ThePornDB.zip
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: Emby.Plugins.ThePornDB.zip
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
