@@ -42,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           if-no-files-found: error
-          name: jellyfin
+          name: Jellyfin.Plugin.ThePornDB.zip
           retention-days: 90
           path: |
             ./Jellyfin.Plugin.ThePornDB.pdb 
@@ -80,7 +80,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           if-no-files-found: error
-          name: emby
+          name: Emby.Plugins.ThePornDB.zip
           retention-days: 90
           path: |
             ./Emby.Plugins.ThePornDB.pdb 
