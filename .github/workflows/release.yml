@@ -91,4 +91,6 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: *.zip
+          files: |
+            /home/runner/work/Jellyfin.Plugin.ThePornDB/Jellyfin.Plugin.ThePornDB/Emby.Plugins.ThePornDB.zip
+            /home/runner/work/Jellyfin.Plugin.ThePornDB/Jellyfin.Plugin.ThePornDB/Jellyfin.Plugin.ThePornDB.zip
