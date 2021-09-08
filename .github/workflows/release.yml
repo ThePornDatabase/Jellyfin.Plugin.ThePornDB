@@ -6,6 +6,7 @@ on:
     tags: [ 'v*' ]
     paths:
       - Jellyfin.Plugin.ThePornDB/**
+      - .github
 
 jobs:
   build:
