@@ -42,12 +42,11 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           if-no-files-found: error
-          name: build
+          name: jellyfin
           retention-days: 90
           path: |
             ./Jellyfin.Plugin.ThePornDB.pdb 
             ./Jellyfin.Plugin.ThePornDB.dll
-            ./HttpClient.Caching.dll
   emby:
     runs-on: ubuntu-latest
     steps:
@@ -77,8 +76,18 @@ jobs:
         with:
           files: ./Emby.Plugins.ThePornDB.pdb ./Emby.Plugins.ThePornDB.dll ./bin/Newtonsoft.Json.dll ./bin/HttpClient.Caching.dll
           dest: Emby.Plugins.ThePornDB.zip
+
+      - uses: actions/upload-artifact@v2
+        with:
+          if-no-files-found: error
+          name: emby
+          retention-days: 90
+          path: |
+            ./Emby.Plugins.ThePornDB.pdb 
+            ./Emby.Plugins.ThePornDB.dll
   deploy:
     runs-on: ubuntu-latest
+    needs: [jellyfin, emby]
     steps:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
