@@ -221,7 +221,7 @@ namespace ThePornDB.Providers
                     result.People.AddRange(other.OrderBy(o => o.Name));
                 }
 
-                if (Plugin.Instance.Configuration.UseCustomTitle)
+                if (Plugin.Instance.Configuration.UseCustomTitle && !string.IsNullOrEmpty(Plugin.Instance.Configuration.CustomTitle))
                 {
                     var parameters = new Dictionary<string, object>()
                     {
