@@ -121,10 +121,15 @@ namespace ThePornDB.Providers
         {
             var result = new MetadataResult<Movie>()
             {
-                HasMetadata = false,
+                HasMetadata = true,
                 Item = new Movie(),
                 People = new List<PersonInfo>(),
             };
+
+            if (Plugin.Instance.Configuration.UseUnmatchedTag && !string.IsNullOrEmpty(Plugin.Instance.Configuration.UnmatchedTag))
+            {
+                result.Item.Genres = new string[] { Plugin.Instance.Configuration.UnmatchedTag };
+            }
 
             if (info == null)
             {
@@ -147,6 +152,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
+            result.HasMetadata = false;
             try
             {
                 result = await MetadataAPI.SceneUpdate(curID, cancellationToken).ConfigureAwait(false);
@@ -239,6 +245,10 @@ namespace ThePornDB.Providers
                     result.Item.Name = parameters.Aggregate(Plugin.Instance.Configuration.CustomTitle, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
                     result.Item.Name = string.Join(" ", result.Item.Name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
                 }
+            }
+            else
+            {
+                result.HasMetadata = true;
             }
 
             return result;

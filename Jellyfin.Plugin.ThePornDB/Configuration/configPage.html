@@ -35,6 +35,16 @@
                         <label class="inputeLabel inputLabelUnfocused" for="CustomTitle">Custom Title Format</label>
                         <input id="CustomTitle" name="CustomTitle" type="text" is="emby-input" />
                     </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="UseUnmatchedTag" name="UseUnmatchedTag" type="checkbox" is="emby-checkbox" />
+                            <span>Use Unmatched Tag</span>
+                        </label>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputeLabel inputLabelUnfocused" for="UnmatchedTag">Unmatched Tag</label>
+                        <input id="UnmatchedTag" name="UnmatchedTag" type="text" is="emby-input" />
+                    </div>
                     <button is="emby-button" type="submit" class="raised button-submit block emby-button">
                         <span>Save</span>
                     </button>
@@ -54,6 +64,8 @@
                     $('#UseOSHash').prop('checked', config.UseOSHash);
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
                     $('#CustomTitle').val(config.CustomTitle).change();
+                    $('#UseUnmatchedTag').prop('checked', config.UseUnmatchedTag);
+                    $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     Dashboard.hideLoadingMsg();
                 });
             });
@@ -66,6 +78,8 @@
                     config.UseOSHash = $('#UseOSHash').prop('checked');
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');
                     config.CustomTitle = $('#CustomTitle').val();
+                    config.UseUnmatchedTag = $('#UseUnmatchedTag').prop('checked');
+                    config.UnmatchedTag = $('#UnmatchedTag').val();
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     });
