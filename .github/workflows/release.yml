@@ -34,7 +34,7 @@ jobs:
       - name: Rename Files
         run: mv bin/ThePornDB.dll ./Jellyfin.Plugin.ThePornDB.dll && mv bin/ThePornDB.pdb ./Jellyfin.Plugin.ThePornDB.pdb
 
-      - uses: papeloto/action-zip@v1
+      - uses: vimtor/action-zip@v1
         with:
           files: ./Jellyfin.Plugin.ThePornDB.pdb ./Jellyfin.Plugin.ThePornDB.dll ./bin/HttpClient.Caching.dll
           dest: Jellyfin.Plugin.ThePornDB.zip
