@@ -172,7 +172,7 @@ namespace ThePornDB.Providers
 
                     if (!string.IsNullOrEmpty(curID))
                     {
-                        actor.ProviderIds.Add(Plugin.Instance.Name, (string)actorLink["parent"]["_id"]);
+                        actor.ProviderIds.Add(Plugin.Instance.Name, curID);
                     }
 
                     if (!string.IsNullOrEmpty(gender))
