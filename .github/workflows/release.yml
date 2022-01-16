@@ -70,7 +70,7 @@ jobs:
       - name: Rename Files
         run: mv bin/ThePornDB.dll ./Emby.Plugins.ThePornDB.dll && mv bin/ThePornDB.pdb ./Emby.Plugins.ThePornDB.pdb
 
-      - uses: papeloto/action-zip@v1
+      - uses: vimtor/action-zip@v1
         with:
           files: ./Emby.Plugins.ThePornDB.pdb ./Emby.Plugins.ThePornDB.dll ./bin/Newtonsoft.Json.dll ./bin/HttpClient.Caching.dll
           dest: Emby.Plugins.ThePornDB.zip
