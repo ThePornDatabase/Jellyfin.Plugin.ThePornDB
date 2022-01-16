@@ -33,7 +33,13 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            if (searchInfo.ProviderIds.TryGetValue(this.Name, out var curID) && !string.IsNullOrEmpty(curID))
+            var curID = searchInfo.Name.GetAttributeValue("theporndbid");
+            if (string.IsNullOrEmpty(curID))
+            {
+                searchInfo.ProviderIds.TryGetValue(this.Name, out curID);
+            }
+
+            if (!string.IsNullOrEmpty(curID))
             {
                 var sceneData = new MetadataResult<Movie>()
                 {
@@ -71,6 +77,8 @@ namespace ThePornDB.Providers
                         ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
                         PremiereDate = sceneData.Item.PremiereDate,
                     });
+
+                    return result;
                 }
             }
 
