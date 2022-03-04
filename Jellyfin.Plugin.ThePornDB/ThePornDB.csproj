@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug.Emby' or '$(Configuration)'=='Release.Emby'">
-    <PackageReference Include="MediaBrowser.Server.Core" Version="4.6.0.50" />
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.7.0.29" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug' or '$(Configuration)'=='Debug.Emby'">
