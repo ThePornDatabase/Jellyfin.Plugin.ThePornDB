@@ -210,6 +210,7 @@ namespace ThePornDB.Providers
             var images = new Dictionary<ImageType, string>
             {
                 { ImageType.Primary, (string)sceneData["posters"]["large"] },
+                { ImageType.Primary, (string)sceneData["background"]["large"] },
                 { ImageType.Backdrop, (string)sceneData["background"]["large"] },
             };
 
