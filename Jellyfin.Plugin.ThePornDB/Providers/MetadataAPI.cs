@@ -68,7 +68,7 @@ namespace ThePornDB.Providers
             {
                 result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["_id"] } },
+                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
                     Name = (string)searchResult["title"],
                     ImageUrl = (string)searchResult["poster"],
                     PremiereDate = (DateTime)searchResult["date"],
@@ -148,9 +148,9 @@ namespace ThePornDB.Providers
 
                     if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object)
                     {
-                        if (actorLink["parent"]["_id"] != null)
+                        if (actorLink["parent"]["id"] != null)
                         {
-                            curID = (string)actorLink["parent"]["_id"];
+                            curID = (string)actorLink["parent"]["id"];
                         }
 
                         if (actorLink["parent"]["name"] != null)
@@ -255,7 +255,7 @@ namespace ThePornDB.Providers
             {
                 result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["_id"] } },
+                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
                     Name = (string)searchResult["name"],
                     ImageUrl = (string)searchResult["image"],
                 });
