@@ -14,6 +14,7 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Model.Configuration;
 #else
 using System.Net.Http;
+using MediaBrowser.Controller.Entities.Movies;
 #endif
 
 namespace ThePornDB.Providers

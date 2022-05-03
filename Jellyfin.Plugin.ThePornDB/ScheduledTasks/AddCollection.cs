@@ -8,6 +8,11 @@ using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
 
+#if __EMBY__
+#else
+using MediaBrowser.Controller.Entities.Movies;
+#endif
+
 namespace ThePornDB.ScheduledTasks
 {
     public class AddCollection : IScheduledTask
