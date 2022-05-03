@@ -207,22 +207,22 @@ namespace ThePornDB.Providers
 
             sceneData = (JObject)sceneData["data"];
 
-            var images = new Dictionary<ImageType, string>
+            var images = new List<(ImageType Type, string Url)>
             {
-                { ImageType.Primary, (string)sceneData["posters"]["large"] },
-                { ImageType.Primary, (string)sceneData["background"]["large"] },
-                { ImageType.Backdrop, (string)sceneData["background"]["large"] },
+                (ImageType.Primary, (string)sceneData["posters"]["large"]),
+                (ImageType.Primary, (string)sceneData["background"]["large"]),
+                (ImageType.Backdrop, (string)sceneData["background"]["large"]),
             };
 
             foreach (var image in images)
             {
                 var res = new RemoteImageInfo
                 {
-                    Url = image.Value,
-                    Type = image.Key,
+                    Url = image.Url,
+                    Type = image.Type,
                 };
 
-                var reg = RegExImageSize.Match(image.Value);
+                var reg = RegExImageSize.Match(image.Url);
                 if (reg.Success)
                 {
                     res.Width = int.Parse(reg.Groups["Width"].Value);
