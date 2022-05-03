@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
 
@@ -47,6 +46,12 @@ namespace ThePornDB.ScheduledTasks
                 progress?.Report((double)idx / studios.Count * 100);
 
                 var movies = items.Where(o => o.Studios.Contains(studio, StringComparer.OrdinalIgnoreCase) && !o.Name.Equals(studio));
+
+                if (!Plugin.Instance.Configuration.AddCollectionToCollections)
+                {
+                    movies = movies.Where(o => !(o is BoxSet));
+                }
+
                 await this.CreateCollection(movies, studio).ConfigureAwait(false);
 
                 if (cancellationToken.IsCancellationRequested)

@@ -2,6 +2,13 @@ using MediaBrowser.Model.Plugins;
 
 namespace ThePornDB.Configuration
 {
+    public enum StudioStyle
+    {
+        Site = 0,
+        Network = 1,
+        Both = 2,
+    }
+
     public class PluginConfiguration : BasePluginConfiguration
     {
         public PluginConfiguration()
@@ -10,6 +17,9 @@ namespace ThePornDB.Configuration
 
             this.UseFilePath = true;
             this.UseOSHash = true;
+
+            this.AddCollectionToCollections = true;
+            this.StudioStyle = StudioStyle.Both;
 
             this.UseCustomTitle = false;
             this.CustomTitle = "{studio}: {title} ({actors})";
@@ -23,6 +33,10 @@ namespace ThePornDB.Configuration
         public bool UseFilePath { get; set; }
 
         public bool UseOSHash { get; set; }
+
+        public bool AddCollectionToCollections { get; set; }
+
+        public StudioStyle StudioStyle { get; set; }
 
         public bool UseCustomTitle { get; set; }
 

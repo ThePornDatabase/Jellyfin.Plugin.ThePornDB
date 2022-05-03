@@ -105,17 +105,23 @@ namespace ThePornDB.Providers
 
             if (sceneData.ContainsKey("site") && sceneData["site"].Type == JTokenType.Object)
             {
-                result.Item.AddStudio((string)sceneData["site"]["name"]);
-
-                int? site_id = (int)sceneData["site"]["id"],
-                    network_id = (int?)sceneData["site"]["network_id"];
-
-                if (network_id.HasValue && !site_id.Equals(network_id))
+                if (Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Site)
                 {
-                    var siteData = await SiteUpdate(network_id.Value, cancellationToken).ConfigureAwait(false);
-                    if (siteData != null)
+                    result.Item.AddStudio((string)sceneData["site"]["name"]);
+                }
+
+                if (Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Network)
+                {
+                    int? site_id = (int)sceneData["site"]["id"],
+                        network_id = (int?)sceneData["site"]["network_id"];
+
+                    if (network_id.HasValue && !site_id.Equals(network_id))
                     {
-                        result.Item.AddStudio((string)siteData["name"]);
+                        var siteData = await SiteUpdate(network_id.Value, cancellationToken).ConfigureAwait(false);
+                        if (siteData != null)
+                        {
+                            result.Item.AddStudio((string)siteData["name"]);
+                        }
                     }
                 }
             }
