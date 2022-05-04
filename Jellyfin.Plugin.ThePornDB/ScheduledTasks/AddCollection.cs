@@ -42,8 +42,11 @@ namespace ThePornDB.ScheduledTasks
 
             var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
 
-            var missingScenes = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.Genres.Contains(Plugin.Instance.Configuration.UnmatchedTag, StringComparer.Ordinal));
-            await this.CreateCollection(missingScenes, Plugin.Instance.Configuration.UnmatchedTag).ConfigureAwait(false);
+            if (Plugin.Instance.Configuration.UseUnmatchedTag)
+            {
+                var missingScenes = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.Genres.Contains(Plugin.Instance.Configuration.UnmatchedTag, StringComparer.Ordinal));
+                await this.CreateCollection(missingScenes, Plugin.Instance.Configuration.UnmatchedTag).ConfigureAwait(false);
+            }
 
             var studios = items.SelectMany(o => o.Studios).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
             foreach (var (idx, studio) in studios.WithIndex())
