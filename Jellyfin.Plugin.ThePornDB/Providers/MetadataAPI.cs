@@ -123,6 +123,13 @@ namespace ThePornDB.Providers
                             result.Item.AddStudio((string)siteData["name"]);
                         }
                     }
+                    else
+                    {
+                        if (!result.Item.Studios.Any())
+                        {
+                            result.Item.AddStudio((string)sceneData["site"]["name"]);
+                        }
+                    }
                 }
             }
 
