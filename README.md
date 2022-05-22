@@ -4,6 +4,7 @@ This metadata provider helps fill Jellyfin/Emby with information for your adult 
 
 [![GPL 2.0 License](https://img.shields.io/github/license/ThePornDatabase/Jellyfin.Plugin.ThePornDB)](./LICENSE)
 [![Current Release](https://img.shields.io/github/release/ThePornDatabase/Jellyfin.Plugin.ThePornDB)](https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/latest)
+[![Build status](https://img.shields.io/github/workflow/status/ThePornDatabase/Jellyfin.Plugin.ThePornDB/Build)](https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/tag/latest)
 
 ------------
 
