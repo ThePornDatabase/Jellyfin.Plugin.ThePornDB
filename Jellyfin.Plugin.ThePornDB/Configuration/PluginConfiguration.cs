@@ -2,7 +2,7 @@ using MediaBrowser.Model.Plugins;
 
 namespace ThePornDB.Configuration
 {
-    public enum StudioStyle
+    public enum StudioStylehttps://github.com/Mace-git/Jellyfin.Plugin.ThePornDB/blob/patch-1/Jellyfin.Plugin.ThePornDB/Configuration/PluginConfiguration.cs
     {
         Site = 0,
         Network = 1,
@@ -26,6 +26,8 @@ namespace ThePornDB.Configuration
 
             this.UseUnmatchedTag = false;
             this.UnmatchedTag = "Missing From ThePornDB";
+            
+            this.DisableActorsAutoIdentify = false;
         }
 
         public string MetadataAPIToken { get; set; }
@@ -45,5 +47,7 @@ namespace ThePornDB.Configuration
         public bool UseUnmatchedTag { get; set; }
 
         public string UnmatchedTag { get; set; }
+        
+        public bool DisableActorsAutoIdentify { get; set; }
     }
 }
