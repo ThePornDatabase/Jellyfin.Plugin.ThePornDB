@@ -2,7 +2,7 @@ using MediaBrowser.Model.Plugins;
 
 namespace ThePornDB.Configuration
 {
-    public enum StudioStylehttps://github.com/Mace-git/Jellyfin.Plugin.ThePornDB/blob/patch-1/Jellyfin.Plugin.ThePornDB/Configuration/PluginConfiguration.cs
+    public enum StudioStyle
     {
         Site = 0,
         Network = 1,
