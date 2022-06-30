@@ -59,6 +59,12 @@
                         <label class="inputeLabel inputLabelUnfocused" for="UnmatchedTag">Unmatched Tag</label>
                         <input id="UnmatchedTag" name="UnmatchedTag" type="text" is="emby-input" />
                     </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="DisableActorsAutoIdentify" name="DisableActorsAutoIdentify" type="checkbox" is="emby-checkbox" />
+                            <span>Disable Actors Auto Identify</span>
+                        </label>
+                    </div>                   
                     <button is="emby-button" type="submit" class="raised button-submit block emby-button">
                         <span>Save</span>
                     </button>
@@ -82,6 +88,7 @@
                     $('#CustomTitle').val(config.CustomTitle).change();
                     $('#UseUnmatchedTag').prop('checked', config.UseUnmatchedTag);
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
+                    $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
                     Dashboard.hideLoadingMsg();
                 });
             });
@@ -98,6 +105,7 @@
                     config.CustomTitle = $('#CustomTitle').val();
                     config.UseUnmatchedTag = $('#UseUnmatchedTag').prop('checked');
                     config.UnmatchedTag = $('#UnmatchedTag').val();
+                    config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     });
