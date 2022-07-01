@@ -107,7 +107,10 @@ namespace ThePornDB.Providers
                 var searchResults = await this.GetSearchResults(info, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
                 {
-                    searchResults.First().ProviderIds.TryGetValue(this.Name, out curID);
+                    if (!Plugin.Instance.Configuration.DisableActorsAutoIdentify)
+                    {
+                        searchResults.First().ProviderIds.TryGetValue(this.Name, out curID);
+                    }
                 }
             }
 
