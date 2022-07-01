@@ -26,7 +26,7 @@ namespace ThePornDB.Configuration
 
             this.UseUnmatchedTag = false;
             this.UnmatchedTag = "Missing From ThePornDB";
-            
+
             this.DisableActorsAutoIdentify = false;
         }
 
@@ -47,7 +47,7 @@ namespace ThePornDB.Configuration
         public bool UseUnmatchedTag { get; set; }
 
         public string UnmatchedTag { get; set; }
-        
+
         public bool DisableActorsAutoIdentify { get; set; }
     }
 }
