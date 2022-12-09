@@ -28,7 +28,7 @@ jobs:
           files: Jellyfin.Plugin.ThePornDB/bin/Release/net6.0/Jellyfin.Plugin.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release/net6.0/Jellyfin.Plugin.ThePornDB.dll
           dest: Jellyfin.Plugin.ThePornDB.zip
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error
           name: Jellyfin
@@ -53,7 +53,7 @@ jobs:
           files: Jellyfin.Plugin.ThePornDB/bin/Release.Emby/netstandard2.1/Emby.Plugins.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release.Emby/netstandard2.1/Emby.Plugins.ThePornDB.dll
           dest: Emby.Plugins.ThePornDB.zip
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error
           name: Emby
@@ -64,7 +64,7 @@ jobs:
     needs: [jellyfin, emby]
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
