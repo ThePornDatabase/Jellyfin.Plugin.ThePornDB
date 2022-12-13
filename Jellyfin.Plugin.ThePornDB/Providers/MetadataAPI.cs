@@ -55,24 +55,44 @@ namespace ThePornDB.Providers
                 return result;
             }
 
+            // Seach Scenes
             var url = string.Format(Consts.APISceneSearchURL, searchTitle, oshash);
 
             var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
 
-            if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
+            if (data != null && data.ContainsKey("data") && data["data"].Type == JTokenType.Array)
             {
-                return result;
+
+                foreach (var searchResult in data["data"])
+                {
+                    result.Add(new RemoteSearchResult
+                    {
+                        ProviderIds = { { Plugin.Instance.Name, "/scenes/"+(string)searchResult["id"] } },
+                        Name = (string)searchResult["title"],
+                        ImageUrl = (string)searchResult["poster"],
+                        PremiereDate = (DateTime)searchResult["date"],
+                    });
+                }
             }
 
-            foreach (var searchResult in data["data"])
+            // Seach Movies
+            url = string.Format(Consts.APIMovieSearchURL, searchTitle, oshash);
+
+            data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+
+            if (data != null && data.ContainsKey("data") && data["data"].Type == JTokenType.Array)
             {
-                result.Add(new RemoteSearchResult
+
+                foreach (var searchResult in data["data"])
                 {
-                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
-                    Name = (string)searchResult["title"],
-                    ImageUrl = (string)searchResult["poster"],
-                    PremiereDate = (DateTime)searchResult["date"],
-                });
+                    result.Add(new RemoteSearchResult
+                    {
+                        ProviderIds = { { Plugin.Instance.Name, "/movies/"+(string)searchResult["id"] } },
+                        Name = (string)searchResult["title"],
+                        ImageUrl = (string)searchResult["poster"],
+                        PremiereDate = (DateTime)searchResult["date"],
+                    });
+                }
             }
 
             return result;
@@ -91,7 +111,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var url = string.Format(Consts.APISceneURL, sceneID);
+            var url = string.Format(Consts.APIVideoURL, sceneID);
             var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
             {
@@ -211,7 +231,8 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var url = string.Format(Consts.APISceneURL, sceneID);
+            var url = string.Format(Consts.APIVideoURL, sceneID);
+
             var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
             {

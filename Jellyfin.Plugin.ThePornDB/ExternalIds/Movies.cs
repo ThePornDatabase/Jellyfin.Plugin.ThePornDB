@@ -21,7 +21,7 @@ namespace ThePornDB
 
         public string Key => Plugin.Instance.Name;
 
-        public string UrlFormatString => Consts.SceneURL;
+        public string UrlFormatString => Consts.VideoURL;
 
         public bool Supports(IHasProviderIds item) => item is Movie;
     }
