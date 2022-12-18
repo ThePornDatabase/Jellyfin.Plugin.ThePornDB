@@ -14,20 +14,20 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
-    public class Movies : IRemoteMetadataProvider<Movie, MovieInfo>
+    public class Scenes : IRemoteMetadataProvider<Movie, MovieInfo>
     {
-        public string Name => Plugin.Instance.Name + " Movies";
+        public string Name => Plugin.Instance.Name + " Scenes";
 
         public async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, CancellationToken cancellationToken)
         {
-            var result = await Base.GetSearchResults(searchInfo, SceneType.Movie, cancellationToken).ConfigureAwait(false);
+            var result = await Base.GetSearchResults(searchInfo, SceneType.Scene, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
 
         public async Task<MetadataResult<Movie>> GetMetadata(MovieInfo info, CancellationToken cancellationToken)
         {
-            var result = await Base.GetMetadata(info, SceneType.Movie, cancellationToken).ConfigureAwait(false);
+            var result = await Base.GetMetadata(info, SceneType.Scene, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
