@@ -132,7 +132,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                result = await MetadataAPI.SceneSearch(searchTitle, oshash, searchURL, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneSearch(searchTitle, oshash, searchURL, providerIdName, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {

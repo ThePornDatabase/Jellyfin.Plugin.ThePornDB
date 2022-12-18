@@ -47,7 +47,7 @@ namespace ThePornDB.Providers
             return json;
         }
 
-        public static async Task<List<RemoteSearchResult>> SceneSearch(string searchTitle, string oshash, string url, CancellationToken cancellationToken)
+        public static async Task<List<RemoteSearchResult>> SceneSearch(string searchTitle, string oshash, string url, string providerIdName, CancellationToken cancellationToken)
         {
             var result = new List<RemoteSearchResult>();
             if (string.IsNullOrEmpty(searchTitle))
@@ -66,7 +66,7 @@ namespace ThePornDB.Providers
             {
                 result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
+                    ProviderIds = { { providerIdName, (string)searchResult["id"] } },
                     Name = (string)searchResult["title"],
                     ImageUrl = (string)searchResult["poster"],
                     PremiereDate = (DateTime)searchResult["date"],
