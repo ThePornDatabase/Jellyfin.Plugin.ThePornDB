@@ -29,6 +29,9 @@ namespace ThePornDB.Configuration
 
             this.DisableMediaAutoIdentify = false;
             this.DisableActorsAutoIdentify = false;
+            
+            this.ActorsOverview = 1;
+            this.ActorsOverviewFormat = "<strong style="color:#ff0000">{Measurements}<br/></strong>{Cupsize}-{Waist}-{Hips}<br/>{Tattoos}<br/>{Piercings}<br/>{Bio}";
         }
 
         public string MetadataAPIToken { get; set; }
@@ -51,5 +54,8 @@ namespace ThePornDB.Configuration
 
         public bool DisableMediaAutoIdentify { get; set; }
         public bool DisableActorsAutoIdentify { get; set; }
+        
+        public int ActorsOverview { get; set; }
+        public string ActorsOverviewFormat { get; set; }
     }
 }
