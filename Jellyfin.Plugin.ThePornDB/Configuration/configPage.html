@@ -70,7 +70,23 @@
                             <input id="DisableActorsAutoIdentify" name="DisableActorsAutoIdentify" type="checkbox" is="emby-checkbox" />
                             <span>Disable Actors Auto Identify</span>
                         </label>
-                    </div>              
+                    </div>
+                      <div class="select-container">
+                        <select is="emby-select" id="ActorsOverview" label="Actors Overview Option">
+                            <option value="0">None</option>
+                            <option value="1">Default</option>
+                            <option value="2">Custom Extras</option>
+                        </select>
+                    </div>
+                
+                    <div class="inputContainer">
+                        <label class="inputeLabel inputLabelUnfocused" for="ActorsOverviewFormat">Actor Custom Format:</label>
+                        <textarea is="emby-textarea" id="ActorsOverviewFormat" label="Actor Custom Format:" class="textarea-mono emby-textarea" rows="9" style="overflow-y: hidden; height: 90px; width: 100%;">
+                        </textarea>
+                        <div class="fieldDescription">
+                            MetadataAPI extras
+                        </div>
+                    </div>
                     <button is="emby-button" type="submit" class="raised button-submit block emby-button">
                         <span>Save</span>
                     </button>
@@ -96,6 +112,8 @@
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
+                    $('#ActorsOverview').val(config.ActorsOverview).change();
+                    $('#ActorsOverviewFormat').val(config.ActorsOverviewFormat).change();
                     Dashboard.hideLoadingMsg();
                 });
             });
@@ -114,6 +132,8 @@
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
+                    config.ActorsOverview = $('#ActorsOverview').val();
+                    config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     });
