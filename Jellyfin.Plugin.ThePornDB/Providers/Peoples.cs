@@ -101,16 +101,12 @@ namespace ThePornDB.Providers
             }
 
             info.ProviderIds.TryGetValue(this.Name, out var curID);
-
-            if (string.IsNullOrEmpty(curID))
+            if (string.IsNullOrEmpty(curID) && !Plugin.Instance.Configuration.DisableActorsAutoIdentify)
             {
                 var searchResults = await this.GetSearchResults(info, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
                 {
-                    if (!Plugin.Instance.Configuration.DisableActorsAutoIdentify)
-                    {
-                        searchResults.First().ProviderIds.TryGetValue(this.Name, out curID);
-                    }
+                    searchResults.First().ProviderIds.TryGetValue(this.Name, out curID);
                 }
             }
 
