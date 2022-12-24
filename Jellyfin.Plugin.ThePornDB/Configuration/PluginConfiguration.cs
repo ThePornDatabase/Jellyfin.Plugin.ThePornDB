@@ -9,6 +9,13 @@ namespace ThePornDB.Configuration
         Both = 2,
     }
 
+    public enum ActorsOverviewStyle
+    {
+        None = 0,
+        Default = 1,
+        CustomExtras = 2,
+    }
+
     public class PluginConfiguration : BasePluginConfiguration
     {
         public PluginConfiguration()
@@ -27,7 +34,11 @@ namespace ThePornDB.Configuration
             this.UseUnmatchedTag = false;
             this.UnmatchedTag = "Missing From ThePornDB";
 
+            this.DisableMediaAutoIdentify = false;
             this.DisableActorsAutoIdentify = false;
+
+            this.ActorsOverview = ActorsOverviewStyle.Default;
+            this.ActorsOverviewFormat = "<strong style=\"color:#ff0000\">{measurements}<br/></strong>{cupsize}-{waist}-{hips}<br/>{tattoos}<br/>{piercings}<br/>{bio}";
         }
 
         public string MetadataAPIToken { get; set; }
@@ -48,6 +59,12 @@ namespace ThePornDB.Configuration
 
         public string UnmatchedTag { get; set; }
 
+        public bool DisableMediaAutoIdentify { get; set; }
+
         public bool DisableActorsAutoIdentify { get; set; }
+
+        public ActorsOverviewStyle ActorsOverview { get; set; }
+
+        public string ActorsOverviewFormat { get; set; }
     }
 }
