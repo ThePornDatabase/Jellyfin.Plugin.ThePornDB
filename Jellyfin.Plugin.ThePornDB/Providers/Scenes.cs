@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Providers;
@@ -20,23 +21,28 @@ namespace ThePornDB.Providers
 
         public async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, CancellationToken cancellationToken)
         {
-            var result = new List<RemoteSearchResult>();
-
-            var (providerIdName, _, _) = Base.GetSettings(SceneType.Movie);
-            searchInfo.ProviderIds.TryGetValue(providerIdName, out var curID);
-            if (string.IsNullOrEmpty(curID))
-            {
-                return result;
-            }
-
-            result = (List<RemoteSearchResult>)await Base.GetSearchResults(searchInfo, SceneType.Scene, cancellationToken).ConfigureAwait(false);
+            var result = (List<RemoteSearchResult>)await Base.GetSearchResults(searchInfo, SceneType.Scene, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
 
         public async Task<MetadataResult<Movie>> GetMetadata(MovieInfo info, CancellationToken cancellationToken)
         {
-            var result = await Base.GetMetadata(info, SceneType.Scene, cancellationToken).ConfigureAwait(false);
+            var result = new MetadataResult<Movie>()
+            {
+                HasMetadata = true,
+                Item = new Movie(),
+                People = new List<PersonInfo>(),
+            };
+
+            var (providerIdName, _, _) = Base.GetSettings(SceneType.Movie);
+            info.ProviderIds.TryGetValue(providerIdName, out var curID);
+            if (!string.IsNullOrEmpty(curID))
+            {
+                return result;
+            }
+
+            result = await Base.GetMetadata(info, SceneType.Scene, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
