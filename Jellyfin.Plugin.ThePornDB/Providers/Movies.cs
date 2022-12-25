@@ -20,16 +20,7 @@ namespace ThePornDB.Providers
 
         public async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, CancellationToken cancellationToken)
         {
-            var result = new List<RemoteSearchResult>();
-
-            var (providerIdName, _, _) = Base.GetSettings(SceneType.Scene);
-            searchInfo.ProviderIds.TryGetValue(providerIdName, out var curID);
-            if (string.IsNullOrEmpty(curID))
-            {
-                return result;
-            }
-
-            result = (List<RemoteSearchResult>)await Base.GetSearchResults(searchInfo, SceneType.Movie, cancellationToken).ConfigureAwait(false);
+            var result = await Base.GetSearchResults(searchInfo, SceneType.Movie, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
