@@ -21,7 +21,6 @@ namespace ThePornDB.Helpers
                 { "{cupsize}", (string)actorData["extras"]["cupsize"] },
                 { "{tattoos}", (string)actorData["extras"]["tattoos"] },
                 { "{birthday}", (string)actorData["extras"]["birthday"] },
-                { "{eye_color}", (string)actorData["extras"]["eye_colour"] },
                 { "{piercings}", (string)actorData["extras"]["piercings"] },
                 { "{ethnicity}", (string)actorData["extras"]["ethnicity"] },
                 { "{astrology}", (string)actorData["extras"]["astrology"] },
