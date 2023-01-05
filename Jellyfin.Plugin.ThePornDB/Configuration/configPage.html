@@ -72,6 +72,13 @@
                         </label>
                     </div>
                     <div class="selectContainer">
+                        <label class="selectLabel" for="ActorsImage">Actors Image Option</label>
+                        <select is="emby-select" id="ActorsImage" name="ActorsImage" class="emby-select-withcolor emby-select">
+                            <option value="Poster">Poster</option>
+                            <option value="Face">Face</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
                         <label class="selectLabel" for="ActorsOverview">Actors Overview Option</label>
                         <select is="emby-select" id="ActorsOverview" name="ActorsOverview" class="emby-select-withcolor emby-select">
                             <option value="None">None</option>
@@ -109,6 +116,7 @@
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
+                    $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
                     $('#ActorsOverviewFormat').val(config.ActorsOverviewFormat).change();
                     Dashboard.hideLoadingMsg();
@@ -129,6 +137,7 @@
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
+                    config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();
                     config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {

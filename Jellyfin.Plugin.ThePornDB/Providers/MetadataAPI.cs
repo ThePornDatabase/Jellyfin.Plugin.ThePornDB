@@ -11,6 +11,7 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 using Newtonsoft.Json.Linq;
+using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
 
@@ -178,8 +179,17 @@ namespace ThePornDB.Providers
                     var actor = new PersonInfo
                     {
                         Name = name,
-                        ImageUrl = (string)actorLink["image"],
                     };
+
+                    switch (Plugin.Instance.Configuration.ActorsImage)
+                    {
+                        case ActorsImageStyle.Face:
+                            actor.ImageUrl = (string)actorLink["face"];
+                            break;
+                        case ActorsImageStyle.Poster:
+                            actor.ImageUrl = (string)actorLink["image"];
+                            break;
+                    }
 
                     if (!string.IsNullOrEmpty(curID))
                     {
@@ -336,21 +346,18 @@ namespace ThePornDB.Providers
 
             sceneData = (JObject)sceneData["data"];
 
+            if (Plugin.Instance.Configuration.ActorsImage == ActorsImageStyle.Face)
+            {
+                var posterURL = (string)sceneData["face"];
+                var res = GetRemoteImageFromURL(posterURL);
+
+                result.Add(res);
+            }
+
             foreach (var poster in sceneData["posters"])
             {
                 var posterURL = (string)poster["url"];
-                var res = new RemoteImageInfo
-                {
-                    Url = posterURL,
-                    Type = ImageType.Primary,
-                };
-
-                var reg = RegExImageSize.Match(posterURL);
-                if (reg.Success)
-                {
-                    res.Width = int.Parse(reg.Groups["Width"].Value);
-                    res.Height = int.Parse(reg.Groups["Height"].Value);
-                }
+                var res = GetRemoteImageFromURL(posterURL);
 
                 result.Add(res);
             }
@@ -384,6 +391,24 @@ namespace ThePornDB.Providers
             }
 
             return result;
+        }
+
+        private static RemoteImageInfo GetRemoteImageFromURL(string url)
+        {
+            var res = new RemoteImageInfo
+            {
+                Url = url,
+                Type = ImageType.Primary,
+            };
+
+            var reg = RegExImageSize.Match(url);
+            if (reg.Success)
+            {
+                res.Width = int.Parse(reg.Groups["Width"].Value);
+                res.Height = int.Parse(reg.Groups["Height"].Value);
+            }
+
+            return res;
         }
     }
 }
