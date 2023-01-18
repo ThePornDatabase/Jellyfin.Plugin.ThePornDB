@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
@@ -17,6 +19,10 @@ namespace ThePornDB.Providers
 {
     public class Scenes : IRemoteMetadataProvider<Movie, MovieInfo>
     {
+        private static readonly SceneType ProviderSceneType = SceneType.Scene;
+
+        private readonly IEnumerable<SceneType> otherTypes = Enum.GetValues(typeof(SceneType)).Cast<SceneType>().Where(o => o != ProviderSceneType);
+
         public string Name => Plugin.Instance.Name + " Scenes";
 
         public async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, CancellationToken cancellationToken)
@@ -35,14 +41,17 @@ namespace ThePornDB.Providers
                 People = new List<PersonInfo>(),
             };
 
-            var (providerIdName, _, _) = Base.GetSettings(SceneType.Movie);
-            info.ProviderIds.TryGetValue(providerIdName, out var curID);
-            if (!string.IsNullOrEmpty(curID))
+            foreach (var item in this.otherTypes)
             {
-                return result;
+                var (providerIdName, _, _) = Base.GetSettings(item);
+                info.ProviderIds.TryGetValue(providerIdName, out var curID);
+                if (!string.IsNullOrEmpty(curID))
+                {
+                    return result;
+                }
             }
 
-            result = await Base.GetMetadata(info, SceneType.Scene, cancellationToken).ConfigureAwait(false);
+            result = await Base.GetMetadata(info, ProviderSceneType, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

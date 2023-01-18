@@ -17,11 +17,11 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
-    public class MoviesImages : IRemoteImageProvider
+    public class JAVImages : IRemoteImageProvider
     {
-        private static readonly SceneType ProviderSceneType = SceneType.Movie;
+        private static readonly SceneType ProviderSceneType = SceneType.JAV;
 
-        public string Name => Plugin.Instance.Name + " Movies";
+        public string Name => Plugin.Instance.Name + " JAV";
 
         public bool Supports(BaseItem item) => item is Movie;
 

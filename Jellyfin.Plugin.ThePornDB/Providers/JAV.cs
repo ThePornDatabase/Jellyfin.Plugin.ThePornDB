@@ -17,17 +17,17 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
-    public class Movies : IRemoteMetadataProvider<Movie, MovieInfo>
+    public class JAV : IRemoteMetadataProvider<Movie, MovieInfo>
     {
-        private static readonly SceneType ProviderSceneType = SceneType.Movie;
+        private static readonly SceneType ProviderSceneType = SceneType.JAV;
 
         private readonly IEnumerable<SceneType> otherTypes = Enum.GetValues(typeof(SceneType)).Cast<SceneType>().Where(o => o != ProviderSceneType);
 
-        public string Name => Plugin.Instance.Name + " Movies";
+        public string Name => Plugin.Instance.Name + " JAV";
 
         public async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, CancellationToken cancellationToken)
         {
-            var result = (List<RemoteSearchResult>)await Base.GetSearchResults(searchInfo, SceneType.Movie, cancellationToken).ConfigureAwait(false);
+            var result = (List<RemoteSearchResult>)await Base.GetSearchResults(searchInfo, SceneType.JAV, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

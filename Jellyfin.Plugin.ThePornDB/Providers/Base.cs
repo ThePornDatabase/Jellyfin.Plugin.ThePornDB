@@ -23,6 +23,7 @@ namespace ThePornDB.Providers
     {
         Scene = 0,
         Movie = 1,
+        JAV = 2,
     }
 
     public static class Base
@@ -44,6 +45,11 @@ namespace ThePornDB.Providers
                     providerIdName = Plugin.Instance.Name + "Movie";
                     searchURL = Consts.APIMovieSearchURL;
                     sceneURL = Consts.APIMovieURL;
+                    break;
+                case SceneType.JAV:
+                    providerIdName = Plugin.Instance.Name + "JAV";
+                    searchURL = Consts.APIJAVSearchURL;
+                    sceneURL = Consts.APIJAVURL;
                     break;
             }
 
