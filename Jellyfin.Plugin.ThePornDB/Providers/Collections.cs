@@ -28,7 +28,7 @@ namespace ThePornDB.Providers
         {
             var result = new List<RemoteSearchResult>();
 
-            if (searchInfo == null || string.IsNullOrEmpty(Plugin.Instance.Configuration.MetadataAPIToken))
+            if (searchInfo == null || string.IsNullOrEmpty(Plugin.Instance.Configuration.MetadataAPIToken) || (Plugin.Instance.Configuration.UseUnmatchedTag && searchInfo.Name == Plugin.Instance.Configuration.UnmatchedTag))
             {
                 return result;
             }
