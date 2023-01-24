@@ -4,6 +4,8 @@
     <ItemGroup>
       <InputAssemblies Include="$(OutputPath)$(AssemblyName).dll" />
       <InputAssemblies Include="$(OutputPath)HttpClient.Caching.dll" />
+      <InputAssemblies Include="$(OutputPath)ComposableAsync.Core.dll" />
+      <InputAssemblies Include="$(OutputPath)RateLimiter.dll" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Release.Emby'">

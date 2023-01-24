@@ -8,8 +8,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using ComposableAsync;
 using Microsoft.Extensions.Caching.Abstractions;
-using Microsoft.Extensions.Caching.InMemory;
+using RateLimiter;
 
 namespace ThePornDB.Helpers.Utils
 {
@@ -29,9 +30,9 @@ namespace ThePornDB.Helpers.Utils
 
         private static IDictionary<HttpStatusCode, TimeSpan> CacheExpirationPerHttpResponseCode { get; } = CacheExpirationProvider.CreateSimple(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(5));
 
-        private static InMemoryCacheHandler Handler { get; } = new InMemoryCacheHandler(HttpHandler, CacheExpirationPerHttpResponseCode);
+        private static RateLimitCachingHandler CacheHandler { get; } = new RateLimitCachingHandler(HttpHandler, CacheExpirationPerHttpResponseCode, TimeLimiter.GetFromMaxCountByInterval(120, TimeSpan.FromSeconds(60)));
 
-        private static HttpClient Http { get; } = new HttpClient(Handler);
+        private static HttpClient Http { get; } = new HttpClient(CacheHandler);
 
         public static async Task<HTTPResponse> Request(string url, HttpMethod method, HttpContent param, IDictionary<string, string> headers, IDictionary<string, string> cookies, CancellationToken cancellationToken)
         {
