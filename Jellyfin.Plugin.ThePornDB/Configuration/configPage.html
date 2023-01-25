@@ -11,7 +11,7 @@
                 <form id="ThePornDBConfigForm">
                     <div class="inputContainer">
                         <label class="inputLabel inputLabelUnfocused" for="MetadataAPIToken">Token</label>
-                        <input id="MetadataAPIToken" name="MetadataAPIToken" type="text" is="emby-input" />
+                        <input id="MetadataAPIToken" name="MetadataAPIToken" type="password" is="emby-input" />
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
@@ -24,6 +24,21 @@
                             <input id="UseOSHash" name="UseOSHash" type="checkbox" is="emby-checkbox" />
                             <span>Use OpenSubtitlesHash for matching</span>
                         </label>
+                    </div>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="OrderStyle">Order Style</label>
+                        <select is="emby-select" id="OrderStyle" name="OrderStyle" class="emby-select-withcolor emby-select">
+                            <option value="Default">Default</option>
+                            <option value="DistanceByTitle">DistanceByTitle</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="TagStyle">Tag Style</label>
+                        <select is="emby-select" id="TagStyle" name="TagStyle" class="emby-select-withcolor emby-select">
+                            <option value="Genre">Genre</option>
+                            <option value="Tag">Tag</option>
+                            <option value="Disabled">Disabled</option>
+                        </select>
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
@@ -108,6 +123,8 @@
                     $('#MetadataAPIToken').val(config.MetadataAPIToken).change();
                     $('#UseFilePath').prop('checked', config.UseFilePath);
                     $('#UseOSHash').prop('checked', config.UseOSHash);
+                    $('#OrderStyle').val(config.OrderStyle).change();
+                    $('#TagStyle').val(config.TagStyle).change();
                     $('#AddCollectionToCollections').prop('checked', config.AddCollectionToCollections);
                     $('#StudioStyle').val(config.StudioStyle).change();
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
@@ -129,6 +146,8 @@
                     config.MetadataAPIToken = $('#MetadataAPIToken').val();
                     config.UseFilePath = $('#UseFilePath').prop('checked');
                     config.UseOSHash = $('#UseOSHash').prop('checked');
+                    config.OrderStyle = $('#OrderStyle').val();
+                    config.TagStyle = $('#TagStyle').val();
                     config.AddCollectionToCollections = $('#AddCollectionToCollections').prop('checked');
                     config.StudioStyle = $('#StudioStyle').val();
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');

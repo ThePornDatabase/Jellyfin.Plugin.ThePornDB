@@ -9,6 +9,8 @@ using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
+using PhoenixAdult.Helpers.Utils;
+using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 
 #if __EMBY__
@@ -154,6 +156,15 @@ namespace ThePornDB.Providers
                         scene.ProductionYear = scene.PremiereDate.Value.Year;
                     }
                 }
+
+                switch (Plugin.Instance.Configuration.OrderStyle)
+                {
+                    case OrderStyle.Default:
+                        break;
+                    case OrderStyle.DistanceByTitle:
+                        result = result.OrderByDescending(o => 100 - LevenshteinDistance.Calculate(searchTitle, o.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                }
             }
 
             return result;
@@ -233,6 +244,7 @@ namespace ThePornDB.Providers
                     result.Item.Studios = studios.Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
                 }
 
+                var tags = new List<string>();
                 if (result.Item.Genres.Any())
                 {
                     var genres = new List<string>();
@@ -248,7 +260,23 @@ namespace ThePornDB.Providers
                         genres.Add(genreName);
                     }
 
-                    result.Item.Genres = genres.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(o => o).ToArray();
+                    tags = genres.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(o => o).ToList();
+                }
+
+                switch (Plugin.Instance.Configuration.TagStyle)
+                {
+                    case TagStyle.Disabled:
+                        result.Item.Genres = Array.Empty<string>();
+                        result.Item.Tags = Array.Empty<string>();
+                        break;
+                    case TagStyle.Genre:
+                        result.Item.Genres = tags.ToArray();
+                        result.Item.Tags = Array.Empty<string>();
+                        break;
+                    case TagStyle.Tag:
+                        result.Item.Genres = Array.Empty<string>();
+                        result.Item.Tags = tags.ToArray();
+                        break;
                 }
 
                 if (result.People.Any())

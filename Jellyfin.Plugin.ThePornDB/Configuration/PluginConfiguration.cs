@@ -2,6 +2,19 @@ using MediaBrowser.Model.Plugins;
 
 namespace ThePornDB.Configuration
 {
+    public enum OrderStyle
+    {
+        Default = 0,
+        DistanceByTitle = 1,
+    }
+
+    public enum TagStyle
+    {
+        Genre = 0,
+        Tag = 1,
+        Disabled = 2,
+    }
+
     public enum StudioStyle
     {
         Site = 0,
@@ -31,6 +44,9 @@ namespace ThePornDB.Configuration
             this.UseFilePath = true;
             this.UseOSHash = true;
 
+            this.OrderStyle = OrderStyle.Default;
+            this.TagStyle = TagStyle.Genre;
+
             this.AddCollectionToCollections = true;
             this.StudioStyle = StudioStyle.Both;
 
@@ -53,6 +69,10 @@ namespace ThePornDB.Configuration
         public bool UseFilePath { get; set; }
 
         public bool UseOSHash { get; set; }
+
+        public OrderStyle OrderStyle { get; set; }
+
+        public TagStyle TagStyle { get; set; }
 
         public bool AddCollectionToCollections { get; set; }
 
