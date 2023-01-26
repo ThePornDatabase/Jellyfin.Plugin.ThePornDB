@@ -56,7 +56,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            url = string.Format(url, searchTitle, oshash);
+            url = string.Format(url, Uri.EscapeDataString(searchTitle), Uri.EscapeDataString(oshash));
             var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
             {
@@ -90,7 +90,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            url = string.Format(url, sceneID);
+            url = string.Format(url, Uri.EscapeDataString(sceneID));
             var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
             {
@@ -219,7 +219,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            url = string.Format(url, sceneID);
+            url = string.Format(url, Uri.EscapeDataString(sceneID));
             var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
             {
@@ -264,7 +264,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var url = string.Format(Consts.APIPerfomerSearchURL, actorName);
+            var url = string.Format(Consts.APIPerfomerSearchURL, Uri.EscapeDataString(actorName));
             var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
 
             if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
@@ -297,7 +297,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var url = string.Format(Consts.APIPerfomerURL, sceneID);
+            var url = string.Format(Consts.APIPerfomerURL, Uri.EscapeDataString(sceneID));
             var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
             {
@@ -337,7 +337,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var url = string.Format(Consts.APIPerfomerURL, sceneID);
+            var url = string.Format(Consts.APIPerfomerURL, Uri.EscapeDataString(sceneID));
             var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
             {
@@ -369,7 +369,7 @@ namespace ThePornDB.Providers
         {
             JArray result = null;
 
-            var url = string.Format(Consts.APISiteSearchURL, name);
+            var url = string.Format(Consts.APISiteSearchURL, Uri.EscapeDataString(name));
             var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Array)
             {
