@@ -34,7 +34,19 @@ namespace ThePornDB.Configuration
         Poster = 0,
         Face = 1,
     }
-
+    
+    public enum AutoIdentifyOptionMedia
+    {
+        Enable = 0,
+        Disable = 1,
+    }
+    public enum AutoIdentifyOptionActors
+    {
+        Enable = 0,
+        Disable = 1,
+        ActorsMedia = 2,
+    }
+    
     public class PluginConfiguration : BasePluginConfiguration
     {
         public PluginConfiguration()
@@ -56,8 +68,8 @@ namespace ThePornDB.Configuration
             this.UseUnmatchedTag = false;
             this.UnmatchedTag = "Missing From ThePornDB";
 
-            this.DisableMediaAutoIdentify = false;
-            this.DisableActorsAutoIdentify = false;
+            this.AutoIdentifyOptionMedia = AutoIdentifyOptionMedia.Enable;
+            this.AutoIdentifyOptionActors = AutoIdentifyOptionActors.Enable;
 
             this.ActorsImage = ActorsImageStyle.Poster;
             this.ActorsOverview = ActorsOverviewStyle.Default;
@@ -86,9 +98,9 @@ namespace ThePornDB.Configuration
 
         public string UnmatchedTag { get; set; }
 
-        public bool DisableMediaAutoIdentify { get; set; }
+        public AutoIdentifyOptionMedia AutoIdentifyOptionMedia{ get; set; }
 
-        public bool DisableActorsAutoIdentify { get; set; }
+        public AutoIdentifyOptionActors AutoIdentifyOptionActors { get; set; }
 
         public ActorsImageStyle ActorsImage { get; set; }
 
