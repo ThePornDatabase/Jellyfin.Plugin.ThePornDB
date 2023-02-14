@@ -24,9 +24,9 @@ namespace ThePornDB.Configuration
 
     public enum ActorsOverviewStyle
     {
-        None = 0,
-        Default = 1,
-        CustomExtras = 2,
+        Bio = 0,
+        None = 1,
+        Custom = 2,
     }
 
     public enum ActorsImageStyle
@@ -72,7 +72,7 @@ namespace ThePornDB.Configuration
             this.AutoIdentifyOptionActors = AutoIdentifyOptionActors.Enable;
 
             this.ActorsImage = ActorsImageStyle.Poster;
-            this.ActorsOverview = ActorsOverviewStyle.Default;
+            this.ActorsOverview = ActorsOverviewStyle.Bio;
             this.ActorsOverviewFormat = "<strong style=\"color:#ff0000\">{measurements}<br/></strong>{cupsize}-{waist}-{hips}<br/>{tattoos}<br/>{piercings}<br/>{bio}";
         }
 
