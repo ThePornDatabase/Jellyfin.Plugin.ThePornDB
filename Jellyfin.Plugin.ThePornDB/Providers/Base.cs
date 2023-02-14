@@ -192,7 +192,7 @@ namespace ThePornDB.Providers
             var (providerIdName, searchURL, sceneURL) = GetSettings(sceneType);
 
             info.ProviderIds.TryGetValue(providerIdName, out var curID);
-            if (string.IsNullOrEmpty(curID) && !Plugin.Instance.Configuration.DisableMediaAutoIdentify)
+            if (string.IsNullOrEmpty(curID) && !Plugin.Instance.Configuration.AutoIdentifyOptionMedia != AutoIdentifyOptionMedia.Disable)
             {
                 var searchResults = await GetSearchResults(info, sceneType, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
