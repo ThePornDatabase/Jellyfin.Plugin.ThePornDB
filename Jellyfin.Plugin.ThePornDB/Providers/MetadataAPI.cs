@@ -191,7 +191,7 @@ namespace ThePornDB.Providers
                             break;
                     }
 
-                    if (!string.IsNullOrEmpty(curID))
+                    if (!string.IsNullOrEmpty(curID) && Plugin.Instance.Configuration.AutoIdentifyOptionActors != AutoIdentifyOptionActors.Disable)
                     {
                         actor.ProviderIds.Add(Plugin.Instance.Name, curID);
                     }
