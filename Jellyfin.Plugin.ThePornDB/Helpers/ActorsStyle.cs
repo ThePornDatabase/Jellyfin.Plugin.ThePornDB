@@ -7,7 +7,7 @@ namespace ThePornDB.Helpers
 {
     public class ActorsStyle
     {
-        public static string OverviewCustomFormat(JObject actorData)
+        public static string OverviewFormat(JObject actorData)
         {
             var placeholders = new Dictionary<string, string>()
             {
