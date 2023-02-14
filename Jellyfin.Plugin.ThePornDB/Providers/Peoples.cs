@@ -101,7 +101,7 @@ namespace ThePornDB.Providers
             }
 
             info.ProviderIds.TryGetValue(this.Name, out var curID);
-            if (string.IsNullOrEmpty(curID) && !Plugin.Instance.Configuration.DisableActorsAutoIdentify)
+            if (string.IsNullOrEmpty(curID) && Plugin.Instance.Configuration.AutoIdentifyOptionActors == AutoIdentifyOptionActors.Enable)
             {
                 var searchResults = await this.GetSearchResults(info, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
