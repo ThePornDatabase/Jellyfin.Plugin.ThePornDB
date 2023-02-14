@@ -33,10 +33,10 @@ namespace ThePornDB.Helpers
             string overview = Plugin.Instance.Configuration.ActorsOverviewFormat;
             switch (Plugin.Instance.Configuration.ActorsOverview)
             {
-                case ActorsOverviewStyle.CustomExtras:
+                case ActorsOverviewStyle.Custom:
                     overview = placeholders.Aggregate(Plugin.Instance.Configuration.ActorsOverviewFormat, (current, parameter) => current.Replace(parameter.Key, parameter.Value));
                     break;
-                case ActorsOverviewStyle.Default:
+                case ActorsOverviewStyle.Bio:
                     overview = (string)actorData["bio"];
                     break;
                 default:
