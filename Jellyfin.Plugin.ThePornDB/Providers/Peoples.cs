@@ -7,6 +7,7 @@ using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
+using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 
 #if __EMBY__
