@@ -74,17 +74,20 @@
                         <label class="inputLabel inputLabelUnfocused" for="UnmatchedTag">Unmatched Tag</label>
                         <input id="UnmatchedTag" name="UnmatchedTag" type="text" is="emby-input" />
                     </div>
-                    <div class="checkboxContainer checkboxContainer-withDescripton">
-                        <label class="emby-checkbox-label">
-                            <input id="DisableMediaAutoIdentify" name="DisableMediaAutoIdentify" type="checkbox" is="emby-checkbox" />
-                            <span>Disable Media Auto Identify</span>
-                        </label>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="AutoIdentifyOptionMedia">Media AutoId Option</label>
+                        <select is="emby-select" id="AutoIdentifyOptionMedia" name="AutoIdentifyOptionMedia" class="emby-select-withcolor emby-select">
+                            <option value="Enable">Enable</option>
+                            <option value="Disable">Disable</option>
+                        </select>
                     </div>
-                    <div class="checkboxContainer checkboxContainer-withDescripton">
-                        <label class="emby-checkbox-label">
-                            <input id="DisableActorsAutoIdentify" name="DisableActorsAutoIdentify" type="checkbox" is="emby-checkbox" />
-                            <span>Disable Actors Auto Identify</span>
-                        </label>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="AutoIdentifyOptionActors">Actors AutoId Option</label>
+                        <select is="emby-select" id="AutoIdentifyOptionActors" name="AutoIdentifyOptionActors" class="emby-select-withcolor emby-select">
+                            <option value="Enable">Enable</option>
+                            <option value="Disable">Disable</option>
+                            <option value="ActorsMedia">Actors with Media</option>
+                        </select>
                     </div>
                     <div class="selectContainer">
                         <label class="selectLabel" for="ActorsImage">Actors Image Option</label>
@@ -131,8 +134,8 @@
                     $('#CustomTitle').val(config.CustomTitle).change();
                     $('#UseUnmatchedTag').prop('checked', config.UseUnmatchedTag);
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
-                    $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
-                    $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
+                    $('#AutoIdentifyOptionMedia').val(config.AutoIdentifyOptionMedia).change();
+                    $('#AutoIdentifyOptionActors').val(config.AutoIdentifyOptionActors).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
                     $('#ActorsOverviewFormat').val(config.ActorsOverviewFormat).change();
@@ -154,8 +157,8 @@
                     config.CustomTitle = $('#CustomTitle').val();
                     config.UseUnmatchedTag = $('#UseUnmatchedTag').prop('checked');
                     config.UnmatchedTag = $('#UnmatchedTag').val();
-                    config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
-                    config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
+                    config.AutoIdentifyOptionMedia = $('#AutoIdentifyOptionMedia').val();
+                    config.AutoIdentifyOptionActors = $('#AutoIdentifyOptionActors').val();
                     config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();
                     config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
