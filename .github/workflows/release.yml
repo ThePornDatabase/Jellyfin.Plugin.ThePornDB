@@ -85,6 +85,7 @@ jobs:
           path: Emby.Plugins.ThePornDB.zip
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
     needs: [jellyfin, emby]
     steps:
       - name: Download all artifacts
