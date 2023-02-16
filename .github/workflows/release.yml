@@ -9,8 +9,31 @@ on:
       - .github/**
 
 jobs:
+  debug-jellyfin:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Build app for debug
+        run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Debug
+  debug-emby:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Build app for release
+        run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Debug.Emby
   jellyfin:
     runs-on: windows-latest
+    needs: [debug-jellyfin]
     steps:
       - uses: actions/checkout@v2
 
@@ -36,6 +59,7 @@ jobs:
           path: Jellyfin.Plugin.ThePornDB.zip
   emby:
     runs-on: windows-latest
+    needs: [debug-emby]
     steps:
       - uses: actions/checkout@v2
 
