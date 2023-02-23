@@ -12,36 +12,35 @@ namespace ThePornDB.Helpers
             var placeholders = new Dictionary<string, string>()
             {
                 { "{bio}", (string)actorData["bio"] },
-                { "{hips}", (string)actorData["extras"]["hips"] },
-                { "{waist}", (string)actorData["extras"]["waist"] },
-                { "{active}", (string)actorData["extras"]["active"] },
-                { "{height}", (string)actorData["extras"]["height"] },
-                { "{weight}", (string)actorData["extras"]["weight"] },
-                { "{gender}", (string)actorData["extras"]["gender"] },
-                { "{cupsize}", (string)actorData["extras"]["cupsize"] },
-                { "{tattoos}", (string)actorData["extras"]["tattoos"] },
-                { "{birthday}", (string)actorData["extras"]["birthday"] },
-                { "{eye_color}", (string)actorData["extras"]["eye_colour"] },
-                { "{piercings}", (string)actorData["extras"]["piercings"] },
-                { "{ethnicity}", (string)actorData["extras"]["ethnicity"] },
-                { "{astrology}", (string)actorData["extras"]["astrology"] },
-                { "{birthplace}", (string)actorData["extras"]["birthplace"] },
-                { "{hair_color}", (string)actorData["extras"]["hair_colour"] },
-                { "{nationality}", (string)actorData["extras"]["nationality"] },
-                { "{measurements}", (string)actorData["extras"]["measurements"] },
+             
             };
 
             string overview = Plugin.Instance.Configuration.ActorsOverviewFormat;
+            foreach (var extraLink in actorData["extras"].Children())
+            {
+                JProperty extraProp = (JProperty)extraLink;
+                placeholders.Add("{" + extraProp.Name.ToLower() + "}", (string)extraLink);
+
+                if ((string)extraLink != null)
+                {
+                    placeholders.Add("{" + extraProp.Name.ToUpper() + "}", char.ToUpper(extraProp.Name[0]) + extraProp.Name.Substring(1) + " :");
+                }
+            }
+            
             switch (Plugin.Instance.Configuration.ActorsOverview)
             {
                 case ActorsOverviewStyle.CustomExtras:
-                    overview = placeholders.Aggregate(Plugin.Instance.Configuration.ActorsOverviewFormat, (current, parameter) => current.Replace(parameter.Key, parameter.Value));
+                    overview = placeholders.Aggregate(overview, (current, parameter) => current.Replace(parameter.Key, parameter.Value));
+                    overview = Regex.Replace(overview, @"{.*?}", string.Empty);
                     break;
                 case ActorsOverviewStyle.Default:
                     overview = (string)actorData["bio"];
                     break;
-                default:
+              case ActorsOverviewStyle.None:
                     overview = " ";
+                    break;
+                default:
+                    overview = string.Empty;
                     break;
             }
 
