@@ -202,7 +202,7 @@ namespace ThePornDB.Providers
                         case ActorsRoleStyle.Gender:
                             role = gender;
                             break;
-                        case ActorsRoleStyle.SceneName:
+                        case ActorsRoleStyle.NameByScene:
                             role = (string)actorLink["name"];
                             break;
                         case ActorsRoleStyle.None:
