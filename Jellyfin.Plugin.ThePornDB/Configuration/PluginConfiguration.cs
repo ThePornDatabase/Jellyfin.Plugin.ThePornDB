@@ -28,14 +28,14 @@ namespace ThePornDB.Configuration
         Default = 1,
         CustomExtras = 2,
     }
-    
+
     public enum ActorsRoleStyle
     {
-        Gender = 0,
-        NameByScene = 1,
-        None = 2,
+        None = 0,
+        Gender = 1,
+        NameByScene = 2,
     }
-    
+
     public enum ActorsImageStyle
     {
         Poster = 0,
@@ -99,7 +99,7 @@ namespace ThePornDB.Configuration
         public bool DisableActorsAutoIdentify { get; set; }
 
         public ActorsRoleStyle ActorsRole { get; set; }
-        
+
         public ActorsImageStyle ActorsImage { get; set; }
 
         public ActorsOverviewStyle ActorsOverview { get; set; }

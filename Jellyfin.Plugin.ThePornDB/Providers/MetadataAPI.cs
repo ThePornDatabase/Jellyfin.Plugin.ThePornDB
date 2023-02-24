@@ -196,7 +196,7 @@ namespace ThePornDB.Providers
                     {
                         actor.ProviderIds.Add(Plugin.Instance.Name, curID);
                     }
-                    
+
                     switch (Plugin.Instance.Configuration.ActorsRole)
                     {
                         case ActorsRoleStyle.Gender:
