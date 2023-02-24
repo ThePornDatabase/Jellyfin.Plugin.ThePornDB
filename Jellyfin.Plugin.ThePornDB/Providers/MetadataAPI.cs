@@ -210,7 +210,7 @@ namespace ThePornDB.Providers
                             break;
                     }
 
-                    if (!string.IsNullOrEmpty(gender))
+                    if (!string.IsNullOrEmpty(role))
                     {
                         actor.Role = role;
                     }
