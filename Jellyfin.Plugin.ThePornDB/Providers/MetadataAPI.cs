@@ -156,7 +156,8 @@ namespace ThePornDB.Providers
                 {
                     string curID = string.Empty,
                         name = (string)actorLink["name"],
-                        gender = string.Empty;
+                        gender = string.Empty,
+                        role = string.Empty;
 
                     if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object)
                     {
@@ -195,10 +196,23 @@ namespace ThePornDB.Providers
                     {
                         actor.ProviderIds.Add(Plugin.Instance.Name, curID);
                     }
+                    
+                    switch (Plugin.Instance.Configuration.ActorsRole)
+                    {
+                        case ActorsRoleStyle.Gender:
+                            role = gender;
+                            break;
+                        case ActorsRoleStyle.SceneName:
+                            role = (string)actorLink["name"];
+                            break;
+                        case ActorsRoleStyle.None:
+                            role = string.Empty;
+                            break;
+                    }
 
                     if (!string.IsNullOrEmpty(gender))
                     {
-                        actor.Role = gender;
+                        actor.Role = role;
                     }
 
                     result.People.Add(actor);
