@@ -28,7 +28,14 @@ namespace ThePornDB.Configuration
         Default = 1,
         CustomExtras = 2,
     }
-
+    
+    public enum ActorsRoleStyle
+    {
+        Gender = 0,
+        NameByScene = 1,
+        None = 2,
+    }
+    
     public enum ActorsImageStyle
     {
         Poster = 0,
@@ -59,6 +66,7 @@ namespace ThePornDB.Configuration
             this.DisableMediaAutoIdentify = false;
             this.DisableActorsAutoIdentify = false;
 
+            this.ActorsRole = ActorsRoleStyle.Gender;
             this.ActorsImage = ActorsImageStyle.Poster;
             this.ActorsOverview = ActorsOverviewStyle.Default;
             this.ActorsOverviewFormat = "<strong style=\"color:#ff0000\">{measurements}<br/></strong>{cupsize}-{waist}-{hips}<br/>{tattoos}<br/>{piercings}<br/>{bio}";
@@ -90,6 +98,8 @@ namespace ThePornDB.Configuration
 
         public bool DisableActorsAutoIdentify { get; set; }
 
+        public ActorsRoleStyle ActorsRole { get; set; }
+        
         public ActorsImageStyle ActorsImage { get; set; }
 
         public ActorsOverviewStyle ActorsOverview { get; set; }
