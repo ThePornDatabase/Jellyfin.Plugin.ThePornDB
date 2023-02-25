@@ -334,7 +334,7 @@ namespace ThePornDB.Providers
                 case ActorsOverviewStyle.Default:
                     overview = (string)actorData["bio"];
                     break;
-                default:
+                case ActorsOverviewStyle.None:
                     overview = " ";
                     break;
             }
