@@ -35,7 +35,7 @@ namespace ThePornDB.Helpers
             
             switch ((string)actorData["extras"]["gender"])
             {
-                case "Female":                    
+                case "Female":
                     overview = Regex.Replace(overview, @"<male>.*?</male>|<trans>.*?</trans>", string.Empty);
                     break;
                 case "Trans":
