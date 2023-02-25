@@ -87,6 +87,14 @@
                         </label>
                     </div>
                     <div class="selectContainer">
+                        <label class="selectLabel" for="ActorsRole">Actors Role Option</label>
+                        <select is="emby-select" id="ActorsRole" name="ActorsRole" class="emby-select-withcolor emby-select">
+                            <option value="None">None</option>
+                            <option value="Gender">Gender</option>
+                            <option value="NameByScene">Name from Scene</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
                         <label class="selectLabel" for="ActorsImage">Actors Image Option</label>
                         <select is="emby-select" id="ActorsImage" name="ActorsImage" class="emby-select-withcolor emby-select">
                             <option value="Poster">Poster</option>
@@ -134,6 +142,7 @@
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
+                    $('#ActorsRole').val(config.ActorsRole).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
                     $('#ActorsOverviewFormat').val(config.ActorsOverviewFormat).change();
@@ -157,6 +166,7 @@
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
+                    config.ActorsRole = $('#ActorsRole').val();
                     config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();
                     config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
