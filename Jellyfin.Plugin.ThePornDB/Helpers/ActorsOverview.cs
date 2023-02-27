@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using ThePornDB.Configuration;
+using System.Text.RegularExpressions;
 
 namespace ThePornDB.Helpers
 {
