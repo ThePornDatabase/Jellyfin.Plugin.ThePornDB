@@ -324,7 +324,7 @@ namespace ThePornDB.Providers
             result.Item.ExternalId = (string)sceneData["name"];
             result.Item.OriginalTitle = string.Join(", ", sceneData["aliases"].Select(o => o.ToString().Trim()));
              
-            string overview = string.Emty; 
+            string overview = string.Empty; 
             
             switch (Plugin.Instance.Configuration.ActorsOverview)
             {
@@ -332,7 +332,7 @@ namespace ThePornDB.Providers
                     overview = ActorsOverview.CustomFormat(sceneData);
                     break;
                 case ActorsOverviewStyle.Default:
-                    overview = (string)actorData["bio"];
+                    overview = (string)sceneData["bio"];
                     break;
                 case ActorsOverviewStyle.None:
                     overview = " ";
