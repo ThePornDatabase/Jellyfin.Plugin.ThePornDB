@@ -111,7 +111,7 @@ namespace ThePornDB.Providers
 
                 if (Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Network)
                 {
-                    int? site_id = (int)sceneData["site"]["_id"],
+                    int? site_id = (int)sceneData["site"]["id"],
                         network_id = (int?)sceneData["site"]["network_id"];
 
                     if (network_id.HasValue && !site_id.Equals(network_id))
