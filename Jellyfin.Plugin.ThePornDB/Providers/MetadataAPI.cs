@@ -37,12 +37,18 @@ namespace ThePornDB.Providers
             {
                 json = JObject.Parse(http.Content);
             }
+            catch (Exception)
+            {
+            }
             finally
             {
+                var message = "Unknown error";
                 if (json != null && json.ContainsKey("message"))
                 {
-                    Logger.Error($"API error: \"{(string)json["message"]}\"");
+                    message = (string)json["message"];
                 }
+
+                Logger.Error($"API error: \"{message}\"");
             }
 
             return json;
@@ -363,17 +369,23 @@ namespace ThePornDB.Providers
             if (Plugin.Instance.Configuration.ActorsImage == ActorsImageStyle.Face)
             {
                 var posterURL = (string)sceneData["face"];
-                var res = GetRemoteImageFromURL(posterURL);
+                if (!string.IsNullOrEmpty(posterURL))
+                {
+                    var res = GetRemoteImageFromURL(posterURL);
 
-                result.Add(res);
+                    result.Add(res);
+                }
             }
 
             foreach (var poster in sceneData["posters"])
             {
                 var posterURL = (string)poster["url"];
-                var res = GetRemoteImageFromURL(posterURL);
+                if (!string.IsNullOrEmpty(posterURL))
+                {
+                    var res = GetRemoteImageFromURL(posterURL);
 
-                result.Add(res);
+                    result.Add(res);
+                }
             }
 
             return result;
