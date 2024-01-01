@@ -257,6 +257,11 @@ namespace ThePornDB.Providers
 
             foreach (var image in images)
             {
+                if (string.IsNullOrEmpty(image.Url))
+                {
+                    continue;
+                }
+
                 var res = new RemoteImageInfo
                 {
                     Url = image.Url,
