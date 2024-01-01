@@ -49,7 +49,7 @@ namespace ThePornDB.Providers
             JObject siteData = null;
             try
             {
-                siteData = await MetadataAPI.SiteUpdate(int.Parse(curID), cancellationToken).ConfigureAwait(false);
+                siteData = await MetadataAPI.SiteUpdate(curID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {

@@ -39,9 +39,6 @@ namespace ThePornDB.Providers
             }
             catch (Exception)
             {
-            }
-            finally
-            {
                 var message = "Unknown error";
                 if (json != null && json.ContainsKey("message"))
                 {
@@ -110,19 +107,19 @@ namespace ThePornDB.Providers
 
             if (sceneData.ContainsKey("site") && sceneData["site"].Type == JTokenType.Object)
             {
-                if (Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Site)
+                if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Site)
                 {
                     result.Item.AddStudio((string)sceneData["site"]["name"]);
                 }
 
-                if (Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == Configuration.StudioStyle.Network)
+                if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.Both || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Network)
                 {
                     int? site_id = (int)sceneData["site"]["id"],
                         network_id = (int?)sceneData["site"]["network_id"];
 
                     if (network_id.HasValue && !site_id.Equals(network_id))
                     {
-                        var siteData = await SiteUpdate(network_id.Value, cancellationToken).ConfigureAwait(false);
+                        var siteData = await SiteUpdate(network_id.Value.ToString(), cancellationToken).ConfigureAwait(false);
                         if (siteData != null)
                         {
                             result.Item.AddStudio((string)siteData["name"]);
@@ -410,11 +407,11 @@ namespace ThePornDB.Providers
             return result;
         }
 
-        public static async Task<JObject> SiteUpdate(int id, CancellationToken cancellationToken)
+        public static async Task<JObject> SiteUpdate(string id, CancellationToken cancellationToken)
         {
             JObject result = null;
 
-            var url = string.Format(Consts.APISiteURL, id);
+            var url = string.Format(Consts.APISiteURL, Uri.EscapeDataString(id));
             var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Object)
             {
