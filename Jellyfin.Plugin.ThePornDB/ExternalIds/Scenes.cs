@@ -14,14 +14,14 @@ namespace ThePornDB
 #if __EMBY__
         public string Name => Plugin.Instance.Name + " Scene";
 #else
-        public string ProviderName => Plugin.Instance.Name + " Scene";
+        public string ProviderName => Plugin.Instance.Name;
 
         public ExternalIdMediaType? Type => ExternalIdMediaType.Movie;
 #endif
 
         public string Key => Plugin.Instance.Name;
 
-        public string UrlFormatString => Consts.SceneURL;
+        public string UrlFormatString => Consts.BaseURL + "/{0}";
 
         public bool Supports(IHasProviderIds item) => item is Movie;
     }

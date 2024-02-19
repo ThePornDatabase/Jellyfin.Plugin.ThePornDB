@@ -30,32 +30,28 @@ namespace ThePornDB.Providers
 
     public static class Base
     {
-        public static (string providerIdName, string searchURL, string sceneURL) GetSettings(SceneType sceneType)
+        public static (string searchURL, string sceneURL) GetSettings(SceneType sceneType)
         {
-            string providerIdName = string.Empty,
-                searchURL = string.Empty,
+            string searchURL = string.Empty,
                 sceneURL = string.Empty;
 
             switch (sceneType)
             {
                 case SceneType.Scene:
-                    providerIdName = Plugin.Instance.Name;
                     searchURL = Consts.APISceneSearchURL;
                     sceneURL = Consts.APISceneURL;
                     break;
                 case SceneType.Movie:
-                    providerIdName = Plugin.Instance.Name + "Movie";
                     searchURL = Consts.APIMovieSearchURL;
                     sceneURL = Consts.APIMovieURL;
                     break;
                 case SceneType.JAV:
-                    providerIdName = Plugin.Instance.Name + "JAV";
                     searchURL = Consts.APIJAVSearchURL;
                     sceneURL = Consts.APIJAVURL;
                     break;
             }
 
-            return (providerIdName, searchURL, sceneURL);
+            return (searchURL, sceneURL);
         }
 
         public static async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, SceneType sceneType, CancellationToken cancellationToken)
@@ -67,12 +63,12 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var (providerIdName, searchURL, sceneURL) = GetSettings(sceneType);
+            var (searchURL, sceneURL) = GetSettings(sceneType);
 
             var curID = searchInfo.Name.GetAttributeValue("theporndbid");
             if (string.IsNullOrEmpty(curID))
             {
-                searchInfo.ProviderIds.TryGetValue(providerIdName, out curID);
+                searchInfo.ProviderIds.TryGetValue(Plugin.Instance.Name, out curID);
             }
 
             if (!string.IsNullOrEmpty(curID))
@@ -108,7 +104,7 @@ namespace ThePornDB.Providers
                 {
                     result.Add(new RemoteSearchResult
                     {
-                        ProviderIds = { { providerIdName, curID } },
+                        ProviderIds = { { Plugin.Instance.Name, curID } },
                         Name = sceneData.Item.Name,
                         ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
                         PremiereDate = sceneData.Item.PremiereDate,
@@ -140,7 +136,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                result = await MetadataAPI.SceneSearch(searchTitle, oshash, searchURL, providerIdName, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneSearch(searchTitle, oshash, searchURL, Plugin.Instance.Name, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -189,15 +185,15 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var (providerIdName, searchURL, sceneURL) = GetSettings(sceneType);
+            var (searchURL, sceneURL) = GetSettings(sceneType);
 
-            info.ProviderIds.TryGetValue(providerIdName, out var curID);
+            info.ProviderIds.TryGetValue(Plugin.Instance.Name, out var curID);
             if (string.IsNullOrEmpty(curID) && !Plugin.Instance.Configuration.DisableMediaAutoIdentify)
             {
                 var searchResults = await GetSearchResults(info, sceneType, cancellationToken).ConfigureAwait(false);
                 if (searchResults.Any())
                 {
-                    searchResults.First().ProviderIds.TryGetValue(providerIdName, out curID);
+                    searchResults.First().ProviderIds.TryGetValue(Plugin.Instance.Name, out curID);
                 }
             }
 
@@ -218,7 +214,7 @@ namespace ThePornDB.Providers
 
             if (result.HasMetadata)
             {
-                result.Item.ProviderIds.Add(providerIdName, curID);
+                result.Item.ProviderIds.Add(Plugin.Instance.Name, curID);
                 result.Item.OfficialRating = "XXX";
 
                 if (result.Item.PremiereDate.HasValue)
@@ -286,11 +282,11 @@ namespace ThePornDB.Providers
                         actorLink.Type = PersonType.Actor;
                     }
 
-                    var people = result.People.Where(o => o.ProviderIds.ContainsKey(providerIdName) && !string.IsNullOrEmpty(o.ProviderIds[providerIdName]));
-                    var other = result.People.Where(o => !o.ProviderIds.ContainsKey(providerIdName) || string.IsNullOrEmpty(o.ProviderIds[providerIdName]));
+                    var people = result.People.Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name) && !string.IsNullOrEmpty(o.ProviderIds[Plugin.Instance.Name]));
+                    var other = result.People.Where(o => !o.ProviderIds.ContainsKey(Plugin.Instance.Name) || string.IsNullOrEmpty(o.ProviderIds[Plugin.Instance.Name]));
 
                     result.People = people
-                        .DistinctBy(o => o.ProviderIds[providerIdName], StringComparer.OrdinalIgnoreCase)
+                        .DistinctBy(o => o.ProviderIds[Plugin.Instance.Name], StringComparer.OrdinalIgnoreCase)
                         .OrderBy(o => string.IsNullOrEmpty(o.Role))
                         .ThenBy(o => o.Role?.Equals("Male", StringComparison.OrdinalIgnoreCase))
                         .ThenBy(o => o.Name)
@@ -329,9 +325,9 @@ namespace ThePornDB.Providers
         {
             IEnumerable<RemoteImageInfo> images = new List<RemoteImageInfo>();
 
-            var (providerIdName, _, sceneURL) = GetSettings(sceneType);
+            var (_, sceneURL) = GetSettings(sceneType);
 
-            if (item == null || !item.ProviderIds.TryGetValue(providerIdName, out var curID))
+            if (item == null || !item.ProviderIds.TryGetValue(Plugin.Instance.Name, out var curID))
             {
                 return images;
             }

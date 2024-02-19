@@ -45,11 +45,7 @@ namespace ThePornDB.ScheduledTasks
             await Task.Yield();
             progress?.Report(0);
 
-            var (scenesProviderId, _, _) = Base.GetSettings(SceneType.Scene);
-            var (moviesProviderId, _, _) = Base.GetSettings(SceneType.Movie);
-            var (javProviderId, _, _) = Base.GetSettings(SceneType.JAV);
-
-            var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(scenesProviderId) || o.ProviderIds.ContainsKey(moviesProviderId) || o.ProviderIds.ContainsKey(javProviderId));
+            var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
 
             if (Plugin.Instance.Configuration.UseUnmatchedTag)
             {
