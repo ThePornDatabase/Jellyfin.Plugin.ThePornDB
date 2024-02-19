@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
+using ThePornDB.Providers;
 
 #if __EMBY__
 #else
@@ -48,7 +49,11 @@ namespace ThePornDB.ScheduledTasks
                     var newScene = scene;
                     newScene.ProviderIds[Plugin.Instance.Name] = $"scenes/{curID}";
 
+#if __EMBY__
+                    this.libraryManager.UpdateItem(scene, newScene, ItemUpdateType.MetadataEdit);
+#else
                     await this.libraryManager.UpdateItemAsync(scene, newScene, ItemUpdateType.MetadataEdit, cancellationToken).ConfigureAwait(false);
+#endif
                 }
             }
 
@@ -63,7 +68,11 @@ namespace ThePornDB.ScheduledTasks
                     var newMovie = movie;
                     newMovie.ProviderIds[Plugin.Instance.Name] = $"movies/{curID}";
 
+#if __EMBY__
+                    this.libraryManager.UpdateItem(movie, newMovie, ItemUpdateType.MetadataEdit);
+#else
                     await this.libraryManager.UpdateItemAsync(movie, newMovie, ItemUpdateType.MetadataEdit, cancellationToken).ConfigureAwait(false);
+#endif
                 }
             }
 
@@ -78,7 +87,11 @@ namespace ThePornDB.ScheduledTasks
                     var newJav = jav;
                     newJav.ProviderIds[Plugin.Instance.Name] = $"jav/{curID}";
 
+#if __EMBY__
+                    this.libraryManager.UpdateItem(jav, newJav, ItemUpdateType.MetadataEdit);
+#else
                     await this.libraryManager.UpdateItemAsync(jav, newJav, ItemUpdateType.MetadataEdit, cancellationToken).ConfigureAwait(false);
+#endif
                 }
             }
 
