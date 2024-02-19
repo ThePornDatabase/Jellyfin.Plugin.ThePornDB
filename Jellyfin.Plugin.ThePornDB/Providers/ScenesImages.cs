@@ -19,8 +19,6 @@ namespace ThePornDB.Providers
 {
     public class ScenesImages : IRemoteImageProvider
     {
-        private static readonly SceneType ProviderSceneType = SceneType.Scene;
-
         public string Name => Plugin.Instance.Name + " Scenes";
 
         public bool Supports(BaseItem item) => item is Movie;
@@ -38,7 +36,7 @@ namespace ThePornDB.Providers
         public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
 #endif
         {
-            var result = await Base.GetImages(item, ProviderSceneType, cancellationToken).ConfigureAwait(false);
+            var result = await Base.GetImages(item, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

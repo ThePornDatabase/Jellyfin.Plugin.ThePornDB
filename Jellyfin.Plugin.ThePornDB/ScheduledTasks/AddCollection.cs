@@ -7,7 +7,6 @@ using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
-using ThePornDB.Providers;
 
 #if __EMBY__
 #else

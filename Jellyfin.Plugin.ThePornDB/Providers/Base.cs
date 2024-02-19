@@ -30,28 +30,32 @@ namespace ThePornDB.Providers
 
     public static class Base
     {
-        public static (string searchURL, string sceneURL) GetSettings(SceneType sceneType)
+        public static (string prefixID, string searchURL, string sceneURL) GetSettings(SceneType sceneType)
         {
-            string searchURL = string.Empty,
+            string prefixID = string.Empty,
+                searchURL = string.Empty,
                 sceneURL = string.Empty;
 
             switch (sceneType)
             {
                 case SceneType.Scene:
+                    prefixID = "scenes/";
                     searchURL = Consts.APISceneSearchURL;
                     sceneURL = Consts.APISceneURL;
                     break;
                 case SceneType.Movie:
+                    prefixID = "movies/";
                     searchURL = Consts.APIMovieSearchURL;
                     sceneURL = Consts.APIMovieURL;
                     break;
                 case SceneType.JAV:
+                    prefixID = "jav/";
                     searchURL = Consts.APIJAVSearchURL;
                     sceneURL = Consts.APIJAVURL;
                     break;
             }
 
-            return (searchURL, sceneURL);
+            return (prefixID, searchURL, sceneURL);
         }
 
         public static async Task<IEnumerable<RemoteSearchResult>> GetSearchResults(MovieInfo searchInfo, SceneType sceneType, CancellationToken cancellationToken)
@@ -63,7 +67,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var (searchURL, sceneURL) = GetSettings(sceneType);
+            var (prefixID, searchURL, sceneURL) = GetSettings(sceneType);
 
             var curID = searchInfo.Name.GetAttributeValue("theporndbid");
             if (string.IsNullOrEmpty(curID))
@@ -84,7 +88,7 @@ namespace ThePornDB.Providers
 
                 try
                 {
-                    sceneData = await MetadataAPI.SceneUpdate(curID, sceneURL, cancellationToken).ConfigureAwait(false);
+                    sceneData = await MetadataAPI.SceneUpdate(curID, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -93,7 +97,7 @@ namespace ThePornDB.Providers
 
                 try
                 {
-                    sceneImages = (List<RemoteImageInfo>)await MetadataAPI.SceneImages(curID, sceneURL, cancellationToken).ConfigureAwait(false);
+                    sceneImages = (List<RemoteImageInfo>)await MetadataAPI.SceneImages(curID, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -104,7 +108,7 @@ namespace ThePornDB.Providers
                 {
                     result.Add(new RemoteSearchResult
                     {
-                        ProviderIds = { { Plugin.Instance.Name, curID } },
+                        ProviderIds = { { Plugin.Instance.Name, prefixID + curID } },
                         Name = sceneData.Item.Name,
                         ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
                         PremiereDate = sceneData.Item.PremiereDate,
@@ -136,7 +140,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                result = await MetadataAPI.SceneSearch(searchTitle, oshash, searchURL, Plugin.Instance.Name, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneSearch(searchTitle, oshash, searchURL, prefixID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -185,7 +189,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            var (searchURL, sceneURL) = GetSettings(sceneType);
+            var (prefixID, searchURL, sceneURL) = GetSettings(sceneType);
 
             info.ProviderIds.TryGetValue(Plugin.Instance.Name, out var curID);
             if (string.IsNullOrEmpty(curID) && !Plugin.Instance.Configuration.DisableMediaAutoIdentify)
@@ -205,7 +209,7 @@ namespace ThePornDB.Providers
             result.HasMetadata = false;
             try
             {
-                result = await MetadataAPI.SceneUpdate(curID, sceneURL, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneUpdate(curID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -321,11 +325,9 @@ namespace ThePornDB.Providers
             return result;
         }
 
-        public static async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, SceneType sceneType, CancellationToken cancellationToken)
+        public static async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
         {
             IEnumerable<RemoteImageInfo> images = new List<RemoteImageInfo>();
-
-            var (_, sceneURL) = GetSettings(sceneType);
 
             if (item == null || !item.ProviderIds.TryGetValue(Plugin.Instance.Name, out var curID))
             {
@@ -334,7 +336,7 @@ namespace ThePornDB.Providers
 
             try
             {
-                images = await MetadataAPI.SceneImages(curID, sceneURL, cancellationToken).ConfigureAwait(false);
+                images = await MetadataAPI.SceneImages(curID, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
