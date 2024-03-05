@@ -1,6 +1,6 @@
 # Jellyfin.Plugin.ThePornDB
 
-This metadata provider helps fill Jellyfin/Emby with information for your adult videos by pulling from https://metadataapi.net/
+This metadata provider helps fill Jellyfin/Emby with information for your adult videos by pulling from [ThePornDB](https://theporndb.net)
 
 [![GPL 2.0 License](https://img.shields.io/github/license/ThePornDatabase/Jellyfin.Plugin.ThePornDB)](./LICENSE)
 [![Current Release](https://img.shields.io/github/release/ThePornDatabase/Jellyfin.Plugin.ThePornDB)](https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/latest)
