@@ -12,7 +12,7 @@ namespace ThePornDB
     public class Scenes : IExternalId
     {
 #if __EMBY__
-        public string Name => Plugin.Instance.Name + " Scene";
+        public string Name => Plugin.Instance.Name;
 #else
         public string ProviderName => Plugin.Instance.Name;
 
