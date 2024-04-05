@@ -172,6 +172,11 @@ namespace ThePornDB.Providers
                         if (actorLink["parent"]["name"] != null)
                         {
                             name = (string)actorLink["parent"]["name"];
+
+                            if (actorLink["parent"]["disambiguation"] != null)
+                            {
+                                name += " (" + (string)actorLink["parent"]["disambiguation"] + ")";
+                            }
                         }
 
                         if (actorLink["parent"]["extras"]["gender"] != null)
@@ -299,7 +304,7 @@ namespace ThePornDB.Providers
                 result.Add(new RemoteSearchResult
                 {
                     ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
-                    Name = (string)searchResult["name"],
+                    Name = searchResult["disambiguation"] != null ? (string)searchResult["name"] + " (" + (string)searchResult["disambiguation"] + ")" : (string)searchResult["name"],
                     ImageUrl = (string)searchResult["image"],
                 });
             }
@@ -329,7 +334,7 @@ namespace ThePornDB.Providers
             sceneData = (JObject)sceneData["data"];
 
             // result.Item.Name = (string)sceneData["name"];
-            result.Item.ExternalId = (string)sceneData["name"];
+            result.Item.ExternalId = sceneData["disambiguation"] != null ? (string)sceneData["name"] + " (" + (string)sceneData["disambiguation"] + ")" : (string)sceneData["name"];
             result.Item.OriginalTitle = string.Join(", ", sceneData["aliases"].Select(o => o.ToString().Trim()));
             result.Item.Overview = ActorsOverview.CustomFormat(sceneData);
 
