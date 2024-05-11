@@ -16,6 +16,7 @@ using ThePornDB.Helpers;
 #if __EMBY__
 using MediaBrowser.Model.Configuration;
 #else
+using Jellyfin.Data.Enums;
 using ThePornDB.Helpers.Utils;
 #endif
 
@@ -283,7 +284,11 @@ namespace ThePornDB.Providers
                 {
                     foreach (var actorLink in result.People)
                     {
+#if __EMBY__
                         actorLink.Type = PersonType.Actor;
+#else
+                        actorLink.Type = PersonKind.Actor;
+#endif
                     }
 
                     var people = result.People.Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name) && !string.IsNullOrEmpty(o.ProviderIds[Plugin.Instance.Name]));
