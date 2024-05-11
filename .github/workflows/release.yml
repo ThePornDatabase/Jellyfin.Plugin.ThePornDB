@@ -16,10 +16,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build app for debug
         run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Debug
@@ -27,10 +27,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build app for release
         run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Debug.Emby
@@ -38,23 +38,23 @@ jobs:
     runs-on: windows-latest
     needs: [debug-jellyfin]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build app for release
         run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Release
 
       - name: Rename Files
-        run: ren Jellyfin.Plugin.ThePornDB/bin/Release/net6.0/ThePornDB.dll Jellyfin.Plugin.ThePornDB.dll && ren Jellyfin.Plugin.ThePornDB/bin/Release/net6.0/ThePornDB.pdb Jellyfin.Plugin.ThePornDB.pdb
+        run: ren Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/ThePornDB.dll Jellyfin.Plugin.ThePornDB.dll && ren Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/ThePornDB.pdb Jellyfin.Plugin.ThePornDB.pdb
 
-      - uses: vimtor/action-zip@v1
+      - uses: vimtor/action-zip@v1.2
         with:
-          files: Jellyfin.Plugin.ThePornDB/bin/Release/net6.0/Jellyfin.Plugin.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release/net6.0/Jellyfin.Plugin.ThePornDB.dll
+          files: Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/Jellyfin.Plugin.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/Jellyfin.Plugin.ThePornDB.dll
           dest: Jellyfin.Plugin.ThePornDB.zip
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: Jellyfin
@@ -64,10 +64,10 @@ jobs:
     runs-on: windows-latest
     needs: [debug-emby]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build app for release
         run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Release.Emby
@@ -75,12 +75,12 @@ jobs:
       - name: Rename Files
         run: ren Jellyfin.Plugin.ThePornDB/bin/Release.Emby/netstandard2.1/ThePornDB.dll ./Emby.Plugins.ThePornDB.dll && ren Jellyfin.Plugin.ThePornDB/bin/Release.Emby/netstandard2.1/ThePornDB.pdb ./Emby.Plugins.ThePornDB.pdb
 
-      - uses: vimtor/action-zip@v1
+      - uses: vimtor/action-zip@v1.2
         with:
           files: Jellyfin.Plugin.ThePornDB/bin/Release.Emby/netstandard2.1/Emby.Plugins.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release.Emby/netstandard2.1/Emby.Plugins.ThePornDB.dll
           dest: Emby.Plugins.ThePornDB.zip
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: Emby
@@ -92,7 +92,7 @@ jobs:
     needs: [jellyfin, emby]
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
