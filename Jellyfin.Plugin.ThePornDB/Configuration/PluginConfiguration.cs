@@ -19,7 +19,8 @@ namespace ThePornDB.Configuration
     {
         Site = 0,
         Network = 1,
-        Both = 2,
+        All = 2,
+        Parent = 3,
     }
 
     public enum ActorsOverviewStyle
@@ -55,7 +56,7 @@ namespace ThePornDB.Configuration
             this.TagStyle = TagStyle.Genre;
 
             this.AddCollectionToCollections = true;
-            this.StudioStyle = StudioStyle.Both;
+            this.StudioStyle = StudioStyle.All;
 
             this.UseCustomTitle = false;
             this.CustomTitle = "{studio}: {title} ({actors})";
