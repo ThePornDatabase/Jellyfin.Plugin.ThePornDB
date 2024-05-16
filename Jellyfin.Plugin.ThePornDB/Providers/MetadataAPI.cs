@@ -326,7 +326,7 @@ namespace ThePornDB.Providers
                 result.Add(new RemoteSearchResult
                 {
                     ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
-                    Name = searchResult["disambiguation"] != null ? (string)searchResult["name"] + " (" + (string)searchResult["disambiguation"] + ")" : (string)searchResult["name"],
+                    Name = (searchResult["disambiguation"] != null && !string.IsNullOrEmpty((string)searchResult["disambiguation"])) ? (string)searchResult["name"] + " (" + (string)searchResult["disambiguation"] + ")" : (string)searchResult["name"],
                     ImageUrl = (string)searchResult["image"],
                 });
             }
