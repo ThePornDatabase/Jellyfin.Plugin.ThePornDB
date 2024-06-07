@@ -9,6 +9,14 @@
         "imageUrl": "https://theporndb.net/images/logo.png",
         "versions": [
             {
+                "checksum": "059067da9fcef05b5a0694a448e94397",
+                "changelog": "Added Support Jellyfin 10.9; Remove Obsolete Externalds; Added Parent Site;Added Disambiguation Field to Performer Name; Minor Changes",
+                "targetAbi": "10.9.0.0",
+                "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.3.0.8/Jellyfin.Plugin.ThePornDB.zip",
+                "timestamp": "2024-06-07 21:00:56",
+                "version": "1.3.0.8"
+            },   
+            {
                 "checksum": "c343beb2745ad8dc8179d9e009353cc3",
                 "changelog": "Changed Endpoint; Added Movies, JAV Support; Few New Setting; Changed ID format (There is a task for migration, for old users); Minor Changes",
                 "targetAbi": "10.8.0.0",
