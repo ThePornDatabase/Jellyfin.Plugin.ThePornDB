@@ -109,7 +109,7 @@ namespace ThePornDB.Providers
                 {
                     result.Add(new RemoteSearchResult
                     {
-                        ProviderIds = { { Plugin.Instance.Name, prefixID + curID } },
+                        ProviderIds = { { Plugin.Instance.Name, curID.StartsWith(prefixID, StringComparison.OrdinalIgnoreCase) ? curID : prefixID + curID } },
                         Name = sceneData.Item.Name,
                         ImageUrl = sceneImages?.Where(o => o.Type == ImageType.Primary).FirstOrDefault()?.Url,
                         PremiereDate = sceneData.Item.PremiereDate,
