@@ -4,8 +4,8 @@
     <TargetFramework Condition="'$(Configuration)'=='Debug' or '$(Configuration)'=='Release'">net8.0</TargetFramework>
     <TargetFramework Condition="'$(Configuration)'=='Debug.Emby' or '$(Configuration)'=='Release.Emby'">netstandard2.1</TargetFramework>
     <RootNamespace>ThePornDB</RootNamespace>
-    <AssemblyVersion>1.4.0.9</AssemblyVersion>
-    <FileVersion>1.4.0.9</FileVersion>
+    <AssemblyVersion>1.5.0.10</AssemblyVersion>
+    <FileVersion>1.5.0.10</FileVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configurations>Debug;Release;Release.Emby;Debug.Emby</Configurations>
   </PropertyGroup>
