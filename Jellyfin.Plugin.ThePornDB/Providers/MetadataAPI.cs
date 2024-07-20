@@ -182,7 +182,9 @@ namespace ThePornDB.Providers
                     string curID = string.Empty,
                         name = (string)actorLink["name"],
                         gender = string.Empty,
-                        role = string.Empty;
+                        role = string.Empty,
+                        face = (string)actorLink["face"],
+                        image = (string)actorLink["image"];
 
                     if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object)
                     {
@@ -205,6 +207,16 @@ namespace ThePornDB.Providers
                         {
                             gender = (string)actorLink["parent"]["extras"]["gender"];
                         }
+
+                        if (actorLink["parent"]["face"] != null)
+                        {
+                            face = (string)actorLink["parent"]["face"];
+                        }
+
+                        if (actorLink["parent"]["image"] != null)
+                        {
+                            image = (string)actorLink["parent"]["image"];
+                        }
                     }
 
                     var actor = new PersonInfo
@@ -215,10 +227,10 @@ namespace ThePornDB.Providers
                     switch (Plugin.Instance.Configuration.ActorsImage)
                     {
                         case ActorsImageStyle.Face:
-                            actor.ImageUrl = (string)actorLink["face"];
+                            actor.ImageUrl = face;
                             break;
                         case ActorsImageStyle.Poster:
-                            actor.ImageUrl = (string)actorLink["image"];
+                            actor.ImageUrl = image;
                             break;
                     }
 
