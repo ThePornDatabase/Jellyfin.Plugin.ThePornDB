@@ -51,7 +51,7 @@ namespace ThePornDB.Providers
             return json;
         }
 
-        public static async Task<List<RemoteSearchResult>> SceneSearch(string searchTitle, string oshash, string url, string prefixID, CancellationToken cancellationToken)
+        public static async Task<List<RemoteSearchResult>> SceneSearch(string searchTitle, string oshash, int? year, string url, string prefixID, CancellationToken cancellationToken)
         {
             var result = new List<RemoteSearchResult>();
             if (string.IsNullOrEmpty(searchTitle))
@@ -59,7 +59,7 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            url = string.Format(url, Uri.EscapeDataString(searchTitle), Uri.EscapeDataString(oshash));
+            url = string.Format(url, Uri.EscapeDataString(searchTitle), Uri.EscapeDataString(oshash), Uri.EscapeDataString(year.HasValue ? year.Value.ToString() : string.Empty));
             var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
             {
