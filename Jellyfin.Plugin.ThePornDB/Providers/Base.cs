@@ -70,7 +70,7 @@ namespace ThePornDB.Providers
 
             var (prefixID, searchURL, sceneURL) = GetSettings(sceneType);
 
-            var curID = searchInfo.Name.GetAttributeValue("theporndbid");
+            var curID = searchInfo.Name.GetAttributeValue("theporndbid") ?? searchInfo.Name.GetAttributeValue("TPDBID");
             if (string.IsNullOrEmpty(curID))
             {
                 searchInfo.ProviderIds.TryGetValue(Plugin.Instance.Name, out curID);
