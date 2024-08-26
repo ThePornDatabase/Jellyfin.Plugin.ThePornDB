@@ -286,10 +286,24 @@ namespace ThePornDB.Providers
 
             var images = new List<(ImageType Type, string Url)>
             {
-                (ImageType.Primary, (string)sceneData["posters"]["large"]),
-                (ImageType.Primary, (string)sceneData["background"]["large"]),
                 (ImageType.Backdrop, (string)sceneData["background"]["large"]),
             };
+
+            JToken primary = null;
+            switch (Plugin.Instance.Configuration.ScenesImage)
+            {
+                case ScenesImageStyle.Poster:
+                    primary = sceneData["posters"]["large"];
+                    break;
+                case ScenesImageStyle.Background:
+                    primary = sceneData["background"]["large"];
+                    break;
+            }
+
+            if (primary != null)
+            {
+                images.Insert(0, (ImageType.Primary, (string)primary));
+            }
 
             foreach (var image in images)
             {

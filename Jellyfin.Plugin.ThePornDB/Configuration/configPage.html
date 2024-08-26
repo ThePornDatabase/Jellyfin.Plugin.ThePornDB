@@ -88,6 +88,13 @@
                         </label>
                     </div>
                     <div class="selectContainer">
+                        <label class="selectLabel" for="ScenesImage">Scenes Image Option</label>
+                        <select is="emby-select" id="ScenesImage" name="ScenesImage" class="emby-select-withcolor emby-select">
+                            <option value="Poster">Poster</option>
+                            <option value="Background">Background</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
                         <label class="selectLabel" for="ActorsRole">Actors Role Option</label>
                         <select is="emby-select" id="ActorsRole" name="ActorsRole" class="emby-select-withcolor emby-select">
                             <option value="None">None</option>
@@ -142,6 +149,7 @@
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
+                    $('#ScenesImage').val(config.ScenesImage).change();
                     $('#ActorsRole').val(config.ActorsRole).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
@@ -166,6 +174,7 @@
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
+                    config.ScenesImage = $('#ScenesImage').val();
                     config.ActorsRole = $('#ActorsRole').val();
                     config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();

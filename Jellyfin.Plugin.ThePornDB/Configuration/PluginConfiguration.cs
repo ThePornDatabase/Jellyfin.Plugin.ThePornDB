@@ -23,6 +23,12 @@ namespace ThePornDB.Configuration
         Parent = 3,
     }
 
+    public enum ScenesImageStyle
+    {
+        Poster = 0,
+        Background = 1,
+    }
+
     public enum ActorsOverviewStyle
     {
         None = 0,
@@ -67,6 +73,8 @@ namespace ThePornDB.Configuration
             this.DisableMediaAutoIdentify = false;
             this.DisableActorsAutoIdentify = false;
 
+            this.ScenesImage = ScenesImageStyle.Poster;
+
             this.ActorsRole = ActorsRoleStyle.Gender;
             this.ActorsImage = ActorsImageStyle.Poster;
             this.ActorsOverview = ActorsOverviewStyle.Default;
@@ -98,6 +106,8 @@ namespace ThePornDB.Configuration
         public bool DisableMediaAutoIdentify { get; set; }
 
         public bool DisableActorsAutoIdentify { get; set; }
+
+        public ScenesImageStyle ScenesImage { get; set; }
 
         public ActorsRoleStyle ActorsRole { get; set; }
 
