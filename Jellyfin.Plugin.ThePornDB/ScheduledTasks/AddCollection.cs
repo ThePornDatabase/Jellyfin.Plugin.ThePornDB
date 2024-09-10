@@ -58,6 +58,10 @@ namespace ThePornDB.ScheduledTasks
                 progress?.Report((double)idx / studios.Count * 100);
 
                 var movies = items.Where(o => o.Studios.Contains(studio, StringComparer.OrdinalIgnoreCase) && !o.Name.Equals(studio));
+                if (movies.Count() < Plugin.Instance.Configuration.CollectionMinSize)
+                {
+                    continue;
+                }
 
                 if (!Plugin.Instance.Configuration.AddCollectionToCollections)
                 {

@@ -46,6 +46,10 @@
                             <span>Add Collection to Collections</span>
                         </label>
                     </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="CollectionMinSize">CollectionMinSize</label>
+                        <input id="CollectionMinSize" name="CollectionMinSize" type="number" is="emby-input" min="0" />
+                    </div>
                     <div class="selectContainer">
                         <label class="selectLabel" for="StudioStyle">Studio Style</label>
                         <select is="emby-select" id="StudioStyle" name="StudioStyle" class="emby-select-withcolor emby-select">
@@ -141,6 +145,7 @@
                     $('#UseOSHash').prop('checked', config.UseOSHash);
                     $('#OrderStyle').val(config.OrderStyle).change();
                     $('#TagStyle').val(config.TagStyle).change();
+                    $('#CollectionMinSize').val(config.CollectionMinSize).change();
                     $('#AddCollectionToCollections').prop('checked', config.AddCollectionToCollections);
                     $('#StudioStyle').val(config.StudioStyle).change();
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
@@ -166,6 +171,7 @@
                     config.UseOSHash = $('#UseOSHash').prop('checked');
                     config.OrderStyle = $('#OrderStyle').val();
                     config.TagStyle = $('#TagStyle').val();
+                    config.CollectionMinSize = $('#CollectionMinSize').val();
                     config.AddCollectionToCollections = $('#AddCollectionToCollections').prop('checked');
                     config.StudioStyle = $('#StudioStyle').val();
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');
