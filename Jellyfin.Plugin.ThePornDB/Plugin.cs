@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
-using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
-using MediaBrowser.Model.Serialization;
 using ThePornDB.Configuration;
 
 #if __EMBY__
 using System.IO;
+using MediaBrowser.Common;
 using MediaBrowser.Common.Net;
 using MediaBrowser.Model.Drawing;
 using MediaBrowser.Model.Logging;
+using MediaBrowser.Controller.Plugins;
 #else
+using MediaBrowser.Model.Serialization;
+using MediaBrowser.Common.Configuration;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 #endif
@@ -21,15 +23,14 @@ using Microsoft.Extensions.Logging;
 namespace ThePornDB
 {
 #if __EMBY__
-    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasThumbImage
+    public class Plugin : BasePluginSimpleUI<PluginConfiguration>, IHasThumbImage
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClient http, ILogManager logger)
+        public Plugin(IApplicationHost applicationHost, IHttpClient http, ILogManager logger) : base(applicationHost)
 #else
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClientFactory http, ILogger<Plugin> logger)
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClientFactory http, ILogger<Plugin> logger) : base(applicationPaths, xmlSerializer)
 #endif
-            : base(applicationPaths, xmlSerializer)
         {
             Instance = this;
             Http = http;
@@ -59,6 +60,8 @@ namespace ThePornDB
         public override Guid Id => Guid.Parse("fb7580cf-576d-4991-8e56-0b4520c111d3");
 
 #if __EMBY__
+        public PluginConfiguration Configuration => GetOptions();
+
         public ImageFormat ThumbImageFormat => ImageFormat.Png;
 
         public Stream GetThumbImage() => this.GetType().Assembly.GetManifestResourceStream($"{this.GetType().Namespace}.Resources.logo.png");
