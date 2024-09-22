@@ -66,8 +66,8 @@ namespace ThePornDB.Configuration
         {
             this.MetadataAPIToken = string.Empty;
 
-            this.UseFilePath = true;
-            this.UseOSHash = true;
+            this.UseFilePath = false;
+            this.UseOSHash = false;
 
             this.OrderStyle = OrderStyle.Default;
             this.TagStyle = TagStyle.Genre;
