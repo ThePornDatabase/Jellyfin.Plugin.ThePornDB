@@ -72,6 +72,8 @@ namespace ThePornDB.Configuration
             this.OrderStyle = OrderStyle.Default;
             this.TagStyle = TagStyle.Genre;
 
+            this.AddCollectionOnSite = false;
+
             this.CollectionMinSize = 0;
             this.AddCollectionToCollections = true;
             this.StudioStyle = StudioStyle.All;
@@ -102,6 +104,8 @@ namespace ThePornDB.Configuration
         public OrderStyle OrderStyle { get; set; }
 
         public TagStyle TagStyle { get; set; }
+
+        public bool AddCollectionOnSite { get; set; }
 
         public int CollectionMinSize { get; set; }
 

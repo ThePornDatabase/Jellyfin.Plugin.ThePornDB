@@ -42,13 +42,19 @@
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
-                            <input id="AddCollectionToCollections" name="AddCollectionToCollections" type="checkbox" is="emby-checkbox" />
-                            <span>Add Collection to Collections</span>
+                            <input id="AddCollectionOnSite" name="AddCollectionOnSite" type="checkbox" is="emby-checkbox" />
+                            <span>Add Collection on Site</span>
                         </label>
                     </div>
                     <div class="inputContainer">
                         <label class="inputLabel inputLabelUnfocused" for="CollectionMinSize">CollectionMinSize</label>
                         <input id="CollectionMinSize" name="CollectionMinSize" type="number" is="emby-input" min="0" />
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="AddCollectionToCollections" name="AddCollectionToCollections" type="checkbox" is="emby-checkbox" />
+                            <span>Add Collection to Collections</span>
+                        </label>
                     </div>
                     <div class="selectContainer">
                         <label class="selectLabel" for="StudioStyle">Studio Style</label>
@@ -145,6 +151,7 @@
                     $('#UseOSHash').prop('checked', config.UseOSHash);
                     $('#OrderStyle').val(config.OrderStyle).change();
                     $('#TagStyle').val(config.TagStyle).change();
+                    $('#AddCollectionOnSite').prop('checked', config.AddCollectionOnSite);
                     $('#CollectionMinSize').val(config.CollectionMinSize).change();
                     $('#AddCollectionToCollections').prop('checked', config.AddCollectionToCollections);
                     $('#StudioStyle').val(config.StudioStyle).change();
@@ -171,6 +178,7 @@
                     config.UseOSHash = $('#UseOSHash').prop('checked');
                     config.OrderStyle = $('#OrderStyle').val();
                     config.TagStyle = $('#TagStyle').val();
+                    config.AddCollectionOnSite = $('#AddCollectionOnSite').prop('checked');
                     config.CollectionMinSize = $('#CollectionMinSize').val();
                     config.AddCollectionToCollections = $('#AddCollectionToCollections').prop('checked');
                     config.StudioStyle = $('#StudioStyle').val();
