@@ -56,8 +56,6 @@ namespace ThePornDB.Configuration
 #if __EMBY__
     public class PluginConfiguration : EditableOptionsBase
     {
-        public override string EditorTitle => Plugin.Instance.Name;
-
 #else
     public class PluginConfiguration : BasePluginConfiguration
     {
@@ -94,6 +92,10 @@ namespace ThePornDB.Configuration
             this.ActorsOverview = ActorsOverviewStyle.Default;
             this.ActorsOverviewFormat = "<strong style=\"color:#ff0000\">{measurements}<br/></strong>{cupsize}-{waist}-{hips}<br/>{tattoos}<br/>{piercings}<br/>{bio}";
         }
+
+#if __EMBY__
+        public override string EditorTitle => Plugin.Instance.Name;
+#endif
 
         public string MetadataAPIToken { get; set; }
 

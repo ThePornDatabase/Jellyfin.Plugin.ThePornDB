@@ -8,13 +8,13 @@ using ThePornDB.Configuration;
 using System.IO;
 using MediaBrowser.Common;
 using MediaBrowser.Common.Net;
+using MediaBrowser.Controller.Plugins;
 using MediaBrowser.Model.Drawing;
 using MediaBrowser.Model.Logging;
-using MediaBrowser.Controller.Plugins;
 #else
-using MediaBrowser.Model.Serialization;
-using MediaBrowser.Common.Configuration;
 using System.Net.Http;
+using MediaBrowser.Common.Configuration;
+using MediaBrowser.Model.Serialization;
 using Microsoft.Extensions.Logging;
 #endif
 
@@ -25,11 +25,13 @@ namespace ThePornDB
 #if __EMBY__
     public class Plugin : BasePluginSimpleUI<PluginConfiguration>, IHasThumbImage
     {
-        public Plugin(IApplicationHost applicationHost, IHttpClient http, ILogManager logger) : base(applicationHost)
+        public Plugin(IApplicationHost applicationHost, IHttpClient http, ILogManager logger)
+            : base(applicationHost)
 #else
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClientFactory http, ILogger<Plugin> logger) : base(applicationPaths, xmlSerializer)
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IHttpClientFactory http, ILogger<Plugin> logger)
+            : base(applicationPaths, xmlSerializer)
 #endif
         {
             Instance = this;
@@ -60,7 +62,7 @@ namespace ThePornDB
         public override Guid Id => Guid.Parse("fb7580cf-576d-4991-8e56-0b4520c111d3");
 
 #if __EMBY__
-        public PluginConfiguration Configuration => GetOptions();
+        public PluginConfiguration Configuration => this.GetOptions();
 
         public ImageFormat ThumbImageFormat => ImageFormat.Png;
 
