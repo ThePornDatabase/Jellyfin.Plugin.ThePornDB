@@ -13,7 +13,7 @@
                 "changelog": "Fixed missing performer image on init",
                 "targetAbi": "10.9.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.5.0.10/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2024-07-21 20:40:36",
+                "timestamp": "2024-07-21T20:40:36Z",
                 "version": "1.5.0.10"
             },
             {
@@ -21,7 +21,7 @@
                 "changelog": "Fixed search with id; Removed obsolete task",
                 "targetAbi": "10.9.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.4.0.9/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2024-07-21 20:14:55",
+                "timestamp": "2024-07-21T20:14:55Z",
                 "version": "1.4.0.9"
             },
             {
@@ -29,7 +29,7 @@
                 "changelog": "Added Support Jellyfin 10.9; Remove Obsolete Externalds; Added Parent Site;Added Disambiguation Field to Performer Name; Minor Changes",
                 "targetAbi": "10.9.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.3.0.8/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2024-06-07 21:00:56",
+                "timestamp": "2024-06-07T21:00:56Z",
                 "version": "1.3.0.8"
             },
             {
@@ -37,7 +37,7 @@
                 "changelog": "Changed Endpoint; Added Movies, JAV Support; Few New Setting; Changed ID format (There is a task for migration, for old users); Minor Changes",
                 "targetAbi": "10.8.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.2.0.7/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2024-03-05 13:20:31",
+                "timestamp": "2024-03-05T13:20:31Z",
                 "version": "1.2.0.7"
             },
             {
@@ -45,7 +45,7 @@
                 "changelog": "Added Latest Jellyfin Support (10.8.0); Added Latest Emby Support (4.7); Minor Changes",
                 "targetAbi": "10.8.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.1.0.6/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2022-06-21 21:32:25",
+                "timestamp": "2022-06-21T21:32:25Z",
                 "version": "1.1.0.6"
             },
             {
@@ -53,7 +53,7 @@
                 "changelog": "Reworked collections; Added logo for Emby; Minor Changes",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.5.5/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2021-05-27 01:30:03",
+                "timestamp": "2021-05-27T01:30:03Z",
                 "version": "1.0.5.5"
             },
             {
@@ -61,7 +61,7 @@
                 "changelog": "Added Creating Collections based on studios; Added HTTP Caching; Added Using OpenSubtitleHash for Search; Added Using Directory Name for Search; Minor Changes",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.4.4/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2021-05-10 08:35:51",
+                "timestamp": "2021-05-10T08:35:51Z",
                 "version": "1.0.4.4"
             },
             {
@@ -69,7 +69,7 @@
                 "changelog": "Added HTTP caching; Added using FilePath for search; Added images for collections; Minor changes",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.3.3/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2021-04-24 13:53:12",
+                "timestamp": "2021-04-24T13:53:12Z",
                 "version": "1.0.3.3"
             },
             {
@@ -77,7 +77,7 @@
                 "changelog": "Added custom title; Added more studio; Added collection creating; Minor changes",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.2.2/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2021-04-22 03:40:04",
+                "timestamp": "2021-04-22T03:40:04Z",
                 "version": "1.0.2.2"
             },
             {
@@ -85,7 +85,7 @@
                 "changelog": "Added Performers Provider; Minor changes",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.1.1/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2021-04-19 13:40:04",
+                "timestamp": "2021-04-19T13:40:04Z",
                 "version": "1.0.1.1"
             },
             {
@@ -93,7 +93,7 @@
                 "changelog": "Initial Release",
                 "targetAbi": "10.7.0.0",
                 "sourceUrl": "https://github.com/ThePornDatabase/Jellyfin.Plugin.ThePornDB/releases/download/1.0.0.0/Jellyfin.Plugin.ThePornDB.zip",
-                "timestamp": "2021-04-19 02:10:47",
+                "timestamp": "2021-04-19T02:10:47Z",
                 "version": "1.0.0.0"
             }
         ]
