@@ -7,6 +7,9 @@ using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
+using ThePornDB.Configuration;
+using ThePornDB.Helpers;
+using ThePornDB.Providers;
 
 #if __EMBY__
 #else
@@ -45,6 +48,11 @@ namespace ThePornDB.ScheduledTasks
             progress?.Report(0);
 
             var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
+            if (Plugin.Instance.Configuration.CollectionType != CollectionType.All)
+            {
+                var (prefixID, _, _) = Base.GetSettings((SceneType)Plugin.Instance.Configuration.CollectionType);
+                items = items.Where(o => o.ProviderIds[Plugin.Instance.Name].StartsWith(prefixID, StringComparison.OrdinalIgnoreCase));
+            }
 
             if (Plugin.Instance.Configuration.UseUnmatchedTag)
             {

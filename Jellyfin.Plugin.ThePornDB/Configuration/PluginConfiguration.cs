@@ -19,6 +19,14 @@ namespace ThePornDB.Configuration
         Disabled = 2,
     }
 
+    public enum CollectionType
+    {
+        Scene = 0,
+        Movie = 1,
+        JAV = 2,
+        All = 3,
+    }
+
     public enum StudioStyle
     {
         Site = 0,
@@ -74,6 +82,8 @@ namespace ThePornDB.Configuration
 
             this.CollectionMinSize = 0;
             this.AddCollectionToCollections = true;
+            this.CollectionType = CollectionType.All;
+
             this.StudioStyle = StudioStyle.All;
 
             this.UseCustomTitle = false;
@@ -112,6 +122,8 @@ namespace ThePornDB.Configuration
         public int CollectionMinSize { get; set; }
 
         public bool AddCollectionToCollections { get; set; }
+
+        public CollectionType CollectionType { get; set; }
 
         public StudioStyle StudioStyle { get; set; }
 

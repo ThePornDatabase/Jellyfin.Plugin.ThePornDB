@@ -57,6 +57,15 @@
                         </label>
                     </div>
                     <div class="selectContainer">
+                        <label class="selectLabel" for="CollectionType">Collection Type</label>
+                        <select is="emby-select" id="CollectionType" name="CollectionType" class="emby-select-withcolor emby-select">
+                            <option value="All">All</option>
+                            <option value="Scene">Scene</option>
+                            <option value="Movie">Movie</option>
+                            <option value="JAV">JAV</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
                         <label class="selectLabel" for="StudioStyle">Studio Style</label>
                         <select is="emby-select" id="StudioStyle" name="StudioStyle" class="emby-select-withcolor emby-select">
                             <option value="Site">Site</option>
@@ -154,6 +163,7 @@
                     $('#AddCollectionOnSite').prop('checked', config.AddCollectionOnSite);
                     $('#CollectionMinSize').val(config.CollectionMinSize).change();
                     $('#AddCollectionToCollections').prop('checked', config.AddCollectionToCollections);
+                    $('#CollectionType').val(config.CollectionType).change();
                     $('#StudioStyle').val(config.StudioStyle).change();
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
                     $('#CustomTitle').val(config.CustomTitle).change();
@@ -181,6 +191,7 @@
                     config.AddCollectionOnSite = $('#AddCollectionOnSite').prop('checked');
                     config.CollectionMinSize = $('#CollectionMinSize').val();
                     config.AddCollectionToCollections = $('#AddCollectionToCollections').prop('checked');
+                    config.CollectionType = $('#CollectionType').val();
                     config.StudioStyle = $('#StudioStyle').val();
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');
                     config.CustomTitle = $('#CustomTitle').val();
