@@ -18,21 +18,26 @@ namespace ThePornDB.Helpers.Utils
     {
         static HTTP()
         {
-            Http.Timeout = TimeSpan.FromSeconds(120);
+            Http.Timeout = Timeout.InfiniteTimeSpan;
         }
 
         private static CookieContainer CookieContainer { get; } = new CookieContainer();
 
-        private static HttpClientHandler HttpHandler { get; } = new HttpClientHandler()
+#if __EMBY__
+        private static StandardSocketsHttpHandler SocketsHttpHandler { get; } = new StandardSocketsHttpHandler()
+#else
+        private static SocketsHttpHandler SocketsHttpHandler { get; } = new SocketsHttpHandler()
+#endif
         {
             CookieContainer = CookieContainer,
+            PooledConnectionLifetime = TimeSpan.FromSeconds(300),
         };
 
         private static IDictionary<HttpStatusCode, TimeSpan> CacheExpirationPerHttpResponseCode { get; } = CacheExpirationProvider.CreateSimple(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(5));
 
-        private static RateLimitCachingHandler CacheHandler { get; } = new RateLimitCachingHandler(HttpHandler, CacheExpirationPerHttpResponseCode, TimeLimiter.GetFromMaxCountByInterval(120, TimeSpan.FromSeconds(60)));
+        private static RateLimitCachingHandler RateLimitCachingHandler { get; } = new RateLimitCachingHandler(SocketsHttpHandler, CacheExpirationPerHttpResponseCode, TimeLimiter.GetFromMaxCountByInterval(120, TimeSpan.FromSeconds(60)));
 
-        private static HttpClient Http { get; } = new HttpClient(CacheHandler);
+        private static HttpClient Http { get; } = new HttpClient(RateLimitCachingHandler);
 
         public static async Task<HTTPResponse> Request(string url, HttpMethod method, HttpContent param, IDictionary<string, string> headers, IDictionary<string, string> cookies, CancellationToken cancellationToken)
         {

@@ -8,12 +8,17 @@ using ComposableAsync;
 using Microsoft.Extensions.Caching.Abstractions;
 using Microsoft.Extensions.Caching.InMemory;
 using RateLimiter;
-using ThePornDB.Extensions;
 
 namespace ThePornDB.Helpers.Utils
 {
     internal class RateLimitCachingHandler : DelegatingHandler
     {
+        private static HashSet<HttpMethod> cachedHttpMethods = new HashSet<HttpMethod>
+        {
+            HttpMethod.Get,
+            HttpMethod.Head,
+        };
+
         private readonly IDictionary<HttpStatusCode, TimeSpan> cacheExpirationPerHttpResponseCode;
         private readonly IMemoryCache responseCache;
         private readonly TimeLimiter rateLimiter;
@@ -37,49 +42,62 @@ namespace ThePornDB.Helpers.Utils
 
         public ICacheKeysProvider CacheKeysProvider { get; }
 
-        public void InvalidateCache(Uri uri, HttpMethod method = null)
+        public void InvalidateCache(Uri uri, HttpMethod httpMethod = null)
         {
-            var methods = method != null ? new[] { method } : new[] { HttpMethod.Get, HttpMethod.Head };
-            foreach (var m in methods)
+            var httpMethods = httpMethod != null ? new HashSet<HttpMethod> { httpMethod } : cachedHttpMethods;
+
+            foreach (var method in httpMethods)
             {
-                var request = new HttpRequestMessage(m, uri);
-                var key = this.CacheKeysProvider.GetKey(request);
+                var httpRequestMessage = new HttpRequestMessage(method, uri);
+                var key = this.CacheKeysProvider.GetKey(httpRequestMessage);
                 this.responseCache.Remove(key);
             }
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var key = this.CacheKeysProvider.GetKey(request);
-            if (request.Method == HttpMethod.Get || request.Method == HttpMethod.Head)
+            string key = null;
+
+            var isCachedHttpMethod = cachedHttpMethods.Contains(request.Method);
+            if (isCachedHttpMethod)
             {
-                var data = await this.responseCache.TryGetAsync(key);
-                if (data != null)
+                key = this.CacheKeysProvider.GetKey(request);
+                if (this.TryGetCachedHttpResponseMessage(request, key, out var cachedResponse))
                 {
-                    var cachedResponse = request.PrepareCachedEntry(data);
-                    this.StatsProvider.ReportCacheHit(cachedResponse.StatusCode);
                     return cachedResponse;
                 }
             }
 
             await this.rateLimiter;
 
-            var response = await base.SendAsync(request, cancellationToken);
-            if (request.Method == HttpMethod.Get || request.Method == HttpMethod.Head)
+            var response = await base.SendAsync(request, cancellationToken).TimeoutWithResult((int)TimeSpan.FromSeconds(120).TotalMilliseconds);
+            if (isCachedHttpMethod)
             {
                 var absoluteExpirationRelativeToNow = response.StatusCode.GetAbsoluteExpirationRelativeToNow(this.cacheExpirationPerHttpResponseCode);
 
                 this.StatsProvider.ReportCacheMiss(response.StatusCode);
-
                 if (absoluteExpirationRelativeToNow != TimeSpan.Zero)
                 {
-                    var entry = await response.ToCacheEntry();
+                    var entry = await response.ToCacheEntryAsync();
                     await this.responseCache.TrySetAsync(key, entry, absoluteExpirationRelativeToNow);
                     return request.PrepareCachedEntry(entry);
                 }
             }
 
             return response;
+        }
+
+        private bool TryGetCachedHttpResponseMessage(HttpRequestMessage request, string key, out HttpResponseMessage cachedResponse)
+        {
+            if (this.responseCache.TryGetCacheData(key, out var cacheData))
+            {
+                cachedResponse = request.PrepareCachedEntry(cacheData);
+                this.StatsProvider.ReportCacheHit(cachedResponse.StatusCode);
+                return true;
+            }
+
+            cachedResponse = default;
+            return false;
         }
     }
 }
