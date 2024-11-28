@@ -6,11 +6,11 @@
       <InputAssemblies Include="$(OutputPath)HttpClient.Caching.dll" />
       <InputAssemblies Include="$(OutputPath)ComposableAsync.Core.dll" />
       <InputAssemblies Include="$(OutputPath)RateLimiter.dll" />
-      <InputAssemblies Include="$(OutputPath)StandardSocketsHttpHandler.dll" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Release.Emby'">
       <InputAssemblies Include="$(OutputPath)Newtonsoft.Json.dll" />
+      <InputAssemblies Include="$(OutputPath)StandardSocketsHttpHandler.dll" />
     </ItemGroup>
 
     <ILRepack
