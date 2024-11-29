@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using ThePornDB.Configuration;
+using System.Text.RegularExpressions;
 
 namespace ThePornDB.Helpers
 {
@@ -32,18 +33,26 @@ namespace ThePornDB.Helpers
             };
 
             string overview = Plugin.Instance.Configuration.ActorsOverviewFormat;
-            switch (Plugin.Instance.Configuration.ActorsOverview)
+            
+            switch ((string)actorData["extras"]["gender"])
             {
-                case ActorsOverviewStyle.CustomExtras:
-                    overview = placeholders.Aggregate(Plugin.Instance.Configuration.ActorsOverviewFormat, (current, parameter) => current.Replace(parameter.Key, parameter.Value));
+                case "Female":
+                    overview = Regex.Replace(overview, @"<male>.*?</male>|<trans>.*?</trans>", string.Empty);
                     break;
-                case ActorsOverviewStyle.Default:
-                    overview = (string)actorData["bio"];
+                case "Trans":
+                    overview = Regex.Replace(overview, @"<female>.*?</female>|<male>.*?</male>", string.Empty);
+                    break;
+                case "Male":
+                    overview = Regex.Replace(overview, @"<female>.*?</female>|<trans>.*?</trans>", string.Empty);
                     break;
                 default:
-                    overview = " ";
+                    overview = Regex.Replace(overview, @"<female>.*?</female>|<trans>.*?</trans>|<male>.*?</male>", string.Empty);
                     break;
             }
+            
+            overview = Regex.Replace(overview, @"<.?male.|<.?female.|<.?trans.", string.Empty);
+            overview = placeholders.Aggregate(overview, (current, parameter) => current.Replace(parameter.Key, parameter.Value));
+            //overview = Regex.Replace(overview, @"{.*?}", string.emty);
 
             return overview;
         }
