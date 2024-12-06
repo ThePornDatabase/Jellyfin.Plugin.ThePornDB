@@ -97,6 +97,7 @@ namespace ThePornDB.Configuration
 
             this.ScenesImage = ScenesImageStyle.Poster;
 
+            this.AddDisambiguation = true;
             this.ActorsRole = ActorsRoleStyle.Gender;
             this.ActorsImage = ActorsImageStyle.Poster;
             this.ActorsOverview = ActorsOverviewStyle.Default;
@@ -140,6 +141,8 @@ namespace ThePornDB.Configuration
         public bool DisableActorsAutoIdentify { get; set; }
 
         public ScenesImageStyle ScenesImage { get; set; }
+
+        public bool AddDisambiguation { get; set; }
 
         public ActorsRoleStyle ActorsRole { get; set; }
 

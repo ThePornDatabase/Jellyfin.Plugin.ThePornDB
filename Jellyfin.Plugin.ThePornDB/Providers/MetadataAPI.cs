@@ -197,7 +197,7 @@ namespace ThePornDB.Providers
                         {
                             name = (string)actorLink["parent"]["name"];
 
-                            if (actorLink["parent"]["disambiguation"] != null && !string.IsNullOrEmpty((string)actorLink["parent"]["disambiguation"]))
+                            if (Plugin.Instance.Configuration.AddDisambiguation && actorLink["parent"]["disambiguation"] != null && !string.IsNullOrEmpty((string)actorLink["parent"]["disambiguation"]))
                             {
                                 name += " (" + (string)actorLink["parent"]["disambiguation"] + ")";
                             }
