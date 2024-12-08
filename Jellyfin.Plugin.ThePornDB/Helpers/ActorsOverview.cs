@@ -1,34 +1,34 @@
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using ThePornDB.Configuration;
+using ThePornDB.Models;
 
 namespace ThePornDB.Helpers
 {
     public class ActorsOverview
     {
-        public static string CustomFormat(JObject actorData)
+        public static string CustomFormat(Performer actorData)
         {
             var placeholders = new Dictionary<string, string>()
             {
-                { "{bio}", (string)actorData["bio"] },
-                { "{hips}", (string)actorData["extras"]["hips"] },
-                { "{waist}", (string)actorData["extras"]["waist"] },
-                { "{active}", (string)actorData["extras"]["active"] },
-                { "{height}", (string)actorData["extras"]["height"] },
-                { "{weight}", (string)actorData["extras"]["weight"] },
-                { "{gender}", (string)actorData["extras"]["gender"] },
-                { "{cupsize}", (string)actorData["extras"]["cupsize"] },
-                { "{tattoos}", (string)actorData["extras"]["tattoos"] },
-                { "{birthday}", (string)actorData["extras"]["birthday"] },
-                { "{eye_color}", (string)actorData["extras"]["eye_colour"] },
-                { "{piercings}", (string)actorData["extras"]["piercings"] },
-                { "{ethnicity}", (string)actorData["extras"]["ethnicity"] },
-                { "{astrology}", (string)actorData["extras"]["astrology"] },
-                { "{birthplace}", (string)actorData["extras"]["birthplace"] },
-                { "{hair_color}", (string)actorData["extras"]["hair_colour"] },
-                { "{nationality}", (string)actorData["extras"]["nationality"] },
-                { "{measurements}", (string)actorData["extras"]["measurements"] },
+                { "{bio}", actorData.Bio },
+                { "{hips}", actorData.Extras.Hips },
+                { "{waist}", actorData.Extras.Waist },
+                { "{active}", actorData.Extras.Active },
+                { "{height}", actorData.Extras.Height },
+                { "{weight}", actorData.Extras.Weight },
+                { "{gender}", actorData.Extras.Gender },
+                { "{cupsize}", actorData.Extras.CupSize },
+                { "{tattoos}", actorData.Extras.Tattoos },
+                { "{birthday}", actorData.Extras.Birthday },
+                { "{eye_color}", actorData.Extras.EyeColour },
+                { "{piercings}", actorData.Extras.Piercings },
+                { "{ethnicity}", actorData.Extras.Ethnicity },
+                { "{astrology}", actorData.Extras.Astrology },
+                { "{birthplace}", actorData.Extras.Birthplace },
+                { "{hair_color}", actorData.Extras.HairColour },
+                { "{nationality}", actorData.Extras.Nationality },
+                { "{measurements}", actorData.Extras.Measurements },
             };
 
             string overview = Plugin.Instance.Configuration.ActorsOverviewFormat;
@@ -38,7 +38,7 @@ namespace ThePornDB.Helpers
                     overview = placeholders.Aggregate(Plugin.Instance.Configuration.ActorsOverviewFormat, (current, parameter) => current.Replace(parameter.Key, parameter.Value));
                     break;
                 case ActorsOverviewStyle.Default:
-                    overview = (string)actorData["bio"];
+                    overview = (string)actorData.Bio;
                     break;
                 default:
                     overview = " ";

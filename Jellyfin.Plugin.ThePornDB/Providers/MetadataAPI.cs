@@ -10,10 +10,13 @@ using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
+using ThePornDB.Models;
+using static System.Net.WebRequestMethods;
 
 namespace ThePornDB.Providers
 {
@@ -60,20 +63,23 @@ namespace ThePornDB.Providers
             }
 
             url = string.Format(url, Uri.EscapeDataString(searchTitle), Uri.EscapeDataString(oshash), Uri.EscapeDataString(year.HasValue ? year.Value.ToString() : string.Empty));
-            var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-            if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
+            var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Array)
             {
                 return result;
             }
 
-            foreach (var searchResult in data["data"])
+            var data = http["data"].ToString();
+            var searchResults = JsonConvert.DeserializeObject<List<Scene>>(data);
+
+            foreach (var searchResult in searchResults)
             {
                 result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, prefixID + (string)searchResult["id"] } },
-                    Name = (string)searchResult["title"],
-                    ImageUrl = (string)searchResult["poster"],
-                    PremiereDate = (DateTime)searchResult["date"],
+                    ProviderIds = { { Plugin.Instance.Name, prefixID + searchResult.UUID } },
+                    Name = searchResult.Title,
+                    ImageUrl = searchResult.Poster,
+                    PremiereDate = searchResult.Date,
                 });
             }
 
@@ -94,171 +100,141 @@ namespace ThePornDB.Providers
             }
 
             var url = Consts.APIBaseURL + "/" + sceneID;
-            var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-            if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
+            var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Object)
             {
                 return result;
             }
 
-            sceneData = (JObject)sceneData["data"];
+            var data = http["data"].ToString();
+            var sceneData = JsonConvert.DeserializeObject<Scene>(data);
 
-            result.Item.Name = (string)sceneData["title"];
-            result.Item.Overview = (string)sceneData["description"];
+            result.Item.Name = sceneData.Title;
+            result.Item.Overview = sceneData.Description;
 
-            if (sceneData.ContainsKey("site") && sceneData["site"].Type == JTokenType.Object)
+            if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Site)
             {
-                if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Site)
-                {
-                    result.Item.AddStudio((string)sceneData["site"]["name"]);
-                }
+                result.Item.AddStudio(sceneData.Site.Name);
+            }
 
-                if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Parent)
-                {
-                    int? site_id = (int)sceneData["site"]["id"],
-                        parent_id = (int?)sceneData["site"]["parent_id"];
+            if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Parent)
+            {
+                int? site_id = sceneData.Site.ID,
+                    parent_id = sceneData.Site.ParentID;
 
-                    if (parent_id.HasValue && !site_id.Equals(parent_id))
+                if (parent_id.HasValue && !site_id.Equals(parent_id))
+                {
+                    if (sceneData.Site.Parent.HasValue)
                     {
-                        if (sceneData["site"]["parent"]?.Type == JTokenType.Object)
-                        {
-                            result.Item.AddStudio((string)sceneData["site"]["parent"]["name"]);
-                        }
-                        else
-                        {
-                            var siteData = await SiteUpdate(parent_id.Value.ToString(), cancellationToken).ConfigureAwait(false);
-                            if (siteData != null)
-                            {
-                                result.Item.AddStudio((string)siteData["name"]);
-                            }
-                        }
+                        result.Item.AddStudio((string)sceneData.Site.Parent.Value.Name);
                     }
-                }
-
-                if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Network)
-                {
-                    int? site_id = (int)sceneData["site"]["id"],
-                        network_id = (int?)sceneData["site"]["network_id"];
-
-                    if (network_id.HasValue && !site_id.Equals(network_id))
+                    else
                     {
-                        if (sceneData["site"]["network"]?.Type == JTokenType.Object)
+                        var siteData = await SiteUpdate(parent_id.Value.ToString(), cancellationToken).ConfigureAwait(false);
+                        if (siteData.HasValue)
                         {
-                            result.Item.AddStudio((string)sceneData["site"]["network"]["name"]);
-                        }
-                        else
-                        {
-                            var siteData = await SiteUpdate(network_id.Value.ToString(), cancellationToken).ConfigureAwait(false);
-                            if (siteData != null)
-                            {
-                                result.Item.AddStudio((string)siteData["name"]);
-                            }
+                            result.Item.AddStudio(siteData.Value.Name);
                         }
                     }
                 }
             }
 
-            var trailer = (string)sceneData["trailer"];
-            if (!string.IsNullOrEmpty(trailer))
+            if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Network)
             {
-                result.Item.AddTrailerUrl((string)sceneData["trailer"]);
-            }
+                int? site_id = sceneData.Site.ID,
+                    network_id = sceneData.Site.NetworkID;
 
-            result.Item.PremiereDate = (DateTime)sceneData["date"];
-
-            if (sceneData.ContainsKey("tags"))
-            {
-                foreach (var genreLink in sceneData["tags"])
+                if (network_id.HasValue && !site_id.Equals(network_id))
                 {
-                    var genreName = (string)genreLink["name"];
-
-                    result.Item.AddGenre(genreName);
+                    if (sceneData.Site.Network.HasValue)
+                    {
+                        result.Item.AddStudio(sceneData.Site.Network.Value.Name);
+                    }
+                    else
+                    {
+                        var siteData = await SiteUpdate(network_id.Value.ToString(), cancellationToken).ConfigureAwait(false);
+                        if (siteData.HasValue)
+                        {
+                            result.Item.AddStudio(siteData.Value.Name);
+                        }
+                    }
                 }
             }
 
-            if (sceneData.ContainsKey("performers"))
+            if (!string.IsNullOrEmpty(sceneData.Trailer))
             {
-                foreach (var actorLink in sceneData["performers"])
+                result.Item.AddTrailerUrl(sceneData.Trailer);
+            }
+
+            result.Item.PremiereDate = sceneData.Date;
+
+            foreach (var genreLink in sceneData.Tags)
+            {
+                result.Item.AddGenre(genreLink.Name);
+            }
+
+            foreach (var actorLink in sceneData.Performers)
+            {
+                string curID = string.Empty,
+                    name = actorLink.Name,
+                    gender = actorLink.Extras.Gender,
+                    role = string.Empty,
+                    face = actorLink.Face,
+                    image = actorLink.Image;
+
+                if (actorLink.Parent.HasValue)
                 {
-                    string curID = string.Empty,
-                        name = (string)actorLink["name"],
-                        gender = string.Empty,
-                        role = string.Empty,
-                        face = (string)actorLink["face"],
-                        image = (string)actorLink["image"];
-
-                    if (actorLink["parent"] != null && actorLink["parent"].Type == JTokenType.Object)
+                    curID = actorLink.Parent.Value.UUID;
+                    name = actorLink.Parent.Value.Name;
+                    if (Plugin.Instance.Configuration.AddDisambiguation && !string.IsNullOrEmpty(actorLink.Parent.Value.Disambiguation))
                     {
-                        if (actorLink["parent"]["id"] != null)
-                        {
-                            curID = (string)actorLink["parent"]["id"];
-                        }
-
-                        if (actorLink["parent"]["name"] != null)
-                        {
-                            name = (string)actorLink["parent"]["name"];
-
-                            if (Plugin.Instance.Configuration.AddDisambiguation && actorLink["parent"]["disambiguation"] != null && !string.IsNullOrEmpty((string)actorLink["parent"]["disambiguation"]))
-                            {
-                                name += " (" + (string)actorLink["parent"]["disambiguation"] + ")";
-                            }
-                        }
-
-                        if (actorLink["parent"]["extras"]["gender"] != null)
-                        {
-                            gender = (string)actorLink["parent"]["extras"]["gender"];
-                        }
-
-                        if (actorLink["parent"]["face"] != null)
-                        {
-                            face = (string)actorLink["parent"]["face"];
-                        }
-
-                        if (actorLink["parent"]["image"] != null)
-                        {
-                            image = (string)actorLink["parent"]["image"];
-                        }
+                        name += " (" + actorLink.Parent.Value.Disambiguation + ")";
                     }
 
-                    var actor = new PersonInfo
-                    {
-                        Name = name,
-                    };
-
-                    switch (Plugin.Instance.Configuration.ActorsImage)
-                    {
-                        case ActorsImageStyle.Face:
-                            actor.ImageUrl = face;
-                            break;
-                        case ActorsImageStyle.Poster:
-                            actor.ImageUrl = image;
-                            break;
-                    }
-
-                    if (!string.IsNullOrEmpty(curID))
-                    {
-                        actor.ProviderIds.Add(Plugin.Instance.Name, curID);
-                    }
-
-                    switch (Plugin.Instance.Configuration.ActorsRole)
-                    {
-                        case ActorsRoleStyle.Gender:
-                            role = gender;
-                            break;
-                        case ActorsRoleStyle.NameByScene:
-                            role = (string)actorLink["name"];
-                            break;
-                        case ActorsRoleStyle.None:
-                            role = string.Empty;
-                            break;
-                    }
-
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        actor.Role = role;
-                    }
-
-                    result.People.Add(actor);
+                    gender = actorLink.Parent.Value.Extras.Gender;
+                    face = actorLink.Parent.Value.Face;
+                    image = actorLink.Parent.Value.Image;
                 }
+
+                var actor = new PersonInfo
+                {
+                    Name = name,
+                };
+
+                switch (Plugin.Instance.Configuration.ActorsImage)
+                {
+                    case ActorsImageStyle.Face:
+                        actor.ImageUrl = face;
+                        break;
+                    case ActorsImageStyle.Poster:
+                        actor.ImageUrl = image;
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(curID))
+                {
+                    actor.ProviderIds.Add(Plugin.Instance.Name, curID);
+                }
+
+                switch (Plugin.Instance.Configuration.ActorsRole)
+                {
+                    case ActorsRoleStyle.Gender:
+                        role = gender;
+                        break;
+                    case ActorsRoleStyle.NameByScene:
+                        role = actorLink.Name;
+                        break;
+                    case ActorsRoleStyle.None:
+                        role = string.Empty;
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(role))
+                {
+                    actor.Role = role;
+                }
+
+                result.People.Add(actor);
             }
 
             result.HasMetadata = true;
@@ -276,31 +252,35 @@ namespace ThePornDB.Providers
             }
 
             var url = Consts.APIBaseURL + "/" + sceneID;
-            var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-            if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
+            var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Object)
             {
                 return result;
             }
 
-            sceneData = (JObject)sceneData["data"];
+            var data = http["data"].ToString();
+            var sceneData = JsonConvert.DeserializeObject<Scene>(data);
 
-            var images = new List<(ImageType Type, string Url)>
+            var images = new List<(ImageType Type, string Url)>();
+
+            string background = sceneData.Background.Large;
+            if (!string.IsNullOrEmpty(background))
             {
-                (ImageType.Backdrop, (string)sceneData["background"]["large"]),
-            };
+                images.Insert(0, (ImageType.Backdrop, (string)background));
+            }
 
-            JToken primary = null;
+            string primary = null;
             switch (Plugin.Instance.Configuration.ScenesImage)
             {
                 case ScenesImageStyle.Poster:
-                    primary = sceneData["posters"]["large"];
+                    primary = sceneData.Posters.Large;
                     break;
                 case ScenesImageStyle.Background:
-                    primary = sceneData["background"]["large"];
+                    primary = sceneData.Background.Large;
                     break;
             }
 
-            if (primary != null)
+            if (!string.IsNullOrEmpty(primary))
             {
                 images.Insert(0, (ImageType.Primary, (string)primary));
             }
@@ -340,20 +320,22 @@ namespace ThePornDB.Providers
             }
 
             var url = string.Format(Consts.APIPerfomerSearchURL, Uri.EscapeDataString(actorName));
-            var data = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-
-            if (data == null || !data.ContainsKey("data") || data["data"].Type != JTokenType.Array)
+            var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Array)
             {
                 return result;
             }
 
-            foreach (var searchResult in data["data"])
+            var data = http["data"].ToString();
+            var searchResults = JsonConvert.DeserializeObject<List<Performer>>(data);
+
+            foreach (var searchResult in searchResults)
             {
                 result.Add(new RemoteSearchResult
                 {
-                    ProviderIds = { { Plugin.Instance.Name, (string)searchResult["id"] } },
-                    Name = (searchResult["disambiguation"] != null && !string.IsNullOrEmpty((string)searchResult["disambiguation"])) ? (string)searchResult["name"] + " (" + (string)searchResult["disambiguation"] + ")" : (string)searchResult["name"],
-                    ImageUrl = (string)searchResult["image"],
+                    ProviderIds = { { Plugin.Instance.Name, searchResult.UUID } },
+                    Name = !string.IsNullOrEmpty(searchResult.Disambiguation) ? searchResult.Name + " (" + searchResult.Disambiguation + ")" : (string)searchResult.Name,
+                    ImageUrl = searchResult.Image,
                 });
             }
 
@@ -373,26 +355,27 @@ namespace ThePornDB.Providers
             }
 
             var url = string.Format(Consts.APIPerfomerURL, Uri.EscapeDataString(sceneID));
-            var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-            if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
+            var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Object)
             {
                 return result;
             }
 
-            sceneData = (JObject)sceneData["data"];
+            var data = http["data"].ToString();
+            var sceneData = JsonConvert.DeserializeObject<Performer>(data);
 
             // result.Item.Name = (string)sceneData["name"];
-            result.Item.ExternalId = (sceneData["disambiguation"] != null && !string.IsNullOrEmpty((string)sceneData["disambiguation"])) ? (string)sceneData["name"] + " (" + (string)sceneData["disambiguation"] + ")" : (string)sceneData["name"];
-            result.Item.OriginalTitle = string.Join(", ", sceneData["aliases"].Select(o => o.ToString().Trim()));
+            result.Item.ExternalId = !string.IsNullOrEmpty(sceneData.Disambiguation) ? sceneData.Name + " (" + sceneData.Disambiguation + ")" : (string)sceneData.Name;
+            result.Item.OriginalTitle = string.Join(", ", sceneData.Aliases.Select(o => o.ToString().Trim()));
             result.Item.Overview = ActorsOverview.CustomFormat(sceneData);
 
-            var actorBornDate = (string)sceneData["extras"]["birthday"];
+            var actorBornDate = sceneData.Extras.Birthday;
             if (DateTime.TryParseExact(actorBornDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))
             {
                 result.Item.PremiereDate = sceneDateObj;
             }
 
-            var actorBornPlace = (string)sceneData["extras"]["birthplace"];
+            var actorBornPlace = sceneData.Extras.Birthplace;
             if (!string.IsNullOrEmpty(actorBornPlace))
             {
                 result.Item.ProductionLocations = new string[] { actorBornPlace };
@@ -413,31 +396,30 @@ namespace ThePornDB.Providers
             }
 
             var url = string.Format(Consts.APIPerfomerURL, Uri.EscapeDataString(sceneID));
-            var sceneData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
-            if (sceneData == null || !sceneData.ContainsKey("data") || sceneData["data"].Type != JTokenType.Object)
+            var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
+            if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Object)
             {
                 return result;
             }
 
-            sceneData = (JObject)sceneData["data"];
+            var data = http["data"].ToString();
+            var sceneData = JsonConvert.DeserializeObject<Performer>(data);
 
             if (Plugin.Instance.Configuration.ActorsImage == ActorsImageStyle.Face)
             {
-                var posterURL = (string)sceneData["face"];
-                if (!string.IsNullOrEmpty(posterURL))
+                if (!string.IsNullOrEmpty(sceneData.Face))
                 {
-                    var res = GetRemoteImageFromURL(posterURL);
+                    var res = GetRemoteImageFromURL(sceneData.Face);
 
                     result.Add(res);
                 }
             }
 
-            foreach (var poster in sceneData["posters"])
+            foreach (var poster in sceneData.Posters)
             {
-                var posterURL = (string)poster["url"];
-                if (!string.IsNullOrEmpty(posterURL))
+                if (!string.IsNullOrEmpty(poster.URL))
                 {
-                    var res = GetRemoteImageFromURL(posterURL);
+                    var res = GetRemoteImageFromURL(poster.URL);
 
                     result.Add(res);
                 }
@@ -446,29 +428,31 @@ namespace ThePornDB.Providers
             return result;
         }
 
-        public static async Task<JArray> SiteSearch(string name, CancellationToken cancellationToken)
+        public static async Task<List<Site>> SiteSearch(string name, CancellationToken cancellationToken)
         {
-            JArray result = null;
+            List<Site> result = null;
 
             var url = string.Format(Consts.APISiteSearchURL, Uri.EscapeDataString(name));
             var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Array)
             {
-                result = (JArray)siteData["data"];
+                var data = (JArray)siteData["data"];
+                result = JsonConvert.DeserializeObject<List<Site>>(data.ToString());
             }
 
             return result;
         }
 
-        public static async Task<JObject> SiteUpdate(string id, CancellationToken cancellationToken)
+        public static async Task<Site?> SiteUpdate(string id, CancellationToken cancellationToken)
         {
-            JObject result = null;
+            Site? result = null;
 
             var url = string.Format(Consts.APISiteURL, Uri.EscapeDataString(id));
             var siteData = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (siteData != null && siteData.ContainsKey("data") && siteData["data"].Type == JTokenType.Object)
             {
-                result = (JObject)siteData["data"];
+                var data = (JObject)siteData["data"];
+                result = JsonConvert.DeserializeObject<Site>(data.ToString());
             }
 
             return result;

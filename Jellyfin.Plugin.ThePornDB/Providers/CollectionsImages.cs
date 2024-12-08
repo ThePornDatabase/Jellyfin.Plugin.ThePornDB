@@ -6,8 +6,8 @@ using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
-using Newtonsoft.Json.Linq;
 using ThePornDB.Helpers;
+using ThePornDB.Models;
 
 #if __EMBY__
 using MediaBrowser.Common.Net;
@@ -39,14 +39,14 @@ namespace ThePornDB.Providers
         public async Task<IEnumerable<RemoteImageInfo>> GetImages(BaseItem item, CancellationToken cancellationToken)
 #endif
         {
-            IList<RemoteImageInfo> images = new List<RemoteImageInfo>();
+            List<RemoteImageInfo> images = new List<RemoteImageInfo>();
 
             if (item == null || !item.ProviderIds.TryGetValue(this.Name, out var curID))
             {
                 return images;
             }
 
-            JObject siteData = null;
+            Site? siteData = null;
             try
             {
                 siteData = await MetadataAPI.SiteUpdate(curID, cancellationToken).ConfigureAwait(false);
@@ -57,11 +57,11 @@ namespace ThePornDB.Providers
             }
 
             var imgs = new Dictionary<ImageType, string>();
-            if (siteData != null)
+            if (siteData.HasValue)
             {
-                imgs.Add(ImageType.Primary, (string)siteData["poster"]);
-                imgs.Add(ImageType.Logo, (string)siteData["logo"]);
-                imgs.Add(ImageType.Disc, (string)siteData["favicon"]);
+                imgs.Add(ImageType.Primary, siteData.Value.Poster);
+                imgs.Add(ImageType.Logo, siteData.Value.Logo);
+                imgs.Add(ImageType.Disc, siteData.Value.Favicon);
             }
 
             foreach (var image in imgs)
