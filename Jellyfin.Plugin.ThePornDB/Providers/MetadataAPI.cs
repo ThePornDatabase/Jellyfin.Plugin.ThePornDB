@@ -234,6 +234,11 @@ namespace ThePornDB.Providers
                     actor.Role = role;
                 }
 
+                if (Plugin.Instance.Configuration.DisableMaleActors && string.Equals(gender, "male", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
                 result.People.Add(actor);
             }
 

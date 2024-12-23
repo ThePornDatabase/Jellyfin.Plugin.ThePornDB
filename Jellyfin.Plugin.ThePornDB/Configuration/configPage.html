@@ -106,6 +106,12 @@
                             <span>Disable Actors Auto Identify</span>
                         </label>
                     </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="DisableMaleActors" name="DisableMaleActors" type="checkbox" is="emby-checkbox" />
+                            <span>Disable Male Actors</span>
+                        </label>
+                    </div>
                     <div class="selectContainer">
                         <label class="selectLabel" for="ScenesImage">Scenes Image Option</label>
                         <select is="emby-select" id="ScenesImage" name="ScenesImage" class="emby-select-withcolor emby-select">
@@ -177,6 +183,7 @@
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
+                    $('#DisableMaleActors').prop('checked', config.DisableMaleActors);
                     $('#ScenesImage').val(config.ScenesImage).change();
                     $('#ActorsRole').val(config.ActorsRole).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
@@ -205,6 +212,7 @@
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
+                    config.DisableMaleActors = $('#DisableMaleActors').prop('checked');
                     config.ScenesImage = $('#ScenesImage').val();
                     config.ActorsRole = $('#ActorsRole').val();
                     config.ActorsImage = $('#ActorsImage').val();
