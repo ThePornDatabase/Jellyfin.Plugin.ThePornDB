@@ -15,7 +15,7 @@ namespace ThePornDB.Models
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
-        [JsonProperty(PropertyName = "descriptiont")]
+        [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         [JsonProperty(PropertyName = "trailer")]
