@@ -16,7 +16,6 @@ using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
 using ThePornDB.Models;
-using static System.Net.WebRequestMethods;
 
 namespace ThePornDB.Providers
 {

@@ -35,14 +35,12 @@
 
   <ItemGroup>
     <PackageReference Include="HttpClient.Caching" Version="1.3.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="RateLimiter" Version="2.2.0" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug' or '$(Configuration)'=='Release'">
     <PackageReference Include="Jellyfin.Controller" Version="10.10.3" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug.Emby' or '$(Configuration)'=='Release.Emby'">
