@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
+using Newtonsoft.Json;
 using ThePornDB.Configuration;
 
 #if __EMBY__
@@ -45,6 +46,8 @@ namespace ThePornDB
 #else
             Log = logger;
 #endif
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
         }
 
 #if __EMBY__
