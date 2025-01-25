@@ -13,9 +13,6 @@ namespace ThePornDB.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "disambiguation")]
-        public string Disambiguation { get; set; }
-
         [JsonProperty(PropertyName = "face")]
         public string Face { get; set; }
 
