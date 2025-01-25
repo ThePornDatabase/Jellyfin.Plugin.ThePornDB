@@ -185,6 +185,7 @@
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
                     $('#DisableMaleActors').prop('checked', config.DisableMaleActors);
                     $('#ScenesImage').val(config.ScenesImage).change();
+                    $('#AddDisambiguation').prop('checked', config.AddDisambiguation);
                     $('#ActorsRole').val(config.ActorsRole).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
@@ -214,6 +215,7 @@
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
                     config.DisableMaleActors = $('#DisableMaleActors').prop('checked');
                     config.ScenesImage = $('#ScenesImage').val();
+                    config.AddDisambiguation = $('#AddDisambiguation').prop('checked');
                     config.ActorsRole = $('#ActorsRole').val();
                     config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();
