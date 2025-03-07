@@ -112,6 +112,18 @@
                             <span>Disable Male Actors</span>
                         </label>
                     </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="DisableActors" name="DisableActors" type="checkbox" is="emby-checkbox" />
+                            <span>Disable Actors Saving to Metadata</span>
+                        </label>
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="DisableGenres" name="DisableGenres" type="checkbox" is="emby-checkbox" />
+                            <span>Disable Genres Saving to Metadata</span>
+                        </label>
+                    </div>
                     <div class="selectContainer">
                         <label class="selectLabel" for="ScenesImage">Scenes Image Option</label>
                         <select is="emby-select" id="ScenesImage" name="ScenesImage" class="emby-select-withcolor emby-select">
@@ -184,6 +196,8 @@
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
                     $('#DisableMaleActors').prop('checked', config.DisableMaleActors);
+                    $('#DisableActors').prop('checked', config.DisableActors);
+                    $('#DisableGenres').prop('checked', config.DisableActors);
                     $('#ScenesImage').val(config.ScenesImage).change();
                     $('#AddDisambiguation').prop('checked', config.AddDisambiguation);
                     $('#ActorsRole').val(config.ActorsRole).change();
@@ -214,6 +228,8 @@
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
                     config.DisableMaleActors = $('#DisableMaleActors').prop('checked');
+                    config.DisableActors = $('#DisableActors').prop('checked');
+                    config.DisableGenres = $('#DisableGenres').prop('checked');
                     config.ScenesImage = $('#ScenesImage').val();
                     config.AddDisambiguation = $('#AddDisambiguation').prop('checked');
                     config.ActorsRole = $('#ActorsRole').val();

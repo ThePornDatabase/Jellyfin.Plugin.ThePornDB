@@ -167,78 +167,84 @@ namespace ThePornDB.Providers
 
             result.Item.PremiereDate = sceneData.Date;
 
-            foreach (var genreLink in sceneData.Tags)
+            if (!Plugin.Instance.Configuration.DisableGenres)
             {
-                result.Item.AddGenre(genreLink.Name);
+                foreach (var genreLink in sceneData.Tags)
+                {
+                    result.Item.AddGenre(genreLink.Name);
+                }
             }
 
-            foreach (var actorLink in sceneData.Performers)
+            if (!Plugin.Instance.Configuration.DisableActors)
             {
-                string curID = string.Empty,
-                    name = actorLink.Name,
-                    gender = actorLink.Extras.Gender,
-                    role = string.Empty,
-                    face = actorLink.Face,
-                    image = actorLink.Image;
-
-                if (actorLink.Parent.HasValue)
+                foreach (var actorLink in sceneData.Performers)
                 {
-                    curID = actorLink.Parent.Value.UUID;
-                    name = actorLink.Parent.Value.Name;
-                    if (Plugin.Instance.Configuration.AddDisambiguation && !string.IsNullOrEmpty(actorLink.Parent.Value.Disambiguation))
+                    string curID = string.Empty,
+                        name = actorLink.Name,
+                        gender = actorLink.Extras.Gender,
+                        role = string.Empty,
+                        face = actorLink.Face,
+                        image = actorLink.Image;
+
+                    if (actorLink.Parent.HasValue)
                     {
-                        name += " (" + actorLink.Parent.Value.Disambiguation + ")";
+                        curID = actorLink.Parent.Value.UUID;
+                        name = actorLink.Parent.Value.Name;
+                        if (Plugin.Instance.Configuration.AddDisambiguation && !string.IsNullOrEmpty(actorLink.Parent.Value.Disambiguation))
+                        {
+                            name += " (" + actorLink.Parent.Value.Disambiguation + ")";
+                        }
+
+                        gender = actorLink.Parent.Value.Extras.Gender;
+                        face = actorLink.Parent.Value.Face;
+                        image = actorLink.Parent.Value.Image;
                     }
 
-                    gender = actorLink.Parent.Value.Extras.Gender;
-                    face = actorLink.Parent.Value.Face;
-                    image = actorLink.Parent.Value.Image;
+                    var actor = new PersonInfo
+                    {
+                        Name = name,
+                    };
+
+                    switch (Plugin.Instance.Configuration.ActorsImage)
+                    {
+                        case ActorsImageStyle.Face:
+                            actor.ImageUrl = face;
+                            break;
+                        case ActorsImageStyle.Poster:
+                            actor.ImageUrl = image;
+                            break;
+                    }
+
+                    if (!string.IsNullOrEmpty(curID))
+                    {
+                        actor.ProviderIds.Add(Plugin.Instance.Name, curID);
+                    }
+
+                    switch (Plugin.Instance.Configuration.ActorsRole)
+                    {
+                        case ActorsRoleStyle.Gender:
+                            role = gender;
+                            break;
+                        case ActorsRoleStyle.NameByScene:
+                            role = actorLink.Name;
+                            break;
+                        case ActorsRoleStyle.None:
+                            role = string.Empty;
+                            break;
+                    }
+
+                    if (!string.IsNullOrEmpty(role))
+                    {
+                        actor.Role = role;
+                    }
+
+                    if (Plugin.Instance.Configuration.DisableMaleActors && string.Equals(gender, "male", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    result.People.Add(actor);
                 }
-
-                var actor = new PersonInfo
-                {
-                    Name = name,
-                };
-
-                switch (Plugin.Instance.Configuration.ActorsImage)
-                {
-                    case ActorsImageStyle.Face:
-                        actor.ImageUrl = face;
-                        break;
-                    case ActorsImageStyle.Poster:
-                        actor.ImageUrl = image;
-                        break;
-                }
-
-                if (!string.IsNullOrEmpty(curID))
-                {
-                    actor.ProviderIds.Add(Plugin.Instance.Name, curID);
-                }
-
-                switch (Plugin.Instance.Configuration.ActorsRole)
-                {
-                    case ActorsRoleStyle.Gender:
-                        role = gender;
-                        break;
-                    case ActorsRoleStyle.NameByScene:
-                        role = actorLink.Name;
-                        break;
-                    case ActorsRoleStyle.None:
-                        role = string.Empty;
-                        break;
-                }
-
-                if (!string.IsNullOrEmpty(role))
-                {
-                    actor.Role = role;
-                }
-
-                if (Plugin.Instance.Configuration.DisableMaleActors && string.Equals(gender, "male", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                result.People.Add(actor);
             }
 
             result.HasMetadata = true;

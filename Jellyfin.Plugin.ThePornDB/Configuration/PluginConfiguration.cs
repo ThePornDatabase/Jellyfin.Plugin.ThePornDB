@@ -95,6 +95,8 @@ namespace ThePornDB.Configuration
             this.DisableMediaAutoIdentify = false;
             this.DisableActorsAutoIdentify = false;
             this.DisableMaleActors = false;
+            this.DisableActors = false;
+            this.DisableGenres = false;
 
             this.ScenesImage = ScenesImageStyle.Poster;
 
@@ -142,6 +144,10 @@ namespace ThePornDB.Configuration
         public bool DisableActorsAutoIdentify { get; set; }
 
         public bool DisableMaleActors { get; set; }
+
+        public bool DisableActors { get; set; }
+
+        public bool DisableGenres { get; set; }
 
         public ScenesImageStyle ScenesImage { get; set; }
 
