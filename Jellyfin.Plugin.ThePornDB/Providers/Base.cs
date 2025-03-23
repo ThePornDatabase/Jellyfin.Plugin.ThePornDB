@@ -9,15 +9,13 @@ using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
-using PhoenixAdult.Helpers.Utils;
 using ThePornDB.Configuration;
 using ThePornDB.Helpers;
+using ThePornDB.Helpers.Utils;
 
 #if __EMBY__
-using MediaBrowser.Model.Configuration;
 #else
 using Jellyfin.Data.Enums;
-using ThePornDB.Helpers.Utils;
 #endif
 
 namespace ThePornDB.Providers
@@ -31,6 +29,8 @@ namespace ThePornDB.Providers
 
     public static class Base
     {
+        private static readonly char[] Separator = new[] { ' ' };
+
         public static (string prefixID, string searchURL, string sceneURL) GetSettings(SceneType sceneType)
         {
             string prefixID = string.Empty,
@@ -148,7 +148,7 @@ namespace ThePornDB.Providers
                 Logger.Error($"Search error: \"{e}\"");
             }
 
-            if (result.Any())
+            if (result.Count > 0)
             {
                 foreach (var scene in result)
                 {
@@ -227,7 +227,7 @@ namespace ThePornDB.Providers
                     result.Item.ProductionYear = result.Item.PremiereDate.Value.Year;
                 }
 
-                if (result.Item.Studios.Any())
+                if (result.Item.Studios.Length > 0)
                 {
                     var studios = new List<string>();
 
@@ -246,7 +246,7 @@ namespace ThePornDB.Providers
                 }
 
                 var tags = new List<string>();
-                if (result.Item.Genres.Any())
+                if (result.Item.Genres.Length > 0)
                 {
                     var genres = new List<string>();
 
@@ -280,7 +280,7 @@ namespace ThePornDB.Providers
                         break;
                 }
 
-                if (result.People.Any())
+                if (result.People.Count > 0)
                 {
                     foreach (var actorLink in result.People)
                     {
@@ -319,7 +319,7 @@ namespace ThePornDB.Providers
                     };
 
                     result.Item.Name = parameters.Aggregate(Plugin.Instance.Configuration.CustomTitle, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
-                    result.Item.Name = string.Join(" ", result.Item.Name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+                    result.Item.Name = string.Join(" ", result.Item.Name.Split(Separator, StringSplitOptions.RemoveEmptyEntries));
                 }
             }
             else

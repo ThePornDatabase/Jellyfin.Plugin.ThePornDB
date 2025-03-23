@@ -7,7 +7,7 @@ using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
 #endif
 
-namespace ThePornDB
+namespace ThePornDB.ExternalIds
 {
     public class Peoples : IExternalId
     {

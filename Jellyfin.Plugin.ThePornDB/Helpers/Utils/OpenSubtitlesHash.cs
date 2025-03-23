@@ -39,7 +39,7 @@ namespace ThePornDB.Helpers.Utils
             return oshash;
         }
 
-        private static byte[] ComputeMovieHash(Stream input)
+        private static byte[] ComputeMovieHash(FileStream input)
         {
             using (input)
             {

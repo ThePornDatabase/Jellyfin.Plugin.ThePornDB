@@ -13,7 +13,7 @@ namespace ThePornDB.Helpers.Utils
 {
     internal class RateLimitCachingHandler : DelegatingHandler
     {
-        private static HashSet<HttpMethod> cachedHttpMethods = new HashSet<HttpMethod>
+        private static readonly HashSet<HttpMethod> CachedHttpMethods = new HashSet<HttpMethod>
         {
             HttpMethod.Get,
             HttpMethod.Head,
@@ -44,7 +44,7 @@ namespace ThePornDB.Helpers.Utils
 
         public void InvalidateCache(Uri uri, HttpMethod httpMethod = null)
         {
-            var httpMethods = httpMethod != null ? new HashSet<HttpMethod> { httpMethod } : cachedHttpMethods;
+            var httpMethods = httpMethod != null ? new HashSet<HttpMethod> { httpMethod } : CachedHttpMethods;
 
             foreach (var method in httpMethods)
             {
@@ -58,7 +58,7 @@ namespace ThePornDB.Helpers.Utils
         {
             string key = null;
 
-            var isCachedHttpMethod = cachedHttpMethods.Contains(request.Method);
+            var isCachedHttpMethod = CachedHttpMethods.Contains(request.Method);
             if (isCachedHttpMethod)
             {
                 key = this.CacheKeysProvider.GetKey(request);

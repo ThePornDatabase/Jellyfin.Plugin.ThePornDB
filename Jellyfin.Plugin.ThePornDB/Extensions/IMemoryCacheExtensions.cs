@@ -59,7 +59,7 @@ internal static class IMemoryCacheExtensions
 
     public static bool TrySetCacheData(this IMemoryCache cache, string key, CacheData value, TimeSpan absoluteExpirationRelativeToNow)
     {
-        var result = false;
+        bool result;
 
         try
         {

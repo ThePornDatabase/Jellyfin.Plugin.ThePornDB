@@ -8,7 +8,7 @@ using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Model.Providers;
 #endif
 
-namespace ThePornDB
+namespace ThePornDB.ExternalIds
 {
     public class Collections : IExternalId
     {
