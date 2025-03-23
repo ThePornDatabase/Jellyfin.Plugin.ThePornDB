@@ -99,6 +99,11 @@ namespace ThePornDB.Providers
             }
 
             var url = Consts.APIBaseURL + "/" + sceneID;
+            if (Plugin.Instance.Configuration.AddCollectionOnSite)
+            {
+                url += "?add_collection=1";
+            }
+
             var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
             if (http == null || !http.ContainsKey("data") || http["data"].Type != JTokenType.Object)
             {

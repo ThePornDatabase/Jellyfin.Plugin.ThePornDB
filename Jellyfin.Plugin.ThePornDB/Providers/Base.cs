@@ -207,11 +207,6 @@ namespace ThePornDB.Providers
                 return result;
             }
 
-            if (Plugin.Instance.Configuration.AddCollectionOnSite)
-            {
-                curID += "?add_collection=1";
-            }
-
             result.HasMetadata = false;
             try
             {
