@@ -210,7 +210,7 @@ namespace ThePornDB.Providers
             result.HasMetadata = false;
             try
             {
-                result = await MetadataAPI.SceneUpdate(curID, cancellationToken).ConfigureAwait(false);
+                result = await MetadataAPI.SceneUpdate(curID, cancellationToken, Plugin.Instance.Configuration.AddCollectionOnSite).ConfigureAwait(false);
             }
             catch (Exception e)
             {

@@ -85,7 +85,7 @@ namespace ThePornDB.Providers
             return result;
         }
 
-        public static async Task<MetadataResult<Movie>> SceneUpdate(string sceneID, CancellationToken cancellationToken)
+        public static async Task<MetadataResult<Movie>> SceneUpdate(string sceneID, CancellationToken cancellationToken, bool addCollectionOnSite = false)
         {
             var result = new MetadataResult<Movie>()
             {
@@ -99,7 +99,7 @@ namespace ThePornDB.Providers
             }
 
             var url = Consts.APIBaseURL + "/" + sceneID;
-            if (Plugin.Instance.Configuration.AddCollectionOnSite)
+            if (addCollectionOnSite)
             {
                 url += "?add_collection=1";
             }
