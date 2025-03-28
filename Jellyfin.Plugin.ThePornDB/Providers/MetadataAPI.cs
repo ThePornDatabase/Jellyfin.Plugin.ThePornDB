@@ -101,7 +101,7 @@ namespace ThePornDB.Providers
             var url = Consts.APIBaseURL + "/" + sceneID;
             if (addCollectionOnSite)
             {
-                url += "?add_collection=1";
+                url += "?add_to_collection=1";
             }
 
             var http = await GetDataFromAPI(url, cancellationToken).ConfigureAwait(false);
