@@ -13,11 +13,6 @@ using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
 
-#if __EMBY__
-#else
-using Jellyfin.Data.Enums;
-#endif
-
 namespace ThePornDB.Providers
 {
     public enum SceneType
@@ -282,21 +277,13 @@ namespace ThePornDB.Providers
 
                 if (result.People.Count > 0)
                 {
-                    foreach (var actorLink in result.People)
-                    {
-#if __EMBY__
-                        actorLink.Type = PersonType.Actor;
-#else
-                        actorLink.Type = PersonKind.Actor;
-#endif
-                    }
-
                     var people = result.People.Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name) && !string.IsNullOrEmpty(o.ProviderIds[Plugin.Instance.Name]));
                     var other = result.People.Where(o => !o.ProviderIds.ContainsKey(Plugin.Instance.Name) || string.IsNullOrEmpty(o.ProviderIds[Plugin.Instance.Name]));
 
                     result.People = people
                         .DistinctBy(o => o.ProviderIds[Plugin.Instance.Name], StringComparer.OrdinalIgnoreCase)
-                        .OrderBy(o => string.IsNullOrEmpty(o.Role))
+                        .OrderBy(o => o.Type)
+                        .ThenBy(o => string.IsNullOrEmpty(o.Role))
                         .ThenBy(o => o.Role?.Equals("Male", StringComparison.OrdinalIgnoreCase))
                         .ThenBy(o => o.Name)
                         .ToList();

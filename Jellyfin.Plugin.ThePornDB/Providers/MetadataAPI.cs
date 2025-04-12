@@ -17,6 +17,11 @@ using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
 using ThePornDB.Models;
 
+#if __EMBY__
+#else
+using Jellyfin.Data.Enums;
+#endif
+
 namespace ThePornDB.Providers
 {
     public static class MetadataAPI
@@ -208,6 +213,11 @@ namespace ThePornDB.Providers
                     var actor = new PersonInfo
                     {
                         Name = name,
+#if __EMBY__
+                        Type = PersonType.Actor,
+#else
+                        Type = PersonKind.Actor,
+#endif
                     };
 
                     switch (Plugin.Instance.Configuration.ActorsImage)
@@ -249,6 +259,21 @@ namespace ThePornDB.Providers
                     }
 
                     result.People.Add(actor);
+                }
+
+                foreach (var direcorLink in sceneData.Directors)
+                {
+                    var director = new PersonInfo
+                    {
+                        Name = direcorLink.Name,
+#if __EMBY__
+                        Type = PersonType.Director,
+#else
+                        Type = PersonKind.Director,
+#endif
+                    };
+
+                    result.People.Add(director);
                 }
             }
 

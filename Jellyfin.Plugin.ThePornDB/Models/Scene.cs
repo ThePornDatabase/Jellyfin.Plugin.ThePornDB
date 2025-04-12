@@ -30,6 +30,9 @@ namespace ThePornDB.Models
         [JsonProperty(PropertyName = "performers")]
         public List<PerformerSite> Performers { get; set; }
 
+        [JsonProperty(PropertyName = "directors")]
+        public List<Director> Directors { get; set; }
+
         [JsonProperty(PropertyName = "tags")]
         public List<Tags> Tags { get; set; }
 
