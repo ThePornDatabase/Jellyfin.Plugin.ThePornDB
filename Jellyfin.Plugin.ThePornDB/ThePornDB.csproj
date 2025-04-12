@@ -39,11 +39,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug' or '$(Configuration)'=='Release'">
-    <PackageReference Include="Jellyfin.Controller" Version="10.10.6" />
+    <PackageReference Include="Jellyfin.Controller" Version="10.10.7" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug.Emby' or '$(Configuration)'=='Release.Emby'">
-    <PackageReference Include="MediaBrowser.Server.Core" Version="4.8.10" />
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.8.11" />
     <PackageReference Include="StandardSocketsHttpHandler" Version="2.2.0.8" />
   </ItemGroup>
 
