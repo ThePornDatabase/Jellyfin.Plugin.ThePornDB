@@ -189,7 +189,7 @@ namespace ThePornDB.Providers
             {
                 foreach (var actorLink in sceneData.Performers)
                 {
-                    string curID = string.Empty,
+                    string curID = actorLink.UUID,
                         name = actorLink.Name,
                         gender = actorLink.Extras.Gender,
                         role = string.Empty,
