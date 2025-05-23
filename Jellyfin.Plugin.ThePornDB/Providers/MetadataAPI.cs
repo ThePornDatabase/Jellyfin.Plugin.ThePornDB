@@ -301,7 +301,10 @@ namespace ThePornDB.Providers
             var data = http["data"].ToString();
             var sceneData = JsonConvert.DeserializeObject<Scene>(data);
 
-            var images = new List<(ImageType Type, string Url)>();
+            var images = new List<(ImageType Type, string Url)>()
+            {
+                (ImageType.Logo, sceneData.Site.Logo),
+            };
 
             string background = sceneData.Background.Large;
             if (!string.IsNullOrEmpty(background))
