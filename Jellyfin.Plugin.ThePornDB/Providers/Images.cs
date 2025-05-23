@@ -17,9 +17,9 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
-    public class MoviesImages : IRemoteImageProvider
+    public class Images : IRemoteImageProvider
     {
-        public string Name => Plugin.Instance.Name + " Movies";
+        public string Name => Plugin.Instance.Name;
 
         public bool Supports(BaseItem item) => item is Movie;
 
