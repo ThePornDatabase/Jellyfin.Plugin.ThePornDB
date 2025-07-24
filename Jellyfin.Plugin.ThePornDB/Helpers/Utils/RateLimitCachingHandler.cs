@@ -83,16 +83,13 @@ namespace ThePornDB.Helpers.Utils
             if (isCachedHttpMethod)
             {
                 var absoluteExpirationRelativeToNow = response.StatusCode.GetAbsoluteExpirationRelativeToNow(this.cacheExpirationPerHttpResponseCode);
-                var maxAgeHeader = response.Headers.CacheControl?.MaxAge ?? TimeSpan.MaxValue;
-
-                var maxCacheTime = (maxAgeHeader < absoluteExpirationRelativeToNow) ? maxAgeHeader : absoluteExpirationRelativeToNow;
 
                 this.StatsProvider.ReportCacheMiss(response.StatusCode);
 
-                if (ShouldCacheResponse(response) && maxCacheTime != TimeSpan.Zero)
+                if (ShouldCacheResponse(response) && absoluteExpirationRelativeToNow != TimeSpan.Zero)
                 {
                     var entry = await response.ToCacheEntryAsync();
-                    await this.responseCache.TrySetAsync(key, entry, maxCacheTime);
+                    await this.responseCache.TrySetAsync(key, entry, absoluteExpirationRelativeToNow);
                     return request.PrepareCachedEntry(entry);
                 }
             }
