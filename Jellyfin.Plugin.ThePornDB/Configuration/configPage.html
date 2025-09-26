@@ -169,6 +169,17 @@
                         </label>
                     </div>
                     <div class="selectContainer">
+                        <label class="selectLabel" for="ActorsTag">Actors Tag Option</label>
+                        <select is="emby-select" id="ActorsTag" name="ActorsTag" class="emby-select-withcolor emby-select">
+                            <option value="None">None</option>
+                            <option value="Custom">Custom</option>                           
+                        </select>
+                        <div class="inputContainer">
+                            <label class="inputLabel inputLabelUnfocused" for="ActorsTagList">Add Tags for Actors</label>
+                            <input id="ActorsTagList" name="ActorsTagList" type="text" is="emby-input" />
+                        </div>
+                    </div>
+                    <div class="selectContainer">
                         <label class="selectLabel" for="ActorsRole">Actors Role Option</label>
                         <select is="emby-select" id="ActorsRole" name="ActorsRole" class="emby-select-withcolor emby-select">
                             <option value="None">None</option>
@@ -223,14 +234,12 @@
                     $('#StudioStyle').val(config.StudioStyle).change();
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
                     $('#CustomTitle').val(config.CustomTitle).change();
-
                     $('#UseOrigTitle').prop('checked', config.UseOrigTitle);
                     $('#OrigTitle').val(config.OrigTitle).change();
                     $('#UseTagline').prop('checked', config.UseTagline);
                     $('#Tagline').val(config.Tagline).change();
                     $('#UseSortTitle').prop('checked', config.UseSortTitle);
                     $('#SortTitle').val(config.SortTitle).change();
-
                     $('#UseUnmatchedTag').prop('checked', config.UseUnmatchedTag);
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
@@ -241,6 +250,8 @@
                     $('#ScenesImage').val(config.ScenesImage).change();
                     $('#AddDisambiguation').prop('checked', config.AddDisambiguation);
                     $('#ActorsRole').val(config.ActorsRole).change();
+                    $('#ActorsTag').val(config.ActorsTag).change();
+                    $('#ActorsTagList').val(config.ActorsTagList).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
                     $('#ActorsOverviewFormat').val(config.ActorsOverviewFormat).change();
@@ -262,15 +273,13 @@
                     config.CollectionType = $('#CollectionType').val();
                     config.StudioStyle = $('#StudioStyle').val();
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');
-                    config.CustomTitle = $('#CustomTitle').val();
-
+                    config.CustomTitle = $('#CustomTitle').val()
                     config.UseOrigTitle = $('#UseOrigTitle').prop('checked');
                     config.OrigTitle = $('#OrigTitle').val();
                     config.UseTagline = $('#UseTagline').prop('checked');
                     config.Tagline = $('#Tagline').val();
                     config.UseSortTitle = $('#UseSortTitle').prop('checked');
                     config.SortTitle = $('#SortTitle').val();
-
                     config.UseUnmatchedTag = $('#UseUnmatchedTag').prop('checked');
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
@@ -281,9 +290,11 @@
                     config.ScenesImage = $('#ScenesImage').val();
                     config.AddDisambiguation = $('#AddDisambiguation').prop('checked');
                     config.ActorsRole = $('#ActorsRole').val();
+                    config.ActorsTag = $('#ActorsTag').val();
+                    config.ActorsTagList = $('#ActorsTagList').val();
                     config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();
-                    config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
+                    config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val();
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     });

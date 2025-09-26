@@ -76,7 +76,7 @@ namespace ThePornDB.Helpers
                     { "{extid}", data.ExtID },
                     { "{title}", data.Title },
                     { "{studio}", data.Site.Name },
-                    { "{network}",data.Site.Network },
+                    { "{network}",data.Site.Network.Value.Name },
                     { "{release_date}", data.Date },
                     { "{actors}", string.Join(", ", actors) },
                     { "{no_male}", string.Join(", ", no_males) },
