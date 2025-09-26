@@ -47,12 +47,18 @@ namespace ThePornDB.Configuration
         Default = 1,
         CustomExtras = 2,
     }
+    public enum ActorsTagStyle
+    {
+        None = 0,
+        Custom = 1,
+    }
 
     public enum ActorsRoleStyle
     {
         None = 0,
         Gender = 1,
         NameByScene = 2,
+        NamesDifferent = 3,
     }
 
     public enum ActorsImageStyle
@@ -89,6 +95,15 @@ namespace ThePornDB.Configuration
             this.UseCustomTitle = false;
             this.CustomTitle = "{studio}: {title} ({actors})";
 
+            this.UseOrigTitle = false;
+            this.OrigTitle = "{studio}: {title} ({no_male})";
+
+            this.UseTagline = false;
+            this.Tagline = "{studio} - {id}";
+
+            this.UseSortTitle = false;
+            this.SortTitle = "{studio} - {id}";
+
             this.UseUnmatchedTag = false;
             this.UnmatchedTag = "Missing From ThePornDB";
 
@@ -101,6 +116,8 @@ namespace ThePornDB.Configuration
             this.ScenesImage = ScenesImageStyle.Poster;
 
             this.AddDisambiguation = true;
+            this.ActorsTagList = "{ethnicity}";
+            this.ActorsTag = ActorsTagStyle.None;
             this.ActorsRole = ActorsRoleStyle.Gender;
             this.ActorsImage = ActorsImageStyle.Poster;
             this.ActorsOverview = ActorsOverviewStyle.Default;
@@ -135,6 +152,18 @@ namespace ThePornDB.Configuration
 
         public string CustomTitle { get; set; }
 
+        public bool UseOrigTitle { get; set; }
+
+        public string OrigTitle { get; set; }
+
+        public bool UseTagline { get; set; }
+
+        public string Tagline { get; set; }
+
+        public bool UseSortTitle{ get; set; }
+
+        public string SortTitle { get; set; }
+
         public bool UseUnmatchedTag { get; set; }
 
         public string UnmatchedTag { get; set; }
@@ -153,8 +182,12 @@ namespace ThePornDB.Configuration
 
         public bool AddDisambiguation { get; set; }
 
-        public ActorsRoleStyle ActorsRole { get; set; }
+        public ActorsTagStyle ActorsTag { get; set; }
 
+        public string ActorsTagList { get; set; }
+
+        public ActorsRoleStyle ActorsRole { get; set; }
+    
         public ActorsImageStyle ActorsImage { get; set; }
 
         public ActorsOverviewStyle ActorsOverview { get; set; }

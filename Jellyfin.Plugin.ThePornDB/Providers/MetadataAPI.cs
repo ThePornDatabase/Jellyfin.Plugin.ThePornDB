@@ -120,6 +120,9 @@ namespace ThePornDB.Providers
 
             result.Item.Name = sceneData.Title;
             result.Item.Overview = sceneData.Description;
+            result.Item.Tagline = Style.Title(sceneData, Style.Typ.Tagline, Plugin.Instance.Configuration.UseTagline, Plugin.Instance.Configuration.Tagline);
+            result.Item.OriginalTitle = Style.Title(sceneData, Style.Typ.Original, Plugin.Instance.Configuration.UseOrigTitle, Plugin.Instance.Configuration.OrigTitle);
+            result.Item.ForcedSortName = Style.Title(sceneData, Style.Typ.Sortable, Plugin.Instance.Configuration.UseSortTitle, Plugin.Instance.Configuration.SortTitle);
 
             if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Site)
             {
@@ -242,6 +245,16 @@ namespace ThePornDB.Providers
                             break;
                         case ActorsRoleStyle.NameByScene:
                             role = actorLink.Name;
+                            break;
+                        case ActorsRoleStyle.NamesDifferent:
+                            if (actorLink.Name == name == false)
+                            {
+                                role = actorLink.Name;
+                            }
+                            else
+                            {
+                                role = string.Empty;
+                            }
                             break;
                         case ActorsRoleStyle.None:
                             role = string.Empty;
@@ -410,8 +423,39 @@ namespace ThePornDB.Providers
             // result.Item.Name = (string)sceneData["name"];
             result.Item.ExternalId = !string.IsNullOrEmpty(sceneData.Disambiguation) ? sceneData.Name + " (" + sceneData.Disambiguation + ")" : (string)sceneData.Name;
             result.Item.OriginalTitle = string.Join(", ", sceneData.Aliases.Select(o => o.ToString().Trim()));
-            result.Item.Overview = ActorsOverview.CustomFormat(sceneData);
+            string overview = string.Empty;
+            switch (Plugin.Instance.Configuration.ActorsOverview)
+            {
+                case ActorsOverviewStyle.CustomExtras:
+                    overview = Style.Actor(sceneData,Plugin.Instance.Configuration.ActorsOverviewFormat).Overview;
+                    break;
+                case ActorsOverviewStyle.Default:
+                    overview = sceneData.Bio;
+                    break;
+                case ActorsOverviewStyle.None:
+                    overview = " ";
+                    break;
+            }
+            if (!string.IsNullOrEmpty(overview))
+            {
+                result.Item.Overview = overview;
+            }
+            var tags = Array.Empty<string>();
 
+            switch (Plugin.Instance.Configuration.ActorsTag)
+            {
+                case ActorsTagStyle.Custom:
+                    tags = Style.Actor(sceneData,Plugin.Instance.Configuration.ActorsTagList).Tags;
+                    break;
+                case ActorsTagStyle.None:
+                    tags = Array.Empty<string>();
+                    break;
+            }
+
+            if (tags == null || tags.Length == 0 == false)
+            {
+                result.Item.Tags = tags;
+            }
             var actorBornDate = sceneData.Extras.Birthday;
             if (DateTime.TryParseExact(actorBornDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))
             {
