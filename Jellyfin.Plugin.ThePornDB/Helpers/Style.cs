@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using ICU4N.Util;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.IO;
 using Microsoft.Extensions.Hosting;
@@ -69,6 +71,22 @@ namespace ThePornDB.Helpers
                 {
                     format = confStyle;
                 }
+
+                int? site_id = data.Site.ID,
+                    parent_id = data.Site.ParentID;
+                string network;
+
+                if (parent_id.HasValue && !site_id.Equals(parent_id))
+                {
+                    if (data.Site.Parent.HasValue)
+                    {
+                        network = data.Site.Parent.Value.Name;    
+                    }
+                    else
+                    {
+                        network = data.Site.Name;
+                    }
+
                     var parameters = new Dictionary<string, object>()
                 {
                     { "{id}", data.ID },
@@ -76,7 +94,7 @@ namespace ThePornDB.Helpers
                     { "{extid}", data.ExtID },
                     { "{title}", data.Title },
                     { "{studio}", data.Site.Name },
-                    { "{network}",data.Site.Network.Value.Name },
+                    { "{network}",network },
                     { "{release_date}", data.Date },
                     { "{actors}", string.Join(", ", actors) },
                     { "{no_male}", string.Join(", ", no_males) },
