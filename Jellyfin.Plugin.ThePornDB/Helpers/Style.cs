@@ -50,7 +50,7 @@ namespace ThePornDB.Helpers
                 }
             }
 
-    
+
 
             if (useStyle)
             {
@@ -80,7 +80,7 @@ namespace ThePornDB.Helpers
                 {
                     if (data.Site.Parent.HasValue)
                     {
-                        network = data.Site.Parent.Value.Name;    
+                        network = data.Site.Parent.Value.Name;
                     }
                     else
                     {
@@ -99,8 +99,9 @@ namespace ThePornDB.Helpers
                     { "{actors}", string.Join(", ", actors) },
                     { "{no_male}", string.Join(", ", no_males) },
                 };
-                formatted = parameters.Aggregate(format, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
-                formatted = string.Join(" ", formatted.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+                    formatted = parameters.Aggregate(format, (current, parameter) => current.Replace(parameter.Key, parameter.Value.ToString()));
+                    formatted = string.Join(" ", formatted.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+                }
             }
             return formatted;
         }
