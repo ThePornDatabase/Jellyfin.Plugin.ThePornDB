@@ -37,15 +37,35 @@ namespace ThePornDB.Configuration
 
     public enum ScenesImageStyle
     {
-        Poster = 0,
-        Background = 1,
+        None = 0,
+        Poster = 1,
+        Background = 2,
+    }
+    public enum ScenesThumbImageStyle
+    {
+        None = 0,
+        Full = 1,
+        Large = 2,
+    }
+    public enum ScenesBackdropImageStyle
+    {
+        None = 0,
+        Full = 1,
+        Large = 2,
     }
 
     public enum ActorsOverviewStyle
     {
         None = 0,
         Default = 1,
-        CustomExtras = 2,
+        Custom = 2,
+    }
+    public enum ActorsTagStyle
+    {
+        None = 0,
+        Custom = 1,
+        Ethnicity = 2,
+        Nationality = 3,
     }
 
     public enum ActorsRoleStyle
@@ -53,6 +73,7 @@ namespace ThePornDB.Configuration
         None = 0,
         Gender = 1,
         NameByScene = 2,
+        NamesDifferent = 3,
     }
 
     public enum ActorsImageStyle
@@ -88,6 +109,13 @@ namespace ThePornDB.Configuration
 
             this.UseCustomTitle = false;
             this.CustomTitle = "{studio}: {title} ({actors})";
+            this.UseOriginalTitle = false;
+            this.OriginalTitle = "{studio}: {title} ({no_male})";
+            this.UseTagline = false;
+            this.Tagline = "{studio} - {code}";
+            this.UseForceSortableTitle = false;
+            this.ForceSortableTitle = "{studio} - {title}";
+
 
             this.UseUnmatchedTag = false;
             this.UnmatchedTag = "Missing From ThePornDB";
@@ -99,11 +127,15 @@ namespace ThePornDB.Configuration
             this.DisableGenres = false;
 
             this.ScenesImage = ScenesImageStyle.Poster;
+            this.ScenesThumb = ScenesThumbImageStyle.None;
+            this.ScenesBackdrop = ScenesBackdropImageStyle.Large;
 
             this.AddDisambiguation = true;
+            this.ActorsTagStyle = ActorsTagStyle.None;
+            this.CustomTagActors = "{ethnicity}";
             this.ActorsRole = ActorsRoleStyle.Gender;
             this.ActorsImage = ActorsImageStyle.Poster;
-            this.ActorsOverview = ActorsOverviewStyle.Default;
+            this.ActorsOverviewStyle = ActorsOverviewStyle.Default;
             this.ActorsOverviewFormat = "<strong style=\"color:#ff0000\">{measurements}<br/></strong>{cupsize}-{waist}-{hips}<br/>{tattoos}<br/>{piercings}<br/>{bio}";
         }
 
@@ -135,6 +167,18 @@ namespace ThePornDB.Configuration
 
         public string CustomTitle { get; set; }
 
+        public bool UseOriginalTitle { get; set; }
+
+        public string OriginalTitle { get; set; }
+
+        public bool UseTagline { get; set; }
+
+        public string Tagline { get; set; }
+
+        public bool UseForceSortableTitle { get; set; }
+
+        public string ForceSortableTitle { get; set; }
+
         public bool UseUnmatchedTag { get; set; }
 
         public string UnmatchedTag { get; set; }
@@ -151,13 +195,21 @@ namespace ThePornDB.Configuration
 
         public ScenesImageStyle ScenesImage { get; set; }
 
+        public ScenesThumbImageStyle ScenesThumb {get;set;}
+
+        public ScenesBackdropImageStyle ScenesBackdrop { get; set; }
+
         public bool AddDisambiguation { get; set; }
+
+        public ActorsTagStyle ActorsTagStyle { get; set; }
+
+        public string CustomTagActors { get; set; }
 
         public ActorsRoleStyle ActorsRole { get; set; }
 
         public ActorsImageStyle ActorsImage { get; set; }
 
-        public ActorsOverviewStyle ActorsOverview { get; set; }
+        public ActorsOverviewStyle ActorsOverviewStyle { get; set; }
 
         public string ActorsOverviewFormat { get; set; }
     }

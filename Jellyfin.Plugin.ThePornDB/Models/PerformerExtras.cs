@@ -28,6 +28,9 @@ namespace ThePornDB.Models
         [JsonProperty(PropertyName = "tattoos")]
         public string Tattoos { get; set; }
 
+        [JsonProperty(PropertyName = "deathday")]
+        public string Deathday { get; set; }
+
         [JsonProperty(PropertyName = "birthday")]
         public string Birthday { get; set; }
 
@@ -54,5 +57,19 @@ namespace ThePornDB.Models
 
         [JsonProperty(PropertyName = "measurements")]
         public string Measurements { get; set; }
+
+        [JsonProperty(PropertyName = "fake_boobs")]
+        public bool FakeBoobs { get; set; }
+
+        [JsonProperty(PropertyName = "same_sex_only")]
+        public bool SameSexOnly { get; set; }
+
+        [JsonProperty(PropertyName = "career_start_year")]
+        public string CareerStart { get; set; }
+
+        [JsonProperty(PropertyName = "career_end_year")]
+        public string CareerEnd { get; set; }
+
+ 
     }
 }
