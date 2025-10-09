@@ -56,7 +56,7 @@ namespace ThePornDB.Style
                     {
                         format = dictionary.FirstOrDefault(x => x.Key == data.Site.Name).Value;
                     }
-                    else if (dictionary.ContainsKey(data.Site.Parent.Value.Name))
+                    else if (data.Site.ParentID.HasValue && dictionary.ContainsKey(data.Site.Parent.Value.Name))
                     {
                         format = dictionary.FirstOrDefault(x => x.Key == data.Site.Parent.Value.Name).Value;
                     }
