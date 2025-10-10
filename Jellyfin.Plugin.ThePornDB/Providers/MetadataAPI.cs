@@ -274,7 +274,10 @@ namespace ThePornDB.Providers
 
                     result.People.Add(actor);
                 }
+            }
 
+            if (!Plugin.Instance.Configuration.DisableDirectors)
+            {
                 foreach (var direcorLink in sceneData.Directors)
                 {
                     var director = new PersonInfo

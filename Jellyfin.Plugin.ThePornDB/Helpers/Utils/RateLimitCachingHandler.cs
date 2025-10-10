@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using ComposableAsync;
@@ -13,6 +14,12 @@ namespace ThePornDB.Helpers.Utils
 {
     internal class RateLimitCachingHandler : DelegatingHandler
     {
+#if NET5_0_OR_GREATER
+        public static readonly HttpRequestOptionsKey<bool> UseCache = new HttpRequestOptionsKey<bool>(nameof(UseCache));
+#else
+        public const string UseCache = nameof(UseCache);
+#endif
+
         private static readonly HashSet<HttpMethod> CachedHttpMethods = new HashSet<HttpMethod>
         {
             HttpMethod.Get,
@@ -59,7 +66,9 @@ namespace ThePornDB.Helpers.Utils
             string key = null;
 
             var isCachedHttpMethod = CachedHttpMethods.Contains(request.Method);
-            if (isCachedHttpMethod)
+
+            var shouldCheckCache = ShouldTheCacheBeChecked(request);
+            if (shouldCheckCache && isCachedHttpMethod)
             {
                 key = this.CacheKeysProvider.GetKey(request);
                 if (this.TryGetCachedHttpResponseMessage(request, key, out var cachedResponse))
@@ -76,7 +85,8 @@ namespace ThePornDB.Helpers.Utils
                 var absoluteExpirationRelativeToNow = response.StatusCode.GetAbsoluteExpirationRelativeToNow(this.cacheExpirationPerHttpResponseCode);
 
                 this.StatsProvider.ReportCacheMiss(response.StatusCode);
-                if (absoluteExpirationRelativeToNow != TimeSpan.Zero)
+
+                if (ShouldCacheResponse(response) && absoluteExpirationRelativeToNow != TimeSpan.Zero)
                 {
                     var entry = await response.ToCacheEntryAsync();
                     await this.responseCache.TrySetAsync(key, entry, absoluteExpirationRelativeToNow);
@@ -85,6 +95,30 @@ namespace ThePornDB.Helpers.Utils
             }
 
             return response;
+        }
+
+        private static bool ShouldTheCacheBeChecked(HttpRequestMessage request)
+        {
+#if NET5_0_OR_GREATER
+            var useCacheOption = request.Options.TryGetValue(UseCache, out var useCache) == false || useCache == true;
+#else
+            var useCacheOption = request.Properties.TryGetValue(UseCache, out var useCache) == false || (bool)useCache == true;
+#endif
+
+            return useCacheOption && request.Headers.CacheControl?.NoCache != true;
+        }
+
+        private static bool ShouldCacheResponse(HttpResponseMessage response)
+        {
+            if (response.Headers.CacheControl is CacheControlHeaderValue cacheControl)
+            {
+                return
+                    cacheControl.NoStore == false &&
+                    cacheControl.NoCache == false &&
+                    response.StatusCode != HttpStatusCode.NotModified;
+            }
+
+            return response.StatusCode != HttpStatusCode.NotModified;
         }
 
         private bool TryGetCachedHttpResponseMessage(HttpRequestMessage request, string key, out HttpResponseMessage cachedResponse)

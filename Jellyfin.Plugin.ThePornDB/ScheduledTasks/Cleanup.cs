@@ -47,7 +47,7 @@ namespace ThePornDB.ScheduledTasks
                 await this.libraryManager.UpdateItemAsync(item, newItem, ItemUpdateType.MetadataEdit, cancellationToken).ConfigureAwait(false);
 #endif
 
-                progress?.Report(idx / items.Count() * 100);
+                progress?.Report((double)idx / items.Count() * 100);
             }
 
             progress?.Report(100);

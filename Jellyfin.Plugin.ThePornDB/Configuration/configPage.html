@@ -151,6 +151,12 @@
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
+                            <input id="DisableDirectors" name="DisableDirectors" type="checkbox" is="emby-checkbox" />
+                            <span>Disable Directors Saving to Metadata</span>
+                        </label>
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
                             <input id="DisableGenres" name="DisableGenres" type="checkbox" is="emby-checkbox" />
                             <span>Disable Genres Saving to Metadata</span>
                         </label>
@@ -266,6 +272,7 @@
                     $('#DisableActorsAutoIdentify').prop('checked', config.DisableActorsAutoIdentify);
                     $('#DisableMaleActors').prop('checked', config.DisableMaleActors);
                     $('#DisableActors').prop('checked', config.DisableActors);
+                    $('#DisableDirectors').prop('checked', config.DisableDirectors);
                     $('#DisableGenres').prop('checked', config.DisableActors);
                     $('#ScenesImage').val(config.ScenesImage).change();
                     $('#ScenesThumb').val(config.ScenesThumb).change();
@@ -310,6 +317,7 @@
                     config.DisableActorsAutoIdentify = $('#DisableActorsAutoIdentify').prop('checked');
                     config.DisableMaleActors = $('#DisableMaleActors').prop('checked');
                     config.DisableActors = $('#DisableActors').prop('checked');
+                    config.DisableDirectors = $('#DisableDirectors').prop('checked');
                     config.DisableGenres = $('#DisableGenres').prop('checked');
                     config.ScenesImage = $('#ScenesImage').val();
                     config.ScenesThumb = $('#ScenesThumb').val();
