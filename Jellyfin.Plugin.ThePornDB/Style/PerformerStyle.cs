@@ -113,7 +113,7 @@ namespace ThePornDB.Style
             }
             var description = string.Empty;
 
-            switch (Plugin.Instance.Configuration.ActorsOverviewStyle)
+            switch (Plugin.Instance.Configuration.ActorsOverview)
             {
                 case ActorsOverviewStyle.Custom:
                     description = Plugin.Instance.Configuration.ActorsOverviewFormat;

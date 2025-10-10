@@ -58,7 +58,7 @@ namespace ThePornDB.Configuration
     {
         None = 0,
         Default = 1,
-        Custom = 2,
+        CustomExtras = 2,
     }
     public enum ActorsTagStyle
     {
@@ -136,7 +136,7 @@ namespace ThePornDB.Configuration
             this.CustomTagActors = "{ethnicity}";
             this.ActorsRole = ActorsRoleStyle.Gender;
             this.ActorsImage = ActorsImageStyle.Poster;
-            this.ActorsOverviewStyle = ActorsOverviewStyle.Default;
+            this.ActorsOverview = ActorsOverviewStyle.Default;
             this.ActorsOverviewFormat = "<strong style=\"color:#ff0000\">{measurements}<br/></strong>{cupsize}-{waist}-{hips}<br/>{tattoos}<br/>{piercings}<br/>{bio}";
         }
 
@@ -212,7 +212,7 @@ namespace ThePornDB.Configuration
 
         public ActorsImageStyle ActorsImage { get; set; }
 
-        public ActorsOverviewStyle ActorsOverviewStyle { get; set; }
+        public ActorsOverviewStyle ActorsOverview { get; set; }
 
         public string ActorsOverviewFormat { get; set; }
     }
