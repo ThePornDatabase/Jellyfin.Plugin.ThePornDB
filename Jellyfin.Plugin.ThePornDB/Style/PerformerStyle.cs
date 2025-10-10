@@ -115,7 +115,7 @@ namespace ThePornDB.Style
 
             switch (Plugin.Instance.Configuration.ActorsOverview)
             {
-                case ActorsOverviewStyle.Custom:
+                case ActorsOverviewStyle.CustomExtras:
                     description = Plugin.Instance.Configuration.ActorsOverviewFormat;
                     break;
                 case ActorsOverviewStyle.Default:
