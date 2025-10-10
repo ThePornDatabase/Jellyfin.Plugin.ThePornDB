@@ -283,7 +283,7 @@
                     $('#CustomTagActors').val(config.CustomTagActors).change();
                     $('#ActorsRole').val(config.ActorsRole).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
-                    $('#ActorsOverviewStyle').val(config.ActorsOverviewStyle).change();
+                    $('#ActorsOverview').val(config.ActorsOverview).change();
                     $('#ActorsOverviewFormat').val(config.ActorsOverviewFormat).change();
                     Dashboard.hideLoadingMsg();
                 });
@@ -329,7 +329,7 @@
                     config.CustomTagActors = $('#CustomTagActors').val();
 
                     config.ActorsImage = $('#ActorsImage').val();
-                    config.ActorsOverviewStyle = $('#ActorsOverviewStyle').val();
+                    config.ActorsOverview = $('#ActorsOverview').val();
                     config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
                     ApiClient.updatePluginConfiguration(ThePornDBConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
