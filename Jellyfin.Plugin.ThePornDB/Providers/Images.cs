@@ -29,6 +29,7 @@ namespace ThePornDB.Providers
                 ImageType.Primary,
                 ImageType.Backdrop,
                 ImageType.Logo,
+                ImageType.Thumb,
             };
 
 #if __EMBY__
