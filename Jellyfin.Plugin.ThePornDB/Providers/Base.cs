@@ -35,17 +35,29 @@ namespace ThePornDB.Providers
             switch (sceneType)
             {
                 case SceneType.Scene:
+#if __EMBY__
+                    prefixID = "scenes\\";
+#else
                     prefixID = "scenes/";
+#endif
                     searchURL = Consts.APISceneSearchURL;
                     sceneURL = Consts.APISceneURL;
                     break;
                 case SceneType.Movie:
+#if __EMBY__
+                    prefixID = "movies\\";
+#else
                     prefixID = "movies/";
+#endif
                     searchURL = Consts.APIMovieSearchURL;
                     sceneURL = Consts.APIMovieURL;
                     break;
                 case SceneType.JAV:
+#if __EMBY__
+                    prefixID = "jav\\";
+#else
                     prefixID = "jav/";
+#endif
                     searchURL = Consts.APIJAVSearchURL;
                     sceneURL = Consts.APIJAVURL;
                     break;
