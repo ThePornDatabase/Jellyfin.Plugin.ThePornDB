@@ -47,11 +47,11 @@ jobs:
         run: MSBuild -t:Restore,Build -p:RestorePackagesConfig=true -property:Configuration=Release
 
       - name: Rename Files
-        run: ren Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/ThePornDB.dll Jellyfin.Plugin.ThePornDB.dll && ren Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/ThePornDB.pdb Jellyfin.Plugin.ThePornDB.pdb
+        run: ren Jellyfin.Plugin.ThePornDB/bin/Release/net9.0/ThePornDB.dll Jellyfin.Plugin.ThePornDB.dll && ren Jellyfin.Plugin.ThePornDB/bin/Release/net9.0/ThePornDB.pdb Jellyfin.Plugin.ThePornDB.pdb
 
       - uses: vimtor/action-zip@v1.2
         with:
-          files: Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/Jellyfin.Plugin.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release/net8.0/Jellyfin.Plugin.ThePornDB.dll
+          files: Jellyfin.Plugin.ThePornDB/bin/Release/net9.0/Jellyfin.Plugin.ThePornDB.pdb Jellyfin.Plugin.ThePornDB/bin/Release/net9.0/Jellyfin.Plugin.ThePornDB.dll
           dest: Jellyfin.Plugin.ThePornDB.zip
 
       - uses: actions/upload-artifact@v4
