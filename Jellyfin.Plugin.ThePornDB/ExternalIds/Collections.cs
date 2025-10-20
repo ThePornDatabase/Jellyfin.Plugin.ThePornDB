@@ -22,7 +22,9 @@ namespace ThePornDB.ExternalIds
 
         public string Key => Plugin.Instance.Name;
 
+#if __EMBY__
         public string UrlFormatString => Consts.SiteURL;
+#endif
 
         public bool Supports(IHasProviderIds item) => item is BoxSet;
     }
