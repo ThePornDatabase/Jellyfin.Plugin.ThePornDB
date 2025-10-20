@@ -70,6 +70,10 @@ namespace ThePornDB.Providers
             {
                 searchInfo.ProviderIds.TryGetValue(Plugin.Instance.Name, out curID);
             }
+            else
+            {
+                curID = prefixID + curID;
+            }
 
             if (!string.IsNullOrEmpty(curID))
             {
