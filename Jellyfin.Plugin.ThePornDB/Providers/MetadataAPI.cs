@@ -272,7 +272,7 @@ namespace ThePornDB.Providers
                         continue;
                     }
 
-                    result.People.Add(actor);
+                    result.AddPerson(actor);
                 }
             }
 
@@ -290,7 +290,7 @@ namespace ThePornDB.Providers
 #endif
                     };
 
-                    result.People.Add(director);
+                    result.AddPerson(director);
                 }
             }
 

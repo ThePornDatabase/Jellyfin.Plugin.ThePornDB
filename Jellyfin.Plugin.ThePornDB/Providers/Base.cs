@@ -35,17 +35,29 @@ namespace ThePornDB.Providers
             switch (sceneType)
             {
                 case SceneType.Scene:
+#if __EMBY__
+                    prefixID = "scenes\\";
+#else
                     prefixID = "scenes/";
+#endif
                     searchURL = Consts.APISceneSearchURL;
                     sceneURL = Consts.APISceneURL;
                     break;
                 case SceneType.Movie:
+#if __EMBY__
+                    prefixID = "movies\\";
+#else
                     prefixID = "movies/";
+#endif
                     searchURL = Consts.APIMovieSearchURL;
                     sceneURL = Consts.APIMovieURL;
                     break;
                 case SceneType.JAV:
+#if __EMBY__
+                    prefixID = "jav\\";
+#else
                     prefixID = "jav/";
+#endif
                     searchURL = Consts.APIJAVSearchURL;
                     sceneURL = Consts.APIJAVURL;
                     break;
@@ -69,6 +81,10 @@ namespace ThePornDB.Providers
             if (string.IsNullOrEmpty(curID))
             {
                 searchInfo.ProviderIds.TryGetValue(Plugin.Instance.Name, out curID);
+            }
+            else
+            {
+                curID = prefixID + curID;
             }
 
             if (!string.IsNullOrEmpty(curID))
@@ -285,7 +301,7 @@ namespace ThePornDB.Providers
                         .ThenBy(o => o.Role?.Equals("Male", StringComparison.OrdinalIgnoreCase))
                         .ThenBy(o => o.Name)
                         .ToList();
-                    result.People.AddRange(other.OrderBy(o => o.Name));
+                    other.OrderBy(o => o.Name).ToList().ForEach(o => result.AddPerson(o));
                 }
 
                 if (Plugin.Instance.Configuration.UseCustomTitle && !string.IsNullOrEmpty(Plugin.Instance.Configuration.CustomTitle))
