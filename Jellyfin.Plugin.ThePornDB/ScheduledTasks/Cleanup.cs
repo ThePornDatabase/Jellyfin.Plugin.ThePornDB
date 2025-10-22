@@ -7,6 +7,12 @@ using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
 
+#if __EMBY__
+using MediaBrowser.Controller.Entities.Movies;
+#else
+using Jellyfin.Data.Enums;
+#endif
+
 namespace ThePornDB.ScheduledTasks
 {
     public class Cleanup : IScheduledTask
@@ -35,7 +41,15 @@ namespace ThePornDB.ScheduledTasks
             await Task.Yield();
             progress?.Report(0);
 
-            var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
+            var items = this.libraryManager.GetItemList(new InternalItemsQuery()
+            {
+#if __EMBY__
+                IncludeItemTypes = new[] { nameof(Movie) },
+#else
+                IncludeItemTypes = [BaseItemKind.Movie],
+#endif
+            }).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
+
             foreach (var (idx, item) in items.WithIndex())
             {
                 var newItem = item;

@@ -5,14 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Entities;
+using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
-using ThePornDB.Configuration;
 using ThePornDB.Providers;
 
 #if __EMBY__
 #else
-using MediaBrowser.Controller.Entities.Movies;
+using Jellyfin.Data.Enums;
 #endif
 
 namespace ThePornDB.ScheduledTasks
@@ -46,8 +46,16 @@ namespace ThePornDB.ScheduledTasks
             await Task.Yield();
             progress?.Report(0);
 
-            var items = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
-            if (Plugin.Instance.Configuration.CollectionType != CollectionType.All)
+            var items = this.libraryManager.GetItemList(new InternalItemsQuery()
+            {
+#if __EMBY__
+                IncludeItemTypes = new[] { nameof(Movie) },
+#else
+                IncludeItemTypes = [BaseItemKind.Movie],
+#endif
+            }).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
+
+            if (Plugin.Instance.Configuration.CollectionType != Configuration.CollectionType.All)
             {
                 var (prefixID, _, _) = Base.GetSettings((SceneType)Plugin.Instance.Configuration.CollectionType);
                 items = items.Where(o => o.ProviderIds[Plugin.Instance.Name].StartsWith(prefixID, StringComparison.OrdinalIgnoreCase));
