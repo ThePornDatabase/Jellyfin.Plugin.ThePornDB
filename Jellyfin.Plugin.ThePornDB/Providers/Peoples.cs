@@ -17,7 +17,11 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
+#if __EMBY__
+    public class Peoples : IRemoteMetadataProvider<Person, PersonLookupInfo>, IHasSupportedExternalIdentifiers
+#else
     public class Peoples : IRemoteMetadataProvider<Person, PersonLookupInfo>
+#endif
     {
         public string Name => Plugin.Instance.Name;
 
@@ -145,5 +149,12 @@ namespace ThePornDB.Providers
         {
             return UGetImageResponse.SendAsync(url, cancellationToken);
         }
+
+#if __EMBY__
+        public string[] GetSupportedExternalIdentifiers()
+        {
+            return new[] { Plugin.Instance.Name };
+        }
+#endif
     }
 }

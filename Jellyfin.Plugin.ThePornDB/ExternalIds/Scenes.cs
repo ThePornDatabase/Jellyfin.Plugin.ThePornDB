@@ -9,7 +9,11 @@ using MediaBrowser.Model.Providers;
 
 namespace ThePornDB.ExternalIds
 {
+#if __EMBY__
+    public class Scenes : IExternalId, IHasWebsite
+#else
     public class Scenes : IExternalId
+#endif
     {
 #if __EMBY__
         public string Name => Plugin.Instance.Name;
@@ -23,6 +27,8 @@ namespace ThePornDB.ExternalIds
 
 #if __EMBY__
         public string UrlFormatString => Consts.BaseURL + "/{0}";
+
+        public string Website => Consts.BaseURL;
 #endif
 
         public bool Supports(IHasProviderIds item) => item is Movie;

@@ -14,7 +14,11 @@ using System.Net.Http;
 
 namespace ThePornDB.Providers
 {
+#if __EMBY__
+    public class Scenes : IRemoteMetadataProvider<Movie, MovieInfo>, IHasSupportedExternalIdentifiers
+#else
     public class Scenes : IRemoteMetadataProvider<Movie, MovieInfo>
+#endif
     {
         private static readonly SceneType ProviderSceneType = SceneType.Scene;
 
@@ -40,5 +44,12 @@ namespace ThePornDB.Providers
         {
             return UGetImageResponse.SendAsync(url, cancellationToken);
         }
+
+#if __EMBY__
+        public string[] GetSupportedExternalIdentifiers()
+        {
+            return new[] { Plugin.Instance.Name };
+        }
+#endif
     }
 }
