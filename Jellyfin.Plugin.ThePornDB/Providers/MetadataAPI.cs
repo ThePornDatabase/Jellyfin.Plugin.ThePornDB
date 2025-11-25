@@ -16,6 +16,7 @@ using ThePornDB.Configuration;
 using ThePornDB.Helpers;
 using ThePornDB.Helpers.Utils;
 using ThePornDB.Models;
+using ThePornDB.Style;
 
 #if __EMBY__
 #else
@@ -120,6 +121,9 @@ namespace ThePornDB.Providers
 
             result.Item.Name = sceneData.Title;
             result.Item.Overview = sceneData.Description;
+            result.Item.Tagline = SceneStyle.Title(sceneData, SceneStyle.Typ.Tagline, Plugin.Instance.Configuration.UseTagline, Plugin.Instance.Configuration.Tagline);
+            result.Item.OriginalTitle = SceneStyle.Title(sceneData, SceneStyle.Typ.Original, Plugin.Instance.Configuration.UseOriginalTitle, Plugin.Instance.Configuration.OriginalTitle);
+            result.Item.ForcedSortName = SceneStyle.Title(sceneData, SceneStyle.Typ.Sortable, Plugin.Instance.Configuration.UseForceSortableTitle, Plugin.Instance.Configuration.ForceSortableTitle);
 
             if (Plugin.Instance.Configuration.StudioStyle == StudioStyle.All || Plugin.Instance.Configuration.StudioStyle == StudioStyle.Site)
             {
@@ -243,6 +247,16 @@ namespace ThePornDB.Providers
                         case ActorsRoleStyle.NameByScene:
                             role = actorLink.Name;
                             break;
+                        case ActorsRoleStyle.NamesDifferent:
+                            if (actorLink.Name == name == false)
+                            {
+                                role = actorLink.Name;
+                            }
+                            else
+                            {
+                                role = string.Empty;
+                            }
+                            break;
                         case ActorsRoleStyle.None:
                             role = string.Empty;
                             break;
@@ -304,32 +318,33 @@ namespace ThePornDB.Providers
             var data = http["data"].ToString();
             var sceneData = JsonConvert.DeserializeObject<Scene>(data);
 
-            var images = new List<(ImageType Type, string Url)>()
-            {
-                (ImageType.Logo, sceneData.Site.Logo),
-            };
+            var images = SceneStyle.ImageList(sceneData);
+            //var images = new List<(ImageType Type, string Url)>()
+            //{
+            //    (ImageType.Logo, sceneData.Site.Logo),
+            //};
 
-            string background = sceneData.Background.Large;
-            if (!string.IsNullOrEmpty(background))
-            {
-                images.Insert(0, (ImageType.Backdrop, (string)background));
-            }
+            //string background = sceneData.Background.Large;
+            //if (!string.IsNullOrEmpty(background))
+            //{
+            //    images.Insert(0, (ImageType.Backdrop, (string)background));
+            //}
 
-            string primary = null;
-            switch (Plugin.Instance.Configuration.ScenesImage)
-            {
-                case ScenesImageStyle.Poster:
-                    primary = sceneData.Posters.Large;
-                    break;
-                case ScenesImageStyle.Background:
-                    primary = sceneData.Background.Large;
-                    break;
-            }
+            //string primary = null;
+            //switch (Plugin.Instance.Configuration.ScenesImage)
+            //{
+            //    case ScenesImageStyle.Poster:
+            //        primary = sceneData.Posters.Large;
+            //        break;
+            //    case ScenesImageStyle.Background:
+            //        primary = sceneData.Background.Large;
+            //        break;
+            //}
 
-            if (!string.IsNullOrEmpty(primary))
-            {
-                images.Insert(0, (ImageType.Primary, (string)primary));
-            }
+            //if (!string.IsNullOrEmpty(primary))
+            //{
+            //    images.Insert(0, (ImageType.Primary, (string)primary));
+            //}
 
             foreach (var image in images)
             {
@@ -413,7 +428,30 @@ namespace ThePornDB.Providers
             // result.Item.Name = (string)sceneData["name"];
             result.Item.ExternalId = !string.IsNullOrEmpty(sceneData.Disambiguation) ? sceneData.Name + " (" + sceneData.Disambiguation + ")" : (string)sceneData.Name;
             result.Item.OriginalTitle = string.Join(", ", sceneData.Aliases.Select(o => o.ToString().Trim()));
-            result.Item.Overview = ActorsOverview.CustomFormat(sceneData);
+
+            string overview = PerformerStyle.Style(sceneData).Descripton;
+            //switch (Plugin.Instance.Configuration.ActorsOverviewStyle)
+            //{
+            //    case ActorsOverviewStyle.Default:
+            //        overview = sceneData.Bio;
+            //        break;
+            //    case ActorsOverviewStyle.Custom:
+            //        overview = PerformerStyle.Style(sceneData).Descripton;
+            //        break;
+            //    case ActorsOverviewStyle.None:
+            //        overview = " ";
+            //        break;
+            //}
+
+            if (!string.IsNullOrEmpty(overview))
+            {
+                result.Item.Overview = overview;
+            }
+            var tags = PerformerStyle.Style(sceneData).Tags;
+            if (tags == null || tags.Length == 0 == false)
+            {
+                result.Item.Tags = tags;
+            }
 
             var actorBornDate = sceneData.Extras.Birthday;
             if (DateTime.TryParseExact(actorBornDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var sceneDateObj))

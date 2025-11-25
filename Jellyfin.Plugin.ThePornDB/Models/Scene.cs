@@ -12,6 +12,9 @@ namespace ThePornDB.Models
         [JsonProperty(PropertyName = "_id")]
         public int ID { get; set; }
 
+        [JsonProperty(PropertyName = "external_id")]
+        public string ExtID { get; set; }
+
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
@@ -44,5 +47,6 @@ namespace ThePornDB.Models
 
         [JsonProperty(PropertyName = "posters")]
         public Image Posters { get; set; }
+
     }
 }

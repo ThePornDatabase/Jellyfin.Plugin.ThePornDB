@@ -86,6 +86,37 @@
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
+                            <input id="UseOriginalTitle" name="UseOriginalTitle" type="checkbox" is="emby-checkbox" />
+                            <span>Use Original Title</span>
+                        </label>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="OriginalTitle">Original Title Format</label>
+                        <input id="OriginalTitle" name="OriginalTitle" type="text" is="emby-input" />
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="UseTagline" name="UseTagline" type="checkbox" is="emby-checkbox" />
+                            <span>Use Tagline</span>
+                        </label>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="Tagline">Tagline Format</label>
+                        <input id="Tagline" name="Tagline" type="text" is="emby-input" />
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
+                            <input id="UseForceSortableTitle" name="UseForceSortableTitle" type="checkbox" is="emby-checkbox" />
+                            <span>Use Force Sortable Title</span>
+                        </label>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="ForceSortableTitle">Force Sortable Title Format</label>
+                        <input id="ForceSortableTitle" name="ForceSortableTitle" type="text" is="emby-input" />
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescripton">
+                        <label class="emby-checkbox-label">
                             <input id="UseUnmatchedTag" name="UseUnmatchedTag" type="checkbox" is="emby-checkbox" />
                             <span>Use Unmatched Tag</span>
                         </label>
@@ -133,8 +164,25 @@
                     <div class="selectContainer">
                         <label class="selectLabel" for="ScenesImage">Scenes Image Option</label>
                         <select is="emby-select" id="ScenesImage" name="ScenesImage" class="emby-select-withcolor emby-select">
+                            <option value="None">None</option>
                             <option value="Poster">Poster</option>
                             <option value="Background">Background</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="ScenesThumb">Thumb Image Option</label>
+                        <select is="emby-select" id="ScenesThumb" name="ScenesThumb" class="emby-select-withcolor emby-select">
+                            <option value="None">None</option>
+                            <option value="Full">Full</option>
+                            <option value="Large">Large</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="ScenesBackdrop">Backdrop Image Option</label>
+                        <select is="emby-select" id="ScenesBackdrop" name="ScenesBackdrop" class="emby-select-withcolor emby-select">
+                            <option value="None">None</option>
+                            <option value="Full">Full</option>
+                            <option value="Large">Large</option>
                         </select>
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
@@ -144,11 +192,25 @@
                         </label>
                     </div>
                     <div class="selectContainer">
+                        <label class="selectLabel" for="ActorsTagStyle">Actors Tag Option</label>
+                        <select is="emby-select" id="ActorsTagStyle" name="ActorsTagStyle" class="emby-select-withcolor emby-select">
+                            <option value="None">None</option>
+                            <option value="Custom">Custom</option>
+                            <option value="Ethnicity">Ethnicity</option>
+                            <option value="Nationality">Nationality</option>
+                        </select>
+                        <div class="inputContainer">
+                            <label class="inputLabel inputLabelUnfocused" for="CustomTagActors">Custom Tags for Actors delimited by comma</label>
+                            <input id="CustomTagActors" name="CustomTagActors" type="text" is="emby-input" />
+                        </div>
+                    </div>
+                    <div class="selectContainer">
                         <label class="selectLabel" for="ActorsRole">Actors Role Option</label>
                         <select is="emby-select" id="ActorsRole" name="ActorsRole" class="emby-select-withcolor emby-select">
                             <option value="None">None</option>
                             <option value="Gender">Gender</option>
                             <option value="NameByScene">Name from Scene</option>
+                            <option value="NamesDifferent">Name from Scene if are different</option>
                         </select>
                     </div>
                     <div class="selectContainer">
@@ -159,16 +221,16 @@
                         </select>
                     </div>
                     <div class="selectContainer">
-                        <label class="selectLabel" for="ActorsOverview">Actors Overview Option</label>
+                        <label class="selectLabel" for="ActorsOverview">Actors Overview Style Option</label>
                         <select is="emby-select" id="ActorsOverview" name="ActorsOverview" class="emby-select-withcolor emby-select">
                             <option value="None">None</option>
+                            <option value="CustomExtras">Custom</option>
                             <option value="Default">Default</option>
-                            <option value="CustomExtras">Custom Extras</option>
                         </select>
                     </div>
                     <div class="inputContainer">
                         <label class="inputLabel inputLabelUnfocused" for="ActorsOverviewFormat">Actor Custom Format</label>
-                        <textarea is="emby-textarea" id="ActorsOverviewFormat" class="textarea-mono emby-textarea" rows="9" style="overflow-y: hidden; height: 90px; width: 100%;">
+                        <textarea is="emby-textarea" id="ActorsOverviewFormat" class="textarea-mono emby-textarea" rows="1" style="overflow-y: hidden; height: 90px; width: 100%; box-sizing:border-box; font:inherit;">
                         </textarea>
                     </div>
                     <button is="emby-button" type="submit" class="raised button-submit block emby-button">
@@ -197,6 +259,13 @@
                     $('#StudioStyle').val(config.StudioStyle).change();
                     $('#UseCustomTitle').prop('checked', config.UseCustomTitle);
                     $('#CustomTitle').val(config.CustomTitle).change();
+                    $('#UseOriginalTitle').prop('checked', config.UseOriginalTitle);
+                    $('#OriginalTitle').val(config.OriginalTitle).change();
+                    $('#UseForceSortableTitle').prop('checked', config.UseForceSortableTitle);
+                    $('#ForceSortableTitle').val(config.ForceSortableTitle).change();
+                    $('#UseTagline').prop('checked', config.UseTagline);
+                    $('#Tagline').val(config.Tagline).change();
+
                     $('#UseUnmatchedTag').prop('checked', config.UseUnmatchedTag);
                     $('#UnmatchedTag').val(config.UnmatchedTag).change();
                     $('#DisableMediaAutoIdentify').prop('checked', config.DisableMediaAutoIdentify)
@@ -206,7 +275,12 @@
                     $('#DisableDirectors').prop('checked', config.DisableDirectors);
                     $('#DisableGenres').prop('checked', config.DisableActors);
                     $('#ScenesImage').val(config.ScenesImage).change();
+                    $('#ScenesThumb').val(config.ScenesThumb).change();
+                    $('#ScenesBackdrop').val(config.ScenesBackdrop).change();
+
                     $('#AddDisambiguation').prop('checked', config.AddDisambiguation);
+                    $('#ActorsTagStyle').val(config.ActorsTagStyle).change();
+                    $('#CustomTagActors').val(config.CustomTagActors).change();
                     $('#ActorsRole').val(config.ActorsRole).change();
                     $('#ActorsImage').val(config.ActorsImage).change();
                     $('#ActorsOverview').val(config.ActorsOverview).change();
@@ -230,6 +304,13 @@
                     config.StudioStyle = $('#StudioStyle').val();
                     config.UseCustomTitle = $('#UseCustomTitle').prop('checked');
                     config.CustomTitle = $('#CustomTitle').val();
+                    config.UseOriginalTitle = $('#UseOriginalTitle').prop('checked');
+                    config.OriginalTitle = $('OrignialTitle').val();
+                    config.UseForceSortableTitle = $('#UseForceSortableTitle').prop('checked');
+                    config.ForceSortableTitle = $('#ForceSortableTitle').val();
+                    config.UseTagline = $('#UseTagline').prop('checked');
+                    config.Tagline = $('#Tagline').val();
+
                     config.UseUnmatchedTag = $('#UseUnmatchedTag').prop('checked');
                     config.UnmatchedTag = $('#UnmatchedTag').val();
                     config.DisableMediaAutoIdentify = $('#DisableMediaAutoIdentify').prop('checked');
@@ -239,8 +320,14 @@
                     config.DisableDirectors = $('#DisableDirectors').prop('checked');
                     config.DisableGenres = $('#DisableGenres').prop('checked');
                     config.ScenesImage = $('#ScenesImage').val();
+                    config.ScenesThumb = $('#ScenesThumb').val();
+                    config.ScenesBackdrop = $('#ScenesBackdrop').val();
+
                     config.AddDisambiguation = $('#AddDisambiguation').prop('checked');
                     config.ActorsRole = $('#ActorsRole').val();
+                    config.ActorsTagStyle = $('#ActorsTagStyle').val();
+                    config.CustomTagActors = $('#CustomTagActors').val();
+
                     config.ActorsImage = $('#ActorsImage').val();
                     config.ActorsOverview = $('#ActorsOverview').val();
                     config.ActorsOverviewFormat = $('#ActorsOverviewFormat').val()
