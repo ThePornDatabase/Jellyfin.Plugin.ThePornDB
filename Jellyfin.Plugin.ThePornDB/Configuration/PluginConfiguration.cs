@@ -19,6 +19,13 @@ namespace ThePornDB.Configuration
         Disabled = 2,
     }
 
+    public enum TagFilterMode
+    {
+        Disabled = 0,
+        Blacklist = 1,
+        Whitelist = 2,
+    }
+
     public enum CollectionType
     {
         Scene = 0,
@@ -77,6 +84,9 @@ namespace ThePornDB.Configuration
 
             this.OrderStyle = OrderStyle.Default;
             this.TagStyle = TagStyle.Genre;
+            this.TagFilterMode = TagFilterMode.Disabled;
+            this.TagFilterList = string.Empty;
+            this.TagMappings = string.Empty;
 
             this.AddCollectionOnSite = false;
 
@@ -121,6 +131,12 @@ namespace ThePornDB.Configuration
         public OrderStyle OrderStyle { get; set; }
 
         public TagStyle TagStyle { get; set; }
+
+        public TagFilterMode TagFilterMode { get; set; }
+
+        public string TagFilterList { get; set; }
+
+        public string TagMappings { get; set; }
 
         public bool AddCollectionOnSite { get; set; }
 

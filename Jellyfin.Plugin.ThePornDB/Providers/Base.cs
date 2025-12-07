@@ -273,6 +273,81 @@ namespace ThePornDB.Providers
                     tags = genres.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(o => o).ToList();
                 }
 
+                // Apply tag filtering based on blacklist/whitelist mode
+                if (Plugin.Instance.Configuration.TagFilterMode != TagFilterMode.Disabled && !string.IsNullOrWhiteSpace(Plugin.Instance.Configuration.TagFilterList))
+                {
+                    var filterList = Plugin.Instance.Configuration.TagFilterList
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(t => t.Trim())
+                        .Where(t => !string.IsNullOrEmpty(t))
+                        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                    if (filterList.Count > 0)
+                    {
+                        switch (Plugin.Instance.Configuration.TagFilterMode)
+                        {
+                            case TagFilterMode.Blacklist:
+                                // Remove tags that are in the blacklist
+                                tags = tags.Where(t => !filterList.Contains(t)).ToList();
+                                break;
+                            case TagFilterMode.Whitelist:
+                                // Keep only tags that are in the whitelist
+                                tags = tags.Where(t => filterList.Contains(t)).ToList();
+                                break;
+                        }
+                    }
+                }
+
+                // Apply tag mappings (merge multiple tags into one)
+                if (!string.IsNullOrWhiteSpace(Plugin.Instance.Configuration.TagMappings))
+                {
+                    var mappingLines = Plugin.Instance.Configuration.TagMappings
+                        .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var line in mappingLines)
+                    {
+                        var colonIndex = line.IndexOf(':');
+                        if (colonIndex <= 0)
+                        {
+                            continue;
+                        }
+
+                        var newTag = line.Substring(0, colonIndex).Trim();
+                        if (string.IsNullOrEmpty(newTag))
+                        {
+                            continue;
+                        }
+
+                        var originalTags = line.Substring(colonIndex + 1)
+                            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(t => t.Trim())
+                            .Where(t => !string.IsNullOrEmpty(t))
+                            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                        if (originalTags.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        // Check if any of the original tags exist in the current tags
+                        var matchingTags = tags.Where(t => originalTags.Contains(t)).ToList();
+                        if (matchingTags.Count > 0)
+                        {
+                            // Remove all matching original tags
+                            tags = tags.Where(t => !originalTags.Contains(t)).ToList();
+
+                            // Add the new tag if not already present
+                            if (!tags.Contains(newTag, StringComparer.OrdinalIgnoreCase))
+                            {
+                                tags.Add(newTag);
+                            }
+                        }
+                    }
+
+                    // Re-sort after merging
+                    tags = tags.OrderBy(o => o).ToList();
+                }
+
                 switch (Plugin.Instance.Configuration.TagStyle)
                 {
                     case TagStyle.Disabled:
