@@ -306,14 +306,10 @@ namespace ThePornDB.Providers
 
             var images = new List<(ImageType Type, string Url)>()
             {
+                (ImageType.Backdrop, sceneData.Background.Large),
+                (ImageType.Backdrop, sceneData.BackgroundBack.Large),
                 (ImageType.Logo, sceneData.Site.Logo),
             };
-
-            string background = sceneData.Background.Large;
-            if (!string.IsNullOrEmpty(background))
-            {
-                images.Insert(0, (ImageType.Backdrop, (string)background));
-            }
 
             string primary = null;
             switch (Plugin.Instance.Configuration.ScenesImage)

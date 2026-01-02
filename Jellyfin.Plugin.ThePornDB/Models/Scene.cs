@@ -42,6 +42,9 @@ namespace ThePornDB.Models
         [JsonProperty(PropertyName = "background")]
         public Image Background { get; set; }
 
+        [JsonProperty(PropertyName = "background_back")]
+        public Image BackgroundBack { get; set; }
+
         [JsonProperty(PropertyName = "posters")]
         public Image Posters { get; set; }
     }
