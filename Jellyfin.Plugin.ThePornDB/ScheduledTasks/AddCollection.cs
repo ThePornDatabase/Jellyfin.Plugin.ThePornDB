@@ -46,14 +46,15 @@ namespace ThePornDB.ScheduledTasks
             await Task.Yield();
             progress?.Report(0);
 
-            var items = this.libraryManager.GetItemList(new InternalItemsQuery()
+            var allMovies = this.libraryManager.GetItemList(new InternalItemsQuery()
             {
 #if __EMBY__
                 IncludeItemTypes = new[] { nameof(Movie) },
 #else
                 IncludeItemTypes = [BaseItemKind.Movie],
 #endif
-            }).Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
+            });
+            var items = allMovies.Where(o => o.ProviderIds.ContainsKey(Plugin.Instance.Name));
 
             if (Plugin.Instance.Configuration.CollectionType != Configuration.CollectionType.All)
             {
@@ -63,7 +64,7 @@ namespace ThePornDB.ScheduledTasks
 
             if (Plugin.Instance.Configuration.UseUnmatchedTag)
             {
-                var missingScenes = this.libraryManager.GetItemList(new InternalItemsQuery()).Where(o => o.Genres.Contains(Plugin.Instance.Configuration.UnmatchedTag, StringComparer.Ordinal));
+                var missingScenes = allMovies.Where(o => o.Genres.Contains(Plugin.Instance.Configuration.UnmatchedTag, StringComparer.Ordinal));
                 await this.CreateCollection(missingScenes, Plugin.Instance.Configuration.UnmatchedTag).ConfigureAwait(false);
             }
 
