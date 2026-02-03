@@ -184,7 +184,7 @@ namespace ThePornDB.Providers
         {
             var result = new MetadataResult<Movie>()
             {
-                HasMetadata = true,
+                HasMetadata = Plugin.Instance.Configuration.UseUnmatchedTag,
                 Item = new Movie(),
                 People = new List<PersonInfo>(),
             };
@@ -325,7 +325,7 @@ namespace ThePornDB.Providers
             }
             else
             {
-                result.HasMetadata = true;
+                result.HasMetadata = Plugin.Instance.Configuration.UseUnmatchedTag;
             }
 
             return result;
