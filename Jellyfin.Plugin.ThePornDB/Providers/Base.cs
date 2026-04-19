@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -140,7 +141,10 @@ namespace ThePornDB.Providers
 
             if (!string.IsNullOrEmpty(searchInfo.Path) && Plugin.Instance.Configuration.UseFilePath)
             {
-                searchTitle = searchInfo.Path;
+                var _filename = Path.GetFileName(searchInfo.Path);
+                searchTitle = _filename.EndsWith(".strm", StringComparison.OrdinalIgnoreCase)
+                    ? Path.GetFileNameWithoutExtension(_filename)
+                    : _filename;
             }
 
             if (!string.IsNullOrEmpty(searchInfo.Path) && Plugin.Instance.Configuration.UseOSHash)
