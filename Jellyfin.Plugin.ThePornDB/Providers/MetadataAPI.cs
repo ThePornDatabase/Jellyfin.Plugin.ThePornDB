@@ -46,7 +46,12 @@ namespace ThePornDB.Providers
             }
             catch (Exception)
             {
-                var message = "Unknown error";
+                Logger.Error($"Not JSON response");
+            }
+
+            if (!http.IsOK)
+            {
+                var message = http.StatusCode.ToString();
                 if (json != null && json.ContainsKey("message"))
                 {
                     message = (string)json["message"];

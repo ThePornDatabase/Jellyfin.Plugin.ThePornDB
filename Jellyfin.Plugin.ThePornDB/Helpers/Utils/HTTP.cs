@@ -91,6 +91,7 @@ namespace ThePornDB.Helpers.Utils
             if (response != null)
             {
                 result.IsOK = response.IsSuccessStatusCode;
+                result.StatusCode = response.StatusCode;
 #if __EMBY__
                 result.Content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 result.ContentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
@@ -121,6 +122,8 @@ namespace ThePornDB.Helpers.Utils
             public Stream ContentStream { get; set; }
 
             public bool IsOK { get; set; }
+
+            public HttpStatusCode StatusCode { get; set; }
 
             public IEnumerable<Cookie> Cookies { get; set; }
 
